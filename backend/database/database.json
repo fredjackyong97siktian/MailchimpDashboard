@@ -1,0 +1,18 @@
+{
+    "dev":{
+        "driver":"pg",
+        "host": {"ENV": "POSTGRESQL_HOST"},
+        "user": {"ENV": "POSTGRESQL_USER"},
+        "password":{"ENV": "POSTGRESQL_PASSWORD"},
+        "database":{"ENV": "POSTGRESQL_DATABASE"},
+        "port":{"ENV": "POSTGRESQL_PORT"}
+    },
+    "test":{
+        "host":"",
+        "user":"",
+        "password":"",
+        "database":"",
+        "driver":"",
+        "multipleStatements":true
+    }, "sql-file":true
+}
