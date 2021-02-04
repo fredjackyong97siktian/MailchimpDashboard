@@ -2,15 +2,22 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import RouterDecider from './RouterDecider'
-
 import reportWebVitals from './reportWebVitals';
 import {  BrowserRouter as Router} from "react-router-dom";
+import {Provider } from 'react-redux';
+import {createStore, applyMiddleware, compose } from 'redux';
+import thunk from 'redux-thunk'
+import {reducers} from './reducer';
+
+const store = createStore(reducers, compose(applyMiddleware(thunk)))
 
 ReactDOM.render(
   <React.StrictMode>
-    <Router>
-      <RouterDecider/>
-    </Router>
+    <Provider store={store}>
+      <Router>
+        <RouterDecider/>
+      </Router>
+    </Provider>
   </React.StrictMode>,
   document.getElementById('root')
 );

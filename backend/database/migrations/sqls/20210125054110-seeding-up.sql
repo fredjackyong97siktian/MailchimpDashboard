@@ -1,11 +1,14 @@
 SET TIME ZONE 'UTC';
+CREATE EXTENSION citext;
+CREATE DOMAIN cemail AS citext
+  CHECK ( value ~ '^[a-zA-Z0-9.!#$%&''*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$' );
+CREATE EXTENSION pgcrypto;
 
 CREATE TABLE "user_account" (
   "id" SERIAL NOT NULL PRIMARY KEY,
   "user_account_id" char(8) NOT NULL,
-  "username" varchar(257),
-  "password" varchar(257),
-  "email" varchar(50),
+  "email" cemail NOT NULL UNIQUE,
+  "password" varchar(257) NOT NULL,
   "profile_img" varchar(257),
   "firstname" varchar(257),
   "lastname" varchar(257),
@@ -231,3 +234,25 @@ CREATE TABLE "payment" (
   "created_at" timestamp without time zone,
   CONSTRAINT chk_payment_id check (payment_id ~ '^[0-9a-zA-Z!@-_#]{6}$') 
 );
+
+Create or replace function random_userID(length integer) returns text as
+$$
+declare
+  chars text[] := '{0,1,2,3,4,5,6,7,8,9,A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z,a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z}';
+  result text := '';
+  done bool;
+  i integer := 0;
+begin
+  done:= false;
+  if length < 0 then
+    raise exception 'Given length cannot be less than 0';
+  end if;
+  WHILE NOT done LOOP
+    for i in 1..length loop
+      result := result || chars[1+random()*(array_length(chars, 1)-1)];
+    end loop;
+  done:= NOT exists(SELECT 1 FROM user_account where user_account_id = result );
+  END LOOP;
+  return result;
+end;
+$$ language plpgsql;

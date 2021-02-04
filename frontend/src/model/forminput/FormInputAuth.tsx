@@ -9,9 +9,15 @@ export interface FormInputRegister {
     lastname: string,
     email: string,
     password: string,
-    repassword : string
+    repassword ?: string
 }
 
 export interface FormInputForgetPassword {
     email: string
+}
+
+export interface RegisterStatus {
+    loading: boolean,
+    data : FormInputRegister
+    message: string
 }

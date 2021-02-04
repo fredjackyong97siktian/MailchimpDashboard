@@ -1,0 +1,1 @@
+export const SIGNUP_CREATE = 'SIGNUP_CREATE'

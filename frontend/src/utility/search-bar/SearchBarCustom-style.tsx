@@ -2,7 +2,6 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
     backgroundColor: {
-
         "& .MuiInput-input": {
             borderBottom: '1px solid #605865',
             color: "white",
@@ -10,17 +9,17 @@ const useStyles = makeStyles((theme) => ({
         "&:hover .MuiInput-input": {
             borderBottom: '3px solid #605865',
         },
-        "& .MuiPaper-outlined":{
-            color: "white",
+        "& .MuiInput-input:focus": {
+            borderBottom: '3px solid #605865',
         },
         "& .MuiIconButton-label": {
             color: "white",
         },
-        searchIconButton: {
-            color:'white',
-        },
         backgroundColor:'transparent',
         color: "white",
+        "&:focus":{
+            width:'10%'
+        }
     }
 }));
 

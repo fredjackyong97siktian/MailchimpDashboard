@@ -1,18 +1,30 @@
-//dotenv
-require('dotenv').config();
+import SignupRoute from './signup/route'
 
-//postgresql
+//postgresq
 const pgp = require('pg-promise')({});
 
+//firebase
+const firebase = require('firebase-admin');
+const functions = require('firebase-functions');
+
+//Express
+const express = require('express');
+const cors = require('cors');
+const app = express();
+
+//configuration
+var config = require('./../config');
+
+//POSTGRE CONFIGURATION
 const cn = {
-    "host" : process.env.POSTGRESQL_HOST,
-    "port" : process.env.POSTGRESQL_PORT,
-    "database" : process.env.POSTGRESQL_DATABASE,
-    "user" :process.env.POSTGRESQL_USER,
-    "password" : process.env.POSTGRESQL_PASSWORD
+    "host" : config.POSTGRESQL_HOST,
+    "port" : config.POSTGRESQL_PORT,
+    "database" : config.POSTGRESQL_DATABASE,
+    "user" :config.POSTGRESQL_USER,
+    "password" : config.POSTGRESQL_PASSWORD
 }
 
-var pgdb = pgp(cn)
+export const pgdb = pgp(cn)
 
 pgdb.connect()
     .then((obj:any) => {
@@ -22,19 +34,15 @@ pgdb.connect()
         console.log('ERROR:', error.message || error);
 });
 
-//firebase
-const firebase = require('firebase-admin');
-const functions = require('firebase-functions');
-const express = require('express');
-const cors = require('cors');
-const app = express();
 
+app.use(cors({ origin: true }));
+app.use('/api',SignupRoute);
+
+//firebase
 var admin = firebase.initializeApp({
     credential: firebase.credential.applicationDefault(),
     databaseURL: 'https://bsupkit-45126.firebaseio.com'
 });
-
-app.use(cors({ origin: true }));
 
 app.get('/hello-world', (req:any, res:any) => {
   return res.status(200).send('Hello World!');
@@ -65,4 +73,5 @@ app.post('/api/create', (req:any, res:any) => {
         }
       })();
   });
+
 exports.app = functions.https.onRequest(app);

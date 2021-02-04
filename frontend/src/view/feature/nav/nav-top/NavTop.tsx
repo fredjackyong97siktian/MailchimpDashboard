@@ -9,6 +9,7 @@ import Badge from '@material-ui/core/Badge';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import useStyles from './NavTop-style'; 
 import {DrawerSetting} from './../../../../model/nav/Nav'
+import LinearProgress from '@material-ui/core/LinearProgress';
 
 const NavTop : React.FC<DrawerSetting> = ({open,setOpen}) => {
     const classes = useStyles();
@@ -22,6 +23,7 @@ const NavTop : React.FC<DrawerSetting> = ({open,setOpen}) => {
       };
 
    return(
+     <>
     <AppBar position="absolute" className={clsx(classes.appBar, open && classes.appBarShift)}>
     <Toolbar className={classes.toolbar}>
       <IconButton
@@ -42,7 +44,10 @@ const NavTop : React.FC<DrawerSetting> = ({open,setOpen}) => {
         </Badge>
       </IconButton>
     </Toolbar>
+    <LinearProgress />
   </AppBar>   
+  
+  </>
    ); 
 }
 

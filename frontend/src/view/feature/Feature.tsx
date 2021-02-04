@@ -21,6 +21,7 @@ const Feature : React.FC = () => {
       <NavTop setOpen={setOpen} open={open}/>
       <NavSide setOpen={setOpen} open={open}/>
       <main className={classes.content}>
+        
         <div className={classes.appBarSpacer} />
         <Container maxWidth="lg" className={classes.container}>
 
