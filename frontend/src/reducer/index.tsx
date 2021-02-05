@@ -1,6 +1,6 @@
 import {combineReducers} from 'redux';
 import SignupReducer from './../view/frontauth/signup/redux/SignupReducer'
-import LoadingReducer from './../utility/loading/LoadingReducer'
+import LoadingReducer from '../view/modal/Loadingpage/redux/LoadingReducer'
 
 export const reducers =  combineReducers({
     signup : SignupReducer ,

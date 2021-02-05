@@ -1,9 +1,10 @@
-import {PAGE_STATUS_LOADING, PAGE_STATUS_SUCCESS, PAGE_STATUS_ERROR} from './LoadingConstant';
-import {LoadingStatus} from './../../model/loading/Loading' 
+import {PAGE_STATUS_LOADING, PAGE_STATUS_SUCCESS, PAGE_STATUS_ERROR ,PAGE_STATUS_RECOVER} from './LoadingConstant';
+import {LoadingStatus} from './../../../../model/loading/Loading' 
 
 const initiateState : LoadingStatus = {
     loading: false,
     status: null,
+    hasError: false,
     message: ''
 }
 
@@ -23,7 +24,15 @@ const LoadingReducer = (state = initiateState, action : any) => {
             return {...state,
                 loading: false,
                 status:false,
+                hasError:true,
                 message: action.payload}
+        case PAGE_STATUS_RECOVER:
+            return {
+                loading: false,
+                status: null,
+                hasError: false,
+                message: ''  
+            }
         default:
             return state;
     }

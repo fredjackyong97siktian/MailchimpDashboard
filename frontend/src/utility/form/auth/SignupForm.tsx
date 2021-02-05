@@ -1,19 +1,17 @@
 import React, {useState , useEffect}from 'react';
 import TextField from '@material-ui/core/TextField';
-import {FormInputRegister,RegisterStatus} from './../../../model/forminput/FormInputAuth' 
+import {FormInputRegister, RegisterStatus} from './../../../model/forminput/FormInputAuth' 
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import {SignupFormValidSchema} from './SignupFormValidSchema';
 import useStylesForm from '../Form-style';
-import {useDispatch , useSelector } from 'react-redux';
+import {useDispatch  } from 'react-redux';
 import {CSignup} from './../../../view/frontauth/signup/redux/SignupAction';
-import {RootState} from './../../../reducer';
+
 
 const SignupForm : React.FC = () => {
-
-    let status = useSelector((state:RootState)=>state.loading);
 
     const classes = useStylesForm();
     const dispatch = useDispatch();
@@ -21,15 +19,10 @@ const SignupForm : React.FC = () => {
         resolver: yupResolver(SignupFormValidSchema)
     });
 
-    useEffect(()=>{
-        console.log(status);
-    },[status])
-
     const onSubmitForm = async (data: FormInputRegister) => {
            dispatch(CSignup(data))
     };
 
-    
     return( 
         <form className={classes.form} onSubmit={handleSubmit(onSubmitForm)} noValidate>
         <Grid container spacing={2}>

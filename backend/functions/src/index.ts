@@ -12,6 +12,12 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 
+//security measure
+var helmet = require('helmet')
+app.use(cors({ origin: true }));
+app.disable('x-powered-by')
+app.use(helmet())
+
 //configuration
 var config = require('./../config');
 
@@ -35,7 +41,7 @@ pgdb.connect()
 });
 
 
-app.use(cors({ origin: true }));
+
 app.use('/api',SignupRoute);
 
 //firebase
