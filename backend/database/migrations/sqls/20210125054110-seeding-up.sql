@@ -23,8 +23,8 @@ CREATE TABLE "user_account" (
   "forget_passcode_receive_at" timestamp without time zone,
   "isactive" bool  default TRUE ,
   "last_login_at" timestamp without time zone,
-  "created_at" timestamp without time zone,
-  "updated_at" timestamp without time zone,
+  "created_at" timestamp  without time zone default (now() at time zone 'utc'),
+  "updated_at" timestamp without time zone default (now() at time zone 'utc'),
   UNIQUE ("user_account_id","email","forget_passcode"),
   CONSTRAINT chk_user_id check (user_account_id ~ '^[0-9a-zA-Z]{8}$') ,
   CONSTRAINT chk_forget_passcode check (forget_passcode ~ '^[0-9a-zA-Z!@-_#]{10}$')
@@ -45,8 +45,8 @@ CREATE TABLE "platform" (
   "country" varchar(257),
   "phone_code" char(4) ,
   "mobile" varchar(257),
-  "created_at" timestamp without time zone,
-  "updated_at" timestamp without time zone,
+  "created_at" timestamp  without time zone default (now() at time zone 'utc'),
+  "updated_at" timestamp without time zone default (now() at time zone 'utc'),
   CONSTRAINT chk_plat_id check (platform_id ~ '^[0-9a-zA-Z!@-_#]{5}$') 
 );
 
@@ -55,8 +55,8 @@ CREATE TABLE "application" (
   "name" varchar(257),
   "auth_method" varchar(257),
   "direct_url_component" varchar(257),
-  "created_at" timestamp without time zone,
-  "updated_at" timestamp without time zone
+  "created_at" timestamp  without time zone default (now() at time zone 'utc'),
+  "updated_at" timestamp without time zone default (now() at time zone 'utc')
 );
 
 CREATE TABLE "authentication" (
@@ -70,8 +70,8 @@ CREATE TABLE "authentication" (
   "expired_in" int,
   "refresh_token" varchar (275),
   "scope" json,
-  "created_at" timestamp without time zone ,
-  "updated_at" timestamp without time zone ,
+  "created_at" timestamp  without time zone default (now() at time zone 'utc') ,
+  "updated_at" timestamp without time zone default (now() at time zone 'utc') ,
   CONSTRAINT chk_auth_id check (authentication_id ~ '^[0-9a-zA-Z!@-_#]{6}$')
 );
 
@@ -109,8 +109,8 @@ CREATE TABLE "dashboard" (
   "dashboard_name" varchar(257),
   "isactive" bool  default TRUE,
   "iscustom" bool  default FALSE,
-  "created_at" timestamp without time zone ,
-  "updated_at" timestamp without time zone,
+  "created_at" timestamp  without time zone default (now() at time zone 'utc') ,
+  "updated_at" timestamp without time zone default (now() at time zone 'utc'),
   CONSTRAINT chk_dash_id check (dashboard_id ~ '^[0-9a-zA-Z!@-_#]{6}$') 
 );
 
@@ -134,8 +134,8 @@ CREATE TABLE "role" (
   "platform_id" int NOT NULL REFERENCES platform(id),
   "user_account_id" int NOT NULL REFERENCES user_account(id),
   "role_name" varchar(257),
-  "created_at" timestamp without time zone,
-  "updated_at" timestamp without time zone,
+  "created_at" timestamp  without time zone default (now() at time zone 'utc'),
+  "updated_at" timestamp without time zone default (now() at time zone 'utc'),
   CONSTRAINT chk_role_id check (role_id ~ '^[0-9a-zA-Z!@-_#]{6}$') 
 );
 
@@ -150,8 +150,8 @@ CREATE TABLE "role_dashboard_authorization" (
   "dashboard_id" int NOT NULL REFERENCES dashboard(id),
   "role_id" int NOT NULL REFERENCES role(id),
   "permission" smallint,
-  "created_at" timestamp without time zone,
-  "updated_at" timestamp without time zone
+  "created_at" timestamp  without time zone default (now() at time zone 'utc'),
+  "updated_at" timestamp without time zone default (now() at time zone 'utc')
 );
 
 CREATE TABLE "payment_method" (
@@ -170,8 +170,8 @@ CREATE TABLE "visual_presentation" (
   "business_information_id" char(7) NOT NULL UNIQUE,
   "dashboard_id" int NOT NULL REFERENCES dashboard(id),
   "arrangment" smallint,
-  "created_at" timestamp without time zone,
-  "updated_at" timestamp without time zone
+  "created_at" timestamp  without time zone default (now() at time zone 'utc'),
+  "updated_at" timestamp without time zone default (now() at time zone 'utc')
 );
 
 
@@ -179,7 +179,7 @@ CREATE TABLE "favourite" (
   "id" SERIAL NOT NULL PRIMARY KEY,
   "user_account_id" int NOT NULL REFERENCES user_account(id),
   "dashboard_id" int NOT NULL REFERENCES dashboard(id),
-  "created_at" timestamp without time zone
+  "created_at" timestamp  without time zone default (now() at time zone 'utc')
 );
 
 
@@ -192,8 +192,8 @@ CREATE TABLE "plan" (
   "ismonth" bool,
   "price" money,
   "currency" char(3),
-  "created_at" timestamp without time zone,
-  "updated_at" timestamp without time zone
+  "created_at" timestamp  without time zone default (now() at time zone 'utc'),
+  "updated_at" timestamp without time zone default (now() at time zone 'utc')
 );
 
 CREATE TABLE "subscription" (
@@ -206,7 +206,7 @@ CREATE TABLE "subscription" (
   "bill" varchar(257),
   "issued_date" timestamp without time zone,
   "expired_at" timestamp without time zone,
-  "created_at" timestamp without time zone,
+  "created_at" timestamp  without time zone default (now() at time zone 'utc'),
   CONSTRAINT chk_subs_id check (subscription_id ~ '^[0-9a-zA-Z]{8}$') 
 );
 
@@ -216,8 +216,8 @@ CREATE TABLE "role_assigned" (
   "platform_id" int NOT NULL REFERENCES platform(id),
   "role_id" int NOT NULL REFERENCES role(id),
   "platform_setting_id" int NOT NULL REFERENCES platform_setting(id),
-  "created_at" timestamp without time zone,
-  "updated_at" timestamp without time zone,
+  "created_at" timestamp  without time zone default (now() at time zone 'utc'),
+  "updated_at" timestamp without time zone default (now() at time zone 'utc'),
   CONSTRAINT chk_ra_id check (role_assigned_id ~ '^[0-9a-zA-Z!@-_#]{6}$') 
 );
 
@@ -231,10 +231,11 @@ CREATE TABLE "payment" (
   "amount" money,
   "currency" char(3),
   "status" varchar,
-  "created_at" timestamp without time zone,
+  "created_at" timestamp  without time zone default (now() at time zone 'utc'),
   CONSTRAINT chk_payment_id check (payment_id ~ '^[0-9a-zA-Z!@-_#]{6}$') 
 );
 
+/*Random UserID Auto*/
 Create or replace function random_userID(length integer) returns text as
 $$
 declare
@@ -256,3 +257,23 @@ begin
   return result;
 end;
 $$ language plpgsql;
+
+/*Auto update on Updated_at*/
+CREATE OR REPLACE FUNCTION update_modified_column() 
+RETURNS TRIGGER AS $$
+BEGIN
+    NEW.updated_at = timezone('utc', now());
+    RETURN NEW; 
+END;
+$$ language 'plpgsql';
+
+CREATE TRIGGER update_customer_modtime BEFORE UPDATE ON user_account FOR EACH ROW EXECUTE PROCEDURE  update_modified_column();
+CREATE TRIGGER update_customer_modtime BEFORE UPDATE ON platform FOR EACH ROW EXECUTE PROCEDURE  update_modified_column();
+CREATE TRIGGER update_customer_modtime BEFORE UPDATE ON application FOR EACH ROW EXECUTE PROCEDURE  update_modified_column();
+CREATE TRIGGER update_customer_modtime BEFORE UPDATE ON authentication FOR EACH ROW EXECUTE PROCEDURE  update_modified_column();
+CREATE TRIGGER update_customer_modtime BEFORE UPDATE ON dashboard FOR EACH ROW EXECUTE PROCEDURE  update_modified_column();
+CREATE TRIGGER update_customer_modtime BEFORE UPDATE ON role FOR EACH ROW EXECUTE PROCEDURE  update_modified_column();
+CREATE TRIGGER update_customer_modtime BEFORE UPDATE ON role_dashboard_authorization FOR EACH ROW EXECUTE PROCEDURE  update_modified_column();
+CREATE TRIGGER update_customer_modtime BEFORE UPDATE ON visual_presentation FOR EACH ROW EXECUTE PROCEDURE  update_modified_column();
+CREATE TRIGGER update_customer_modtime BEFORE UPDATE ON plan FOR EACH ROW EXECUTE PROCEDURE  update_modified_column();
+CREATE TRIGGER update_customer_modtime BEFORE UPDATE ON role_assigned FOR EACH ROW EXECUTE PROCEDURE  update_modified_column();

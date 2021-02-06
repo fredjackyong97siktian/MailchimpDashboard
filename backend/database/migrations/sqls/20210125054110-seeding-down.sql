@@ -1,3 +1,15 @@
+DROP TRIGGER update_customer_modtime  ON user_account ;
+DROP TRIGGER update_customer_modtime  ON platform ;
+DROP TRIGGER update_customer_modtime  ON application;
+DROP TRIGGER update_customer_modtime  ON authentication ;
+DROP TRIGGER update_customer_modtime  ON dashboard ;
+DROP TRIGGER update_customer_modtime  ON role ;
+DROP TRIGGER update_customer_modtime  ON role_dashboard_authorization ;
+DROP TRIGGER update_customer_modtime  ON visual_presentation ;
+DROP TRIGGER update_customer_modtime  ON plan ;
+DROP TRIGGER update_customer_modtime  ON role_assigned ;
+
+DROP FUNCTION update_modified_column;
 DROP FUNCTION random_userID;
 
 DROP TABLE "payment";

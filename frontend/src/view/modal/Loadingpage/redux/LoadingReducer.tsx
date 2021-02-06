@@ -3,7 +3,7 @@ import {LoadingStatus} from './../../../../model/loading/Loading'
 
 const initiateState : LoadingStatus = {
     loading: false,
-    status: null,
+    hasSuccess: false,
     hasError: false,
     message: ''
 }
@@ -13,23 +13,23 @@ const LoadingReducer = (state = initiateState, action : any) => {
         case PAGE_STATUS_LOADING:
             return {...state, 
                 loading: true,
-                status:null,
+                hasSuccess:false,
                 message: ''}
         case PAGE_STATUS_SUCCESS:
             return {...state,
                 loading: false,
-                status: true,
+                hasSuccess: true,
                 message: action.payload}
         case PAGE_STATUS_ERROR:
             return {...state,
                 loading: false,
-                status:false,
+                hasSuccess:false,
                 hasError:true,
                 message: action.payload}
         case PAGE_STATUS_RECOVER:
             return {
                 loading: false,
-                status: null,
+                hasSuccess: false,
                 hasError: false,
                 message: ''  
             }

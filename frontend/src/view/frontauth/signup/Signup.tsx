@@ -12,6 +12,8 @@ import { useSelector } from 'react-redux';
 import {RootState} from './../../../reducer';
 import LoadingPage from './../../../view/modal/Loadingpage/LoadingPage';
 import Errorpage from './../../modal/Errorpage/Errorpage';
+import Successpage from './../../modal/Successpage/Successpage';
+import {success} from './Signup-message';
 
 export default function SignUp() {
   const status = useSelector((state:RootState)=>state.loading);
@@ -21,7 +23,7 @@ export default function SignUp() {
     <>
      {status.loading ? <LoadingPage /> : <></>}
      {status.hasError ? <Errorpage message={status.message} /> : <> </>}
-     {console.log(status.hasError)}
+     {status.hasSuccess ? <Successpage success={success} /> : <> </> }
     <Container component="main" maxWidth="xs">
 
       <CssBaseline />

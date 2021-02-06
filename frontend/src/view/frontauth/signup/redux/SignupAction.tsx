@@ -10,6 +10,7 @@ export const CSignup = (information : FormInputRegister ) => async(dispatch : an
         delete Inputdata.repassword;
         console.log(Inputdata);
         const {data} = await effect.Signup(Inputdata);
+
         dispatch({type: SIGNUP_CREATE , payload: information}); 
         dispatch({type:PAGE_STATUS_SUCCESS,payload: data});
 

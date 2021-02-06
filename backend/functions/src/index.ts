@@ -1,4 +1,4 @@
-import SignupRoute from './signup/route'
+import AllRoute from './route';
 
 //postgresq
 const pgp = require('pg-promise')({});
@@ -26,7 +26,7 @@ const cn = {
     "host" : config.POSTGRESQL_HOST,
     "port" : config.POSTGRESQL_PORT,
     "database" : config.POSTGRESQL_DATABASE,
-    "user" :config.POSTGRESQL_USER,
+    "user" : config.POSTGRESQL_USER,
     "password" : config.POSTGRESQL_PASSWORD
 }
 
@@ -40,9 +40,9 @@ pgdb.connect()
         console.log('ERROR:', error.message || error);
 });
 
+const api = '/api'
+app.use(api,AllRoute);
 
-
-app.use('/api',SignupRoute);
 
 //firebase
 var admin = firebase.initializeApp({

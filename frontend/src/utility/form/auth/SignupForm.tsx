@@ -10,16 +10,17 @@ import useStylesForm from '../Form-style';
 import {useDispatch  } from 'react-redux';
 import {CSignup} from './../../../view/frontauth/signup/redux/SignupAction';
 
-
 const SignupForm : React.FC = () => {
 
     const classes = useStylesForm();
     const dispatch = useDispatch();
     const {register , handleSubmit , errors  } = useForm<FormInputRegister>({
+        mode:'onChange',
         resolver: yupResolver(SignupFormValidSchema)
     });
 
     const onSubmitForm = async (data: FormInputRegister) => {
+        
            dispatch(CSignup(data))
     };
 

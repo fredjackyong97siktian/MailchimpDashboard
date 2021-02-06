@@ -1,9 +1,9 @@
 //SignUp
 import express  from 'express';
-import {CSignUp} from './controller';
+import {REmailM} from './controller';
 
 const router = express.Router();
 
-router.post('/add', CSignUp);
+router.post('/', REmailM);
 
 export default router;

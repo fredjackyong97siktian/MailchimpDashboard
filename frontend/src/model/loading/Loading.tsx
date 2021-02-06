@@ -1,6 +1,6 @@
 export interface LoadingStatus {
-    loading:boolean
-    status: boolean | null
-    hasError:boolean
+    loading:boolean,
+    hasSuccess: boolean,
+    hasError:boolean,
     message: string
 }
