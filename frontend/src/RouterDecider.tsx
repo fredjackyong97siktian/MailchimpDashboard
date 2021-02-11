@@ -4,6 +4,7 @@ import Login from "./view/frontauth/login/Login";
 import Signup from "./view/frontauth/signup/Signup";
 import Feature from "./view/feature/Feature";
 import LoadingPage from "./view/modal/Successpage/Successpage";
+import SignUpDecider from "./view/frontauth/signup/Signup-decider";
 
 const RouterDecider : React.FC = () => {
    return(
@@ -11,6 +12,7 @@ const RouterDecider : React.FC = () => {
         <Switch>
           <Route exact path="/auth/login" component= {Login} />
           <Route exact path="/auth/signup" component = {Signup} />
+          <Route exact path="/auth/signup/:status" component = {SignUpDecider}/>   
           <Route exact path="/feature" component = {Feature}/>
           <Route exact path="/loading" component = {LoadingPage}/>         
         </Switch>

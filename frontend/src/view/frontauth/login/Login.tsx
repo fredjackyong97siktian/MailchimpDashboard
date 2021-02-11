@@ -52,7 +52,7 @@ const Login : React.FC = () => {
           spacing={0}
           className="altauth"
         >
-        <Button> Facebook </Button>
+        <a href='/api/auth/signup/facebook'> <Button> Facebook </Button> </a>
         <Button> GOOGLE </Button>        
        </Grid>
       </div>

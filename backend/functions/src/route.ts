@@ -1,5 +1,5 @@
 import SignupRoute from './signup/route'
-import EmailRoute from './emailcollector/route'
+import EmailRoute from './email/route'
 
 import express  from 'express';
 const rootRouter = express.Router();
@@ -13,5 +13,9 @@ const private_prefix = '/:platformid'
 
 //Others
 rootRouter.use('/email',EmailRoute);
+
+
+
+
 
 export default rootRouter

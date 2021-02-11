@@ -21,11 +21,14 @@ CREATE TABLE "user_account" (
   "mobile"varchar(257),
   "forget_passcode" char(10) ,
   "forget_passcode_receive_at" timestamp without time zone,
-  "isactive" bool  default TRUE ,
+  "email_verification_code" UUID DEFAULT gen_random_uuid(),
+  "email_verification_code_sent_at" timestamp without time zone default (now() at time zone 'utc'),
+  "email_verification_code_received_at" timestamp without time zone,
+  "isactive" bool  default FALSE ,
   "last_login_at" timestamp without time zone,
   "created_at" timestamp  without time zone default (now() at time zone 'utc'),
   "updated_at" timestamp without time zone default (now() at time zone 'utc'),
-  UNIQUE ("user_account_id","email","forget_passcode"),
+  UNIQUE ("user_account_id","email","forget_passcode", "email_verification_code"),
   CONSTRAINT chk_user_id check (user_account_id ~ '^[0-9a-zA-Z]{8}$') ,
   CONSTRAINT chk_forget_passcode check (forget_passcode ~ '^[0-9a-zA-Z!@-_#]{10}$')
 );
