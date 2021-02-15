@@ -1,0 +1,1 @@
+export const LOGIN_READ = 'LOGIN_READ'

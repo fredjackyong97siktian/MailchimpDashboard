@@ -6,6 +6,7 @@ import {ErrorpageTitle} from './ErrorpageTitle';
 
 interface ErrorpageInterface {
     message:string
+    explaination: string
 }
 
 const Errorpage: React.FC<ErrorpageInterface>= (props) => {
@@ -14,9 +15,9 @@ const Errorpage: React.FC<ErrorpageInterface>= (props) => {
         setOpen(false);
     }
     const error = {
-        message: 'There is an error occured while signing up.',
+        message: props.message,
         code: '',
-        explaination: props.message
+        explaination: props.explaination
     }
 
     const data = {

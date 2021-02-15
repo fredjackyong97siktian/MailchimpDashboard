@@ -7,18 +7,20 @@ import Button from '@material-ui/core/Button';
 import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import {LoginFormValidSchema} from './LoginFormValidSchema';
+import {useDispatch  } from 'react-redux';
+import {RLogin} from './../../../view/frontauth/login/redux/LoginAction';
 import useStylesForm from '../Form-style';
 
 const LoginForm : React.FC = () => {
     const classes = useStylesForm();
+    const dispatch = useDispatch();
     const {register, handleSubmit , errors } = useForm<FormInputLogin>({
         resolver: yupResolver(LoginFormValidSchema)
     });
 
     const onSubmitForm = (data: FormInputLogin) => {
-    alert("before redirect..");
-    window.location.href = "http://localhost:3000/feature";
-    return false;
+      console.log('hi')
+      dispatch(RLogin(data))
     };
 
    return(

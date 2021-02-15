@@ -22,7 +22,7 @@ export default function SignUp() {
   return (
     <>
      {status.loading ? <LoadingPage /> : <></>}
-     {status.hasError ? <Errorpage message={status.message} /> : <> </>}
+     {status.hasError ? <Errorpage message={status.message} explaination={status.explaination} /> : <> </>}
      {status.hasSuccess ? <Successpage success={success} /> : <> </> }
     <Container component="main" maxWidth="xs">
 

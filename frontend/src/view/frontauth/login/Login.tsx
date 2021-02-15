@@ -1,20 +1,33 @@
-import React, { ReactDOM } from 'react';
+import React, { ReactDOM, useEffect } from 'react';
 import useStyles from './Login-style';
-import Copyright from './Login-copyright'
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import LoginForm from './../../../utility/form/auth/LoginForm'
+import { useSelector } from 'react-redux';
+import {RootState} from './../../../reducer';
+import LoadingPage from './../../../view/modal/Loadingpage/LoadingPage';
+import Errorpage from './../../modal/Errorpage/Errorpage';
+import { useHistory } from "react-router-dom";
 
 const Login : React.FC = () => {
+  const status = useSelector((state:RootState)=>state.loading);
     const classes = useStyles();
+    const history = useHistory();
+    useEffect(()=>{
+      status.hasSuccess && history.push('/feature');
+    },[status.hasSuccess])
+
     return (
+      <>
+     {status.loading ? <LoadingPage /> : <></>}
+     {status.hasError ? <Errorpage message={status.message} explaination={status.explaination}/> : <> </>}
+
     <Container component="main" maxWidth="xs">
       <CssBaseline />
       <div className={classes.paper}>
@@ -52,16 +65,12 @@ const Login : React.FC = () => {
           spacing={0}
           className="altauth"
         >
-        <a href='/api/auth/signup/facebook'> <Button> Facebook </Button> </a>
+        <Button> Facebook </Button>
         <Button> GOOGLE </Button>        
        </Grid>
-      </div>
-      <Box mt={8}>
-        <Copyright />
-      </Box>
-   
+      </div>   
     </Container>
-
+      </>
     );
 }
 

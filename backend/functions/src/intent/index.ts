@@ -1,4 +1,7 @@
 import AllRoute from './route';
+import passport from "passport";
+import 'reflect-metadata';
+import {createConnection} from'typeorm';
 
 //postgresq
 const pgp = require('pg-promise')({});
@@ -12,6 +15,12 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 
+//TypeORM
+createConnection();
+
+//passport
+app.use(passport.initialize());
+
 //security measure
 var helmet = require('helmet')
 app.use(cors({ origin: true }));
@@ -20,7 +29,7 @@ app.use(helmet())
 
 
 //configuration
-var config = require('./../config');
+var config = require('./../../config');
 
 //POSTGRE CONFIGURATION
 const cn = {

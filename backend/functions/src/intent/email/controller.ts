@@ -5,7 +5,7 @@ import {updateEmailVerification} from './sql/updateEmail';
 import {emailsender} from './emailsender';
 import {saltHashPasswordSalt} from './../crypto/encryption_method';
 
-var config = require('./../../config');
+var config = require('./../../../config');
 //Create
 export const REmailS = async (req : Request, res : Response) => {
     try {
@@ -50,7 +50,7 @@ export const UEmailVerification = async (req : Request, res: Response)=> {
         if (email_hash.hash !== email) {
             throw new Error('Invalid Address');
         } 
-        const data = await updateEmailVerification(verificationid);
+        await updateEmailVerification(verificationid);
         res.writeHead(301,
             {Location: config.CLIENT_API+'auth/signup/success'}
           );

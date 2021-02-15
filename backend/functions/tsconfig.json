@@ -1,15 +1,21 @@
 {
   "compilerOptions": {
     "jsx": "react",
+    "lib":["ES5","ES6","DOM"],
     "skipLibCheck": true,
     "esModuleInterop": true,
     "module": "commonjs",
     "noImplicitReturns": true,
     "noUnusedLocals": true,
     "outDir": "lib",
+    "rootDir": "src",
+    "moduleResolution": "node",
     "sourceMap": true,
     "strict": true,
-    "target": "es2017"
+    "target": "es2017",
+    "strictPropertyInitialization": false,
+  "experimentalDecorators": true,
+  "emitDecoratorMetadata": true
   },
   "compileOnSave": true,
   "include": [

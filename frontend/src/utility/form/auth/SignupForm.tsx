@@ -20,7 +20,7 @@ const SignupForm : React.FC = () => {
     });
 
     const onSubmitForm = async (data: FormInputRegister) => {
-        
+
            dispatch(CSignup(data))
     };
 

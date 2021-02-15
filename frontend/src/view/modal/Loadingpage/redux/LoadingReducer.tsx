@@ -5,7 +5,8 @@ const initiateState : LoadingStatus = {
     loading: false,
     hasSuccess: false,
     hasError: false,
-    message: ''
+    message: '',
+    explaination: ''
 }
 
 const LoadingReducer = (state = initiateState, action : any) => {
@@ -19,19 +20,22 @@ const LoadingReducer = (state = initiateState, action : any) => {
             return {...state,
                 loading: false,
                 hasSuccess: true,
+                hasError:false,
                 message: action.payload}
         case PAGE_STATUS_ERROR:
             return {...state,
                 loading: false,
                 hasSuccess:false,
                 hasError:true,
-                message: action.payload}
+                message: action.payload.message,
+                explaination: action.payload.explaination}
         case PAGE_STATUS_RECOVER:
             return {
                 loading: false,
                 hasSuccess: false,
                 hasError: false,
-                message: ''  
+                message: '' ,
+                explaination: '' 
             }
         default:
             return state;

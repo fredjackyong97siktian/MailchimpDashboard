@@ -17,7 +17,9 @@ export const CSignup = (information : FormInputRegister ) => async(dispatch : an
         dispatch({type:PAGE_STATUS_SUCCESS,payload: data});
 
     }catch(error){
-        dispatch({type:PAGE_STATUS_ERROR,payload: error.message});
+        const payload = {message: 'There is an error occured while signing up.',
+                         explaination: error.message}
+        dispatch({type:PAGE_STATUS_ERROR, payload: payload});
     }finally{
         if(emailtobesent){
             const emailobject = {"email": information.email}

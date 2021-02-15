@@ -8,7 +8,7 @@ CREATE TABLE "user_account" (
   "id" SERIAL NOT NULL PRIMARY KEY,
   "user_account_id" char(8) NOT NULL,
   "email" cemail NOT NULL UNIQUE,
-  "password" varchar(257) NOT NULL,
+  "password" varchar(257),
   "profile_img" varchar(257),
   "firstname" varchar(257),
   "lastname" varchar(257),
@@ -21,14 +21,21 @@ CREATE TABLE "user_account" (
   "mobile"varchar(257),
   "forget_passcode" char(10) ,
   "forget_passcode_receive_at" timestamp without time zone,
-  "email_verification_code" UUID DEFAULT gen_random_uuid(),
-  "email_verification_code_sent_at" timestamp without time zone default (now() at time zone 'utc'),
+  "email_verification_code" UUID ,
+  "email_verification_code_sent_at" timestamp without time zone,
   "email_verification_code_received_at" timestamp without time zone,
   "isactive" bool  default FALSE ,
   "last_login_at" timestamp without time zone,
+  "fb_id" varchar(257),
+  "google_id" varchar(257),
+  "accesstoken" varchar(257),
+  "refreshtoken" varchar(257),
   "created_at" timestamp  without time zone default (now() at time zone 'utc'),
   "updated_at" timestamp without time zone default (now() at time zone 'utc'),
   UNIQUE ("user_account_id","email","forget_passcode", "email_verification_code"),
+      CONSTRAINT oauth_check check ((password is null and fb_id is not null and google_id is null) 
+                                  or (password is null and fb_id is null and google_id is not null) 
+                                  or (password is not null and fb_id is null and google_id is null )),
   CONSTRAINT chk_user_id check (user_account_id ~ '^[0-9a-zA-Z]{8}$') ,
   CONSTRAINT chk_forget_passcode check (forget_passcode ~ '^[0-9a-zA-Z!@-_#]{10}$')
 );
@@ -280,3 +287,5 @@ CREATE TRIGGER update_customer_modtime BEFORE UPDATE ON role_dashboard_authoriza
 CREATE TRIGGER update_customer_modtime BEFORE UPDATE ON visual_presentation FOR EACH ROW EXECUTE PROCEDURE  update_modified_column();
 CREATE TRIGGER update_customer_modtime BEFORE UPDATE ON plan FOR EACH ROW EXECUTE PROCEDURE  update_modified_column();
 CREATE TRIGGER update_customer_modtime BEFORE UPDATE ON role_assigned FOR EACH ROW EXECUTE PROCEDURE  update_modified_column();
+
+ALTER TABLE user_account ALTER user_account_id SET DEFAULT random_userID(8)

@@ -1,3 +1,5 @@
+ALTER TABLE user_account ALTER COLUMN user_account_id DROP DEFAULT ;
+
 DROP TRIGGER update_customer_modtime  ON user_account ;
 DROP TRIGGER update_customer_modtime  ON platform ;
 DROP TRIGGER update_customer_modtime  ON application;

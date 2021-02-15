@@ -13,9 +13,10 @@ export const SignupFormValidSchema = yup.object().shape({
        //check  if email is exist in the database
        return new Promise ((resolve,reject)=>{
         axios.post(API_URL+'email/',{email: email}).then(res=>{
-          console.log(res.data.data.length);
+          //console.log(res.data.data.length);
           res.data.data.length === 0 ? resolve(true) : resolve(false)
         }).catch(()=>{
+          console.log(API_CLIENT);
           alert('Server Down. Please contact us.');
           resolve(false)
           window.location.replace(API_CLIENT);
