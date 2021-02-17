@@ -1,7 +1,11 @@
 import AllRoute from './route';
 import passport from "passport";
 import 'reflect-metadata';
-import {createConnection} from'typeorm';
+import {createConnection} from'typeorm';  
+//configuration
+var config = require('./../../config');
+
+const bodyParser = require('body-parser');
 
 //postgresq
 const pgp = require('pg-promise')({});
@@ -15,21 +19,58 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 
-//TypeORM
-createConnection();
-
 //passport
 app.use(passport.initialize());
 
 //security measure
 var helmet = require('helmet')
-app.use(cors({ origin: true }));
-app.disable('x-powered-by')
-app.use(helmet())
+//origin:localhost3001
+app.use(cors({ origin: true, credentials: true }));
+app.use(bodyParser.urlencoded({extended:false}));
+app.use(bodyParser.json());
+app.disable('x-powered-by');
+app.use(helmet());
+
+//TypeORM
+createConnection();
+
+//cookie
+const cookieParser = require('cookie-parser');
+app.use(cookieParser());
+
+app.use((req :any,res :any,next :any)=>{
+  console.log('Req Header')
+  console.log(req.headers);
+  next();
+})
+
+//JWT Token
+const jwt = require('express-jwt');
+
+export const checkJWT = jwt({
+  secret: config.JWTSK, 
+  algorithms: ['HS256'],
+  iss : 'api.orbit',
+  aud: 'api.orbit'
+})
+
+/*const attachUser = (req,res,next)=>{
+  const token = req.headers.authorization;
+  if(!token){
+    return res.status(401).json({message: 'Authentication invalid'});
+  }
+
+  const decodedToken = jwtDecode
+}*/
 
 
-//configuration
-var config = require('./../../config');
+app.get('/testonly', checkJWT, (req :any,res :any)=>{
+  res.json({
+    data: {
+      id:'123'
+    }
+  })
+})
 
 //POSTGRE CONFIGURATION
 const cn = {

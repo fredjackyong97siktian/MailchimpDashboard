@@ -8,14 +8,19 @@ import {Provider } from 'react-redux';
 import {createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk'
 import {reducers} from './reducer';
-
+import {AuthProvider} from './context/AuthContext'
+import {FetchProvider} from './context/FetchContext'
 const store = createStore(reducers, compose(applyMiddleware(thunk)))
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
       <Router>
-        <RouterDecider/>
+        <AuthProvider >
+          <FetchProvider>
+            <RouterDecider/>
+          </FetchProvider>
+        </AuthProvider>
       </Router>
     </Provider>
   </React.StrictMode>,

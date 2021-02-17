@@ -2,7 +2,8 @@ import * as yup from "yup";
 import axios from 'axios';
 import config from './../../../config'
 
-const API_URL = String(config.API_URL)
+
+const API_URL = String(config.API_BACKEND)
 const API_CLIENT = String(config.API_CLIENT);
 
 export const SignupFormValidSchema = yup.object().shape({

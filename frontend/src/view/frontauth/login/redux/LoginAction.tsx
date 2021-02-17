@@ -4,9 +4,9 @@ import {PAGE_STATUS_LOADING, PAGE_STATUS_SUCCESS, PAGE_STATUS_ERROR} from '../..
 import {FormInputLogin} from '../../../../model/forminput/FormInputAuth' 
 
 //Action Creators
-export const RLogin = (information : FormInputLogin ) => async(dispatch : any) => {
+export const RLogin = (information : FormInputLogin ,authContext : any ) => async(dispatch : any) => {
     dispatch({type:PAGE_STATUS_LOADING});
-    try {  
+    try {
         const Inputdata = information;
         delete Inputdata["remember"];
         const {data} = await effect.Login(Inputdata); 
@@ -17,6 +17,7 @@ export const RLogin = (information : FormInputLogin ) => async(dispatch : any) =
              );
         }
 
+        authContext.setAuthState(data.JWT);
         dispatch({type: LOGIN_READ , payload: information})
         dispatch({type: PAGE_STATUS_SUCCESS,payload: data});
 

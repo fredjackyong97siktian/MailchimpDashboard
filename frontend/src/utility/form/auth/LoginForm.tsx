@@ -1,4 +1,4 @@
-import React, { ReactDOM } from 'react';
+import React, { ReactDOM ,useContext} from 'react';
 import {FormInputLogin} from './../../../model/forminput/FormInputAuth'
 import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -10,17 +10,19 @@ import {LoginFormValidSchema} from './LoginFormValidSchema';
 import {useDispatch  } from 'react-redux';
 import {RLogin} from './../../../view/frontauth/login/redux/LoginAction';
 import useStylesForm from '../Form-style';
+import {AuthContext} from './../../../context/AuthContext';
 
 const LoginForm : React.FC = () => {
+    const authContext = useContext(AuthContext);
     const classes = useStylesForm();
     const dispatch = useDispatch();
     const {register, handleSubmit , errors } = useForm<FormInputLogin>({
         resolver: yupResolver(LoginFormValidSchema)
     });
-
+    
     const onSubmitForm = (data: FormInputLogin) => {
       console.log('hi')
-      dispatch(RLogin(data))
+      dispatch(RLogin(data,authContext))
     };
 
    return(
