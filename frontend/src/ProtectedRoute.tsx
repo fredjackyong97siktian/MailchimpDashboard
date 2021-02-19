@@ -2,12 +2,12 @@ import React from 'react'
 import { Route, Redirect } from 'react-router-dom'
 
 
-const ProtectedRoute = ({isAuth: isAuth,component: Component, ...rest} : any) => {
+const ProtectedRoute = ({authState,component: Component, ...rest} : any) => {
     return(
         <Route
         {...rest}
         render={(props)=>{
-            return isAuth ? <Component /> : <Redirect to={{ pathname: "/",state: {from: props.location}}}/> 
+            return authState ? <Component /> : <Redirect to={{ pathname: "/auth/login",state: {from: props.location}}}/> 
         }} 
         />
     )

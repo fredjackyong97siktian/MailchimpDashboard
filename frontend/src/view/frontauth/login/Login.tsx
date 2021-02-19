@@ -14,13 +14,29 @@ import {RootState} from './../../../reducer';
 import LoadingPage from './../../../view/modal/Loadingpage/LoadingPage';
 import Errorpage from './../../modal/Errorpage/Errorpage';
 import { useHistory } from "react-router-dom";
+import config from './../../../config';
 
 const Login : React.FC = () => {
-  const status = useSelector((state:RootState)=>state.loading);
+    const status = useSelector((state:RootState)=>state.loading);
     const classes = useStyles();
     const history = useHistory();
+    console.log(config.FACEBOOK_API);
+    const handleClick = (type : string) => {
+      switch(type){
+        case 'Facebook':
+          window.location.replace(String(config.FACEBOOK_API));
+          break;
+        case 'Google':
+          break;
+      }
+
+    }
+
     useEffect(()=>{
-      status.hasSuccess && history.push('/feature');
+      //status.hasSuccess && history.push('/feature');
+      if(status.hasSuccess){
+        window.location.replace(String(config.API_CLIENT+'/feature'));
+      }
     },[status.hasSuccess])
 
     return (
@@ -65,8 +81,8 @@ const Login : React.FC = () => {
           spacing={0}
           className="altauth"
         >
-        <Button> Facebook </Button>
-        <Button> GOOGLE </Button>        
+        <Button onClick= {() => handleClick('Facebook')}> Facebook </Button>
+        <Button onClick= {() => handleClick('Google')}> GOOGLE </Button>        
        </Grid>
       </div>   
     </Container>

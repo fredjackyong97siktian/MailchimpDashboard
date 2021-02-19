@@ -7,17 +7,30 @@ import LoadingPage from "./view/modal/Successpage/Successpage";
 import SignUpDecider from "./view/frontauth/signup/Signup-decider";
 import ProtectedRoute from './ProtectedRoute';
 import {AuthContext} from './context/AuthContext';
+
 const RouterDecider : React.FC = () => {
-  const {isAuth} = useContext(AuthContext);
-  console.log(isAuth())
+  const {authState} = useContext(AuthContext);
+
+      /*const isAuth = () => {
+        console.log(authState)
+        console.log('isAuth')
+        if(!authState.expiresAt || !authState.userInfo){
+            return false;
+        }
+        return new Date().getTime() / 1000 < authState.expiresAt
+       // return true;
+        //return true;
+    }*/
+  //console.log(isAuth())
    return(
     <>
         <Switch>
           <Route exact path="/auth/login" component= {Login} />
           <Route exact path="/auth/signup" component = {Signup} />
           <Route exact path="/auth/signup/:status" component = {SignUpDecider}/>   
-          <ProtectedRoute exact path="/feature" component = {Feature} isAuth = {isAuth()}/>
-          <Route exact path="/loading" component = {LoadingPage}/>         
+          <ProtectedRoute exact path="/feature" component = {Feature} authState = {authState}/>
+          <Route exact path="/loading" component = {LoadingPage}/>
+
         </Switch>
     </>    
    ); 

@@ -1,8 +1,7 @@
 import  {Request, Response} from 'express';
 import {getRepository} from 'typeorm';
 import { user_account } from "./../../entity/user_account";
-import {createJWTToken} from "./../../jwt";
-const jwtDecode = require('jwt-decode');
+import {setToken} from './setToken';
 const bcrypt = require('bcrypt');
 
 export const RLoginS = async (req : Request, res : Response) => {
@@ -17,28 +16,9 @@ export const RLoginS = async (req : Request, res : Response) => {
         //JWT
         let JWT = {}
         if(passwordsMatch && user){
-            const userInfo = {
-                user_id : user.user_account_id,
-                email: user.email,
-            }
-            //use userInfo to create JWTToken
-            const jwtToken = createJWTToken(userInfo);
-            const decodedToken = jwtDecode(jwtToken);
-            const expiresAt = decodedToken.exp;
-
-            JWT = {
-                jwtToken: jwtToken,
-                userInfo: userInfo,
-                expiresAt: expiresAt,
-            }
-            res.cookie('jwtToken',jwtToken, {
-                expires: new Date(new Date().getTime() + 5 * 1000),
-                httpOnly: true,
-                //secure:true
-            })
-
+            JWT = setToken(user,res);
         }
-    
+
         res.status(201).json({
             success: true,
             passwordsMatch,

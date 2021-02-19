@@ -2,6 +2,9 @@ import AllRoute from './route';
 import passport from "passport";
 import 'reflect-metadata';
 import {createConnection} from'typeorm';  
+import {attachUser} from './../jwt/userchecker';
+import {checkJWT} from './../jwt/tokenchecker';
+
 //configuration
 var config = require('./../../config');
 
@@ -31,6 +34,17 @@ app.use(bodyParser.json());
 app.disable('x-powered-by');
 app.use(helmet());
 
+
+//CSRF
+/*const csrf = require('csurf');
+const csrfProtection = csrf({
+  cookie : true
+});
+app.use(csrfProtection);
+app.get('/csrf-token',(req :any,res :any)=>{
+  res.json({csrfToken: req.csrfToken()});
+});*/
+
 //TypeORM
 createConnection();
 
@@ -45,14 +59,15 @@ app.use((req :any,res :any,next :any)=>{
 })
 
 //JWT Token
-const jwt = require('express-jwt');
+//app.use(attachUser);
+/*const jwt = require('express-jwt');
 
 export const checkJWT = jwt({
   secret: config.JWTSK, 
   algorithms: ['HS256'],
   iss : 'api.orbit',
   aud: 'api.orbit'
-})
+})*/
 
 /*const attachUser = (req,res,next)=>{
   const token = req.headers.authorization;

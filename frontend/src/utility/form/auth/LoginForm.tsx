@@ -21,8 +21,7 @@ const LoginForm : React.FC = () => {
     });
     
     const onSubmitForm = (data: FormInputLogin) => {
-      console.log('hi')
-      dispatch(RLogin(data,authContext))
+      dispatch(RLogin(data))
     };
 
    return(

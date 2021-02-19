@@ -5,17 +5,29 @@ import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import Typography from '@material-ui/core/Typography';
-import Badge from '@material-ui/core/Badge';
-import NotificationsIcon from '@material-ui/icons/Notifications';
+import Button from '@material-ui/core/Button';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import useStyles from './NavTop-style'; 
 import {DrawerSetting} from './../../../../model/nav/Nav'
 import LinearProgress from '@material-ui/core/LinearProgress';
 import {AuthContext} from './../../../../context/AuthContext';
 import {FetchContext} from './../../../../context/FetchContext';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 
 const NavTop : React.FC<DrawerSetting> = ({open,setOpen}) => {
     const {authState} = useContext(AuthContext);
     const {authAxios} = useContext(FetchContext);
+
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
+    const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+      setAnchorEl(event.currentTarget);
+    };
+  
+    const handleClose = () => {
+      setAnchorEl(null);
+    };
     console.log(authState);
     const classes = useStyles();
 
@@ -41,12 +53,23 @@ const NavTop : React.FC<DrawerSetting> = ({open,setOpen}) => {
         <MenuIcon />
       </IconButton>
       <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
-        {authState.userInfo.email}'s Dashboard
+        's Dashboard
       </Typography>
       <IconButton color="inherit">
-        <Badge badgeContent={4} color="secondary">
-          <NotificationsIcon />
-        </Badge>
+        <Button aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
+          <AccountCircleIcon style={{fill: "green", fontSize:'35px'}}/>
+        </Button>
+        <Menu
+        id="simple-menu"
+        anchorEl={anchorEl}
+        keepMounted
+        open={Boolean(anchorEl)}
+        onClose={handleClose}
+      >
+        <MenuItem onClick={handleClose}>Profile</MenuItem>
+        <MenuItem onClick={handleClose}>My account</MenuItem>
+        <MenuItem onClick={handleClose}>Logout</MenuItem>
+      </Menu>
       </IconButton>
     </Toolbar>
     <LinearProgress />

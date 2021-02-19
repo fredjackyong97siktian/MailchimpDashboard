@@ -4,7 +4,7 @@ import {PAGE_STATUS_LOADING, PAGE_STATUS_SUCCESS, PAGE_STATUS_ERROR} from '../..
 import {FormInputLogin} from '../../../../model/forminput/FormInputAuth' 
 
 //Action Creators
-export const RLogin = (information : FormInputLogin ,authContext : any ) => async(dispatch : any) => {
+export const RLogin = (information : FormInputLogin ) => async(dispatch : any) => {
     dispatch({type:PAGE_STATUS_LOADING});
     try {
         const Inputdata = information;
@@ -17,7 +17,6 @@ export const RLogin = (information : FormInputLogin ,authContext : any ) => asyn
              );
         }
 
-        authContext.setAuthState(data.JWT);
         dispatch({type: LOGIN_READ , payload: information})
         dispatch({type: PAGE_STATUS_SUCCESS,payload: data});
 
@@ -28,12 +27,12 @@ export const RLogin = (information : FormInputLogin ,authContext : any ) => asyn
     }
 }
 
-export const RLoginFB = () => async (dispatch : any)=> {
+export const RLoginFB = (authContext: any) => async (dispatch : any)=> {
     dispatch({type:PAGE_STATUS_LOADING});
     try {
-        await effect.LoginFB();
-        dispatch({type: LOGIN_READ })
-        dispatch({type: PAGE_STATUS_SUCCESS});
+        const data = await effect.LoginFB();
+        //dispatch({type: LOGIN_READ })
+        //dispatch({type: PAGE_STATUS_SUCCESS});
     }catch(error){
         const payload = {message: error.message || error,
             explaination: ''}

@@ -1,79 +1,95 @@
-import React, {useState, createContext} from 'react';
+import React, {useState, createContext ,useEffect , useContext} from 'react';
 import {useHistory} from 'react-router-dom';
+import {FetchContext} from './FetchContext';
+import axios from 'axios';
 
 interface AuthContextI {
-    jwtToken: any,
     userInfo: any,
     expiresAt : any
 }
 
  interface ProviderContext {
-    authState: any,
-    setAuthState : (authInfo: AuthContextI) => void,
-    isAuth : ()=> boolean
+    authData: any,
+    authState :boolean
 
 }
 
 const AuthContextInitial = {
-    authState:{},
-    setAuthState: () => {}, 
-    isAuth: ()=>false
+    authData:{},
+    authState: false
 }
 
 const AuthContext = createContext<ProviderContext>(AuthContextInitial);
 const {Provider} = AuthContext;
 
 const AuthProvider = ({children} :any) => {
+    const {authAxios} = useContext(FetchContext);
     const history = useHistory();
-    const jwtToken = localStorage.getItem('jwtToken');
+
     const userInfo = localStorage.getItem('userInfo');
     const expiresAt = localStorage.getItem('expiresAt');
 
-    const [authState, setAuthState] = useState<AuthContextI>({
-        jwtToken,
+    const [authState,setAuthState] = useState(true);
+    const [authData, setAuthData] = useState<AuthContextI>({
         expiresAt,
         userInfo: userInfo ? JSON.parse(userInfo) : {}
     })
 
-    const setAuthInfo = ({ jwtToken, userInfo, expiresAt} : AuthContextI)=>{        
-        localStorage.setItem('jwtToken',jwtToken);
-        localStorage.setItem('userInfo',JSON.stringify(userInfo));
-        localStorage.setItem('expiresAt',expiresAt);
-        
-        setAuthState({
-            jwtToken,
+    const setAuthInfo = ({ userInfo, expiresAt} : AuthContextI)=>{  
+        localStorage.setItem(
+            'userInfo',
+            JSON.stringify(userInfo)
+          );
+        localStorage.setItem('expiresAt', expiresAt);
+                    
+        setAuthData({
             userInfo,
             expiresAt
         })
     }
 
+    useEffect(()=>{
+        const auth = async () => {
+            try{
+                const {data} = await authAxios.post('verify/profile');
+                setAuthInfo(data)
+                setAuthState(true);
+                }catch{
+                  setAuthState(false);
+                  console.error('Unauthorized')
+                }
+             }
+             console.log(auth);
+             auth();
+    },[authAxios])
+
     const logout = () => {
-        localStorage.removeItem('jwtToken');
         localStorage.removeItem('userInfo');
-        localStorage.removeItem('expiresAt');  
-        
-        setAuthState({
-            jwtToken: null,
+        localStorage.removeItem('expiresAt');
+        setAuthState(false);
+        setAuthData({
             userInfo : {},
             expiresAt : null
         })
-
         history.push('/auth/login');
     }
 
-
-    const isAuth = () => {
-        if(!authState.jwtToken || !authState.expiresAt){
+    /*const isAuth = () => {
+        console.log(authState)
+        console.log('isAuth')
+        if(!authState.expiresAt || !authState.userInfo){
             return false;
         }
         return new Date().getTime() / 1000 < authState.expiresAt
-    }
+       // return true;
+        //return true;
+    }*/
+    
     return(
         <Provider
           value={{
-              authState,
-              setAuthState : (authInfo : AuthContextI) => setAuthInfo(authInfo),
-              isAuth
+              authData,
+              authState
           }} >
               {children}
           </Provider>

@@ -16,11 +16,11 @@ ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
       <Router>
+      <FetchProvider>
         <AuthProvider >
-          <FetchProvider>
             <RouterDecider/>
-          </FetchProvider>
         </AuthProvider>
+        </FetchProvider>
       </Router>
     </Provider>
   </React.StrictMode>,
