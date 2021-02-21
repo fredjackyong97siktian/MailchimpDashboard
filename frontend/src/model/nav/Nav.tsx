@@ -2,11 +2,16 @@ import { SetStateAction } from 'react';
 
 //adjusting nav open and close
 export interface DrawerSetting {
-    open: boolean;
-    setOpen: React.Dispatch<SetStateAction<boolean>>;
+    open: boolean ;
+    setOpen: React.Dispatch<SetStateAction<boolean>> ;
    
     // setValuesList: (val: number[]) => void  will also satisfy, but it is
     // better to be explict and pass React.Dispatch<SetStateAction<number[]>>
+}
+
+export interface NavTopI {
+    nav : DrawerSetting ,
+    type : string,
 }
 
 //component of the drawer open and close

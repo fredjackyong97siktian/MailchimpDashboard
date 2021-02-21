@@ -1,7 +1,6 @@
 import React, {useState, createContext ,useEffect , useContext} from 'react';
 import {useHistory} from 'react-router-dom';
 import {FetchContext} from './FetchContext';
-import axios from 'axios';
 
 interface AuthContextI {
     userInfo: any,
@@ -11,12 +10,13 @@ interface AuthContextI {
  interface ProviderContext {
     authData: any,
     authState :boolean
-
+    logout: () => void
 }
 
 const AuthContextInitial = {
     authData:{},
-    authState: false
+    authState: false,
+    logout: () => {}
 }
 
 const AuthContext = createContext<ProviderContext>(AuthContextInitial);
@@ -64,13 +64,22 @@ const AuthProvider = ({children} :any) => {
     },[authAxios])
 
     const logout = () => {
-        localStorage.removeItem('userInfo');
-        localStorage.removeItem('expiresAt');
-        setAuthState(false);
-        setAuthData({
-            userInfo : {},
-            expiresAt : null
-        })
+        const logoutCall = async () => {
+            try{
+                await authAxios.post('logout');
+                localStorage.removeItem('userInfo');
+                localStorage.removeItem('expiresAt');
+                setAuthState(false);
+                setAuthData({
+                    userInfo : {},
+                    expiresAt : null
+                })
+                }catch{
+                    console.log("Something Wrong")
+                }
+             }
+        logoutCall();
+
         history.push('/auth/login');
     }
 
@@ -89,7 +98,8 @@ const AuthProvider = ({children} :any) => {
         <Provider
           value={{
               authData,
-              authState
+              authState,
+              logout
           }} >
               {children}
           </Provider>

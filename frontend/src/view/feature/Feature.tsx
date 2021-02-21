@@ -17,11 +17,9 @@ const Feature : React.FC = () => {
    const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
    return(
     <div className={classes.root}>
-
-      <NavTop setOpen={setOpen} open={open}/>
+      <NavTop nav={{open : open,setOpen:setOpen}} type={'Feature'}/>
       <NavSide setOpen={setOpen} open={open}/>
       <main className={classes.content}>
-        
         <div className={classes.appBarSpacer} />
         <Container maxWidth="lg" className={classes.container}>
 

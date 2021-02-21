@@ -7,7 +7,7 @@ const useStyles = makeStyles((theme) => ({
         paddingRight: 24, // keep right padding when drawer closed
       },
     appBar: {
-        backgroundColor: '#ffffff',
+      backgroundColor: 'transparent',
         zIndex: theme.zIndex.drawer + 1,
         transition: theme.transitions.create(['width', 'margin'], {
           easing: theme.transitions.easing.sharp,
@@ -22,6 +22,9 @@ const useStyles = makeStyles((theme) => ({
           duration: theme.transitions.duration.enteringScreen,
         }),
     },
+    backgroundColor: {
+      backgroundColor: '#ffffff',
+    },
     menuButton: {
         color:'	#1d1124',
         marginRight: 36,
@@ -33,6 +36,10 @@ const useStyles = makeStyles((theme) => ({
         color:'black',
         flexGrow: 1,
     },
+    platformtitle:{
+      color:'white',
+      flexGrow: 1,      
+    }
 
 }));
 

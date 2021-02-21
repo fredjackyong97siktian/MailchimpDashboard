@@ -15,7 +15,11 @@ import LoadingPage from './../../../view/modal/Loadingpage/LoadingPage';
 import Errorpage from './../../modal/Errorpage/Errorpage';
 import { useHistory } from "react-router-dom";
 import config from './../../../config';
-
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { IconName } from '@fortawesome/fontawesome-svg-core';
+import './../../../utility/icon/IconLibrary'
+import Box from '@material-ui/core/Box';
+import Divider from '@material-ui/core/Divider';
 const Login : React.FC = () => {
     const status = useSelector((state:RootState)=>state.loading);
     const classes = useStyles();
@@ -39,6 +43,48 @@ const Login : React.FC = () => {
       }
     },[status.hasSuccess])
 
+    //Oauth Button Option
+    const oauthButton = [
+      {
+        tag: "Facebook",
+        actionTag:"Facebook",
+        svg: 'facebook-f',
+        colorButton: "#3B5998"
+      },
+      { 
+        tag: "Google",
+        actionTag:"Google",
+        svg:'google',
+        colorButton: "#EA4335"
+      },
+      {
+        tag: "Linkedin",
+        actionTag:"Linkedin",
+        svg: 'linkedin-in',
+        colorButton: "#0077B5"
+      }
+    ]
+
+    const oauthButtonList = oauthButton.map((item)=>{
+      return(
+      <>
+      <Box mt={2}>
+        <Button variant="contained" onClick= {() => handleClick(item.actionTag)} className={classes.oauthButton} style={{backgroundColor: item.colorButton}}>
+        <Grid
+            container
+            direction="row"
+            justify="flex-start"
+            alignItems="stretch"
+            className={classes.oauthButtonGrid}
+          >
+            <span className={classes.oauthButtonIconGrid}> <FontAwesomeIcon icon={['fab',item.svg as IconName]} className={classes.oauthButtonIcon} size="2x" /> </span>
+            <Typography variant="button" display="block" className={classes.oauthButtonText} gutterBottom> <b> Sign in with {item.tag} </b> </Typography>
+            </Grid>
+        </Button>
+      </Box>
+      </>
+      )
+    })
     return (
       <>
      {status.loading ? <LoadingPage /> : <></>}
@@ -58,6 +104,7 @@ const Login : React.FC = () => {
           <Grid item xs>
             <Link href="#" variant="body2">
               Forgot password?
+              
             </Link>
           </Grid>
           <Grid item>
@@ -67,22 +114,21 @@ const Login : React.FC = () => {
           </Grid>
         </Grid>
       </div>
-      <div className={classes.paper}>
+      <div className={classes.lowerORpaper}>
        <Typography>
-       OR Sign in Using
+            OR 
        </Typography>
       </div>
-      <div className={classes.paper}>
+      <div className={classes.lowerpaper}>
         <Grid
           container
-          direction="row"
+          direction="column"
           justify="space-evenly"
-          alignItems="center"
+          alignItems="stretch"
           spacing={0}
           className="altauth"
         >
-        <Button onClick= {() => handleClick('Facebook')}> Facebook </Button>
-        <Button onClick= {() => handleClick('Google')}> GOOGLE </Button>        
+          {oauthButtonList}
        </Grid>
       </div>   
     </Container>
