@@ -1,5 +1,5 @@
 import React, { ReactDOM ,useContext} from 'react';
-import {FormInputLogin} from './../../../model/forminput/FormInputAuth'
+import {FormInputLogin} from '../../../../model/forminput/FormInputAuth'
 import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
@@ -8,9 +8,9 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import {LoginFormValidSchema} from './LoginFormValidSchema';
 import {useDispatch  } from 'react-redux';
-import {RLogin} from './../../../view/frontauth/login/redux/LoginAction';
-import useStylesForm from '../Form-style';
-import {AuthContext} from './../../../context/AuthContext';
+import {RLogin} from '../../../../view/frontauth/login/redux/LoginAction';
+import useStylesForm from '../../Form-style';
+import {AuthContext} from '../../../../context/AuthContext';
 
 const LoginForm : React.FC = () => {
     const authContext = useContext(AuthContext);

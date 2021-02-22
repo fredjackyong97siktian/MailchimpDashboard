@@ -1,11 +1,14 @@
-import {Entity, PrimaryGeneratedColumn, Column, BeforeInsert, BeforeUpdate, AfterLoad} from "typeorm";
+import {Entity, PrimaryGeneratedColumn, Column, BeforeInsert, BeforeUpdate, AfterLoad, OneToMany} from "typeorm";
+import {Platform} from './platform';
 import { IsEmail, IsNotEmpty} from "class-validator";
 const { v4: uuidv4 } = require('uuid');
 const bcrypt = require('bcrypt');
 
-@Entity()
-export class user_account {
+@Entity('user_account')
+export class UserAccount {
+    
 
+    @IsNotEmpty()
     @PrimaryGeneratedColumn()
     id: number;
 
@@ -77,6 +80,10 @@ export class user_account {
     @Column()
     accesstoken : string;
 
+    //relations
+    @OneToMany((type => Platform), platform => platform.user_account_id)
+    platform: Platform[]
+
     @BeforeInsert()
     @BeforeUpdate()
     async hashPassword() {
@@ -102,4 +109,7 @@ export class user_account {
             this.email_verification_code_sent_at = new Date();
         }
     }
+
+    
+
 }

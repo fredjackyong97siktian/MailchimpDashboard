@@ -2,6 +2,7 @@ import SignupRoute from './signup/route'
 import EmailRoute from './email/route'
 import Oauth from './login/oauth/index'
 import LoginRoute from './login/route'
+import PlatformRoute from './platform/route'
 import {auth , logout} from './auth'
 import express  from 'express';
 import {checkJWT} from './../jwt/tokenchecker';
@@ -14,6 +15,7 @@ rootRouter.use(public_prefix+'/login',LoginRoute)
 
 //Protected
 //const private_prefix = '/:platformid'
+rootRouter.use('/platform' , checkJWT, PlatformRoute)
 
 //Auth
 rootRouter.post('/verify/profile', checkJWT, auth)  

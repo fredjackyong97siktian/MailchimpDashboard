@@ -1,14 +1,14 @@
 import React, {useState , useEffect}from 'react';
 import TextField from '@material-ui/core/TextField';
-import {FormInputRegister, RegisterStatus} from './../../../model/forminput/FormInputAuth' 
+import {FormInputRegister, RegisterStatus} from '../../../../model/forminput/FormInputAuth' 
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import {SignupFormValidSchema} from './SignupFormValidSchema';
-import useStylesForm from '../Form-style';
+import useStylesForm from '../../Form-style';
 import {useDispatch  } from 'react-redux';
-import {CSignup} from './../../../view/frontauth/signup/redux/SignupAction';
+import {CSignup} from '../../../../view/frontauth/signup/redux/SignupAction';
 
 const SignupForm : React.FC = () => {
 

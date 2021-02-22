@@ -42,7 +42,8 @@ CREATE TABLE "user_account" (
 
 CREATE TABLE "platform" (
   "id" SERIAL NOT NULL PRIMARY KEY,
-  "platform_id" char(5) NOT NULL UNIQUE,
+  "platform_id" char(5) NOT NULL,
+  "platform_name" varchar(257) NOT NULL,
   "user_account_id" int NOT NULL REFERENCES user_account(id),
   "company_name" varchar(257),
   "company_website" varchar(257),
@@ -57,6 +58,7 @@ CREATE TABLE "platform" (
   "mobile" varchar(257),
   "created_at" timestamp  without time zone default (now() at time zone 'utc'),
   "updated_at" timestamp without time zone default (now() at time zone 'utc'),
+  UNIQUE (platform_id, platform_name),
   CONSTRAINT chk_plat_id check (platform_id ~ '^[0-9a-zA-Z!@-_#]{5}$') 
 );
 
@@ -288,4 +290,5 @@ CREATE TRIGGER update_customer_modtime BEFORE UPDATE ON visual_presentation FOR 
 CREATE TRIGGER update_customer_modtime BEFORE UPDATE ON plan FOR EACH ROW EXECUTE PROCEDURE  update_modified_column();
 CREATE TRIGGER update_customer_modtime BEFORE UPDATE ON role_assigned FOR EACH ROW EXECUTE PROCEDURE  update_modified_column();
 
-ALTER TABLE user_account ALTER user_account_id SET DEFAULT random_userID(8)
+ALTER TABLE user_account ALTER user_account_id SET DEFAULT random_userID(8);
+ALTER TABLE platform ALTER platform_id SET DEFAULT random_userID(5);

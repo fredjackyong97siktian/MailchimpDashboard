@@ -8,7 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import useStyles from './Signup-style';
 import Container from '@material-ui/core/Container';
 import Button from '@material-ui/core/Button';
-import SignupForm from '../../../utility/form/auth/SignupForm'
+import SignupForm from '../../../utility/form/auth/signup/SignupForm'
 import { useSelector } from 'react-redux';
 import {RootState} from '../../../reducer';
 import LoadingPage from '../../modal/Loadingpage/LoadingPage';

@@ -4,11 +4,11 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import MenuIcon from '@material-ui/icons/Menu';
 import Typography from '@material-ui/core/Typography';
-import useStyles from './../feature/nav/nav-top/NavTop-style'; 
-import {NavTopI} from './../../model/nav/Nav'
+import useStyles from '../feature/nav/nav-top/NavTop-style'; 
+import {NavTopI} from '../../model/nav/Nav'
 import LinearProgress from '@material-ui/core/LinearProgress';
-import {AuthContext} from './../../context/AuthContext';
-import {FetchContext} from './../../context/FetchContext';
+import {AuthContext} from '../../context/AuthContext';
+import {FetchContext} from '../../context/FetchContext';
 import IconButton from '@material-ui/core/IconButton';
 import NavTopRight from '../user/nav/NavTopAccountContextMenu';
 //<LinearProgress />

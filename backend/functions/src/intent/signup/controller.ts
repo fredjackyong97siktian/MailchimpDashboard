@@ -2,14 +2,14 @@
 import  {Request, Response} from 'express';
 import {createAccount} from './sql/createAccount';
 import {getRepository} from 'typeorm';
-import { user_account } from "./../../entity/user_account";
+import { UserAccount } from "./../../entity/user_account";
 
 
 //Create
 export const CSignUp = async (req : Request, res : Response) => {
     try {
         //create model and save
-        const userRepository = getRepository(user_account)
+        const userRepository = getRepository(UserAccount)
         const user = userRepository.create(req.body);
         const data = await userRepository.save(user);
 

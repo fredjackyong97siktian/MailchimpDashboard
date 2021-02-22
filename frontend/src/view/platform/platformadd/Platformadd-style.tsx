@@ -7,31 +7,29 @@ const useStyles = makeStyles((theme) => ({
       flexGrow: 1,
     },
     paper:{
-        padding: theme.spacing(8),
+        height:'180px',
         textAlign: 'center',
         color: theme.palette.text.secondary,
         backgroundColor:'white',
         width:'100%',
         borderRadius:'10px',
         boxShadow: '0.5px grey',
+        textTransform: "none"
     },
     background: {
         backgroundColor: '#1d1124',
-        height:'280px'
+        height:'70px',
+       
     },
-    platformGrid:{
-
-        padding: '80px 125px',
-        color: 'white'
+    platformContainer:{
+        padding: '10px 20px',
+        [theme.breakpoints.up('sm')]: {
+            padding: '10px 60px',
+        },
+        [theme.breakpoints.up('md')]: {
+            padding: '10px 100px',
+        },
     },
-    platformGridItem:{
-        width:'100%',
-        height:'100%',
-        backgroundColor: 'red'
-    },
-    platform_outer:{
-        position:'relative'
-    }
   }));
 
 export default useStyles

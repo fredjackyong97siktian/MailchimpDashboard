@@ -7,7 +7,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import useStyles from './Signup-style';
 import Container from '@material-ui/core/Container';
-import SignupForm from './../../../utility/form/auth/SignupForm'
+import SignupForm from '../../../utility/form/auth/signup/SignupForm'
 import { useSelector } from 'react-redux';
 import {RootState} from './../../../reducer';
 import LoadingPage from './../../../view/modal/Loadingpage/LoadingPage';

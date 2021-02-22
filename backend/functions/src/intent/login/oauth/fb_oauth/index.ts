@@ -3,7 +3,7 @@ import passport from "passport";
 import strategy from "passport-facebook";
 import {setToken} from '../../setToken';
 import {getRepository} from 'typeorm';
-import { user_account } from "../../../../entity/user_account";
+import { UserAccount } from "../../../../entity/user_account";
 var config = require('./../../../../../config');
 
 export const FBOauth = (data :any , router: any) => {
@@ -29,7 +29,7 @@ export const FBOauth = (data :any , router: any) => {
           email : email,
           isactive: true
         };
-        const userRepository = getRepository(user_account)
+        const userRepository = getRepository(UserAccount)
         const user = userRepository.create(userData);
         userRepository.save(user);
         const userDetail = await userRepository.findOne({email: email});
@@ -66,6 +66,7 @@ export const FBOauth = (data :any , router: any) => {
       }*/
 
     }
-  );
 
+
+  );
 }

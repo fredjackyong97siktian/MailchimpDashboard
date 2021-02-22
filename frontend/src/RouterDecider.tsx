@@ -7,7 +7,8 @@ import LoadingPage from "./view/modal/Successpage/Successpage";
 import SignUpDecider from "./view/frontauth/signup/Signup-decider";
 import ProtectedRoute from './ProtectedRoute';
 import {AuthContext} from './context/AuthContext';
-import Platform from './view/platform/Platform';
+import Platform from './view/platform/platformdisplay/Platform';
+import PlatformAdd from './view/platform/platformadd/Platformadd'
 const RouterDecider : React.FC = () => {
   const {authState} = useContext(AuthContext);
 
@@ -31,6 +32,8 @@ const RouterDecider : React.FC = () => {
           <ProtectedRoute exact path="/feature" component = {Feature} authState = {authState}/>
           <Route exact path="/loading" component = {LoadingPage}/>
           <Route exact path="/platform" component = {Platform}/>
+          <Route exact path="/platform/add" component = {PlatformAdd}/>
+          
         </Switch>
     </>    
    ); 

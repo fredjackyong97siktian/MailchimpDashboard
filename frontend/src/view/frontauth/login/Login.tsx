@@ -8,7 +8,7 @@ import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
-import LoginForm from './../../../utility/form/auth/LoginForm'
+import LoginForm from '../../../utility/form/auth/login/LoginForm'
 import { useSelector } from 'react-redux';
 import {RootState} from './../../../reducer';
 import LoadingPage from './../../../view/modal/Loadingpage/LoadingPage';

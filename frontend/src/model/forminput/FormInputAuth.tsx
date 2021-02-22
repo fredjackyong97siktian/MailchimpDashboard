@@ -22,3 +22,9 @@ export interface RegisterStatus {
     data : FormInputRegister
     message: string
 }
+
+export interface PlatformAdd {
+    email: string,
+    platformname: string,
+    companyname: string
+}
