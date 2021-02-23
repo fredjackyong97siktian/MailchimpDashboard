@@ -15,7 +15,7 @@ rootRouter.use(public_prefix+'/login',LoginRoute)
 
 //Protected
 //const private_prefix = '/:platformid'
-rootRouter.use('/platform' , checkJWT, PlatformRoute)
+rootRouter.use('/platform' , PlatformRoute)
 
 //Auth
 rootRouter.post('/verify/profile', checkJWT, auth)  

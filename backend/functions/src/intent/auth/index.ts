@@ -21,4 +21,5 @@ export const auth = (req :any,res :any,next :any)=>{
 
 export const logout = (req : any,res :any,next :any)=> {
     res.clearCookie('Token');
+    res.json({message:'Logout'});
 }

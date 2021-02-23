@@ -5,6 +5,11 @@ import {createConnection} from'typeorm';
 import {attachUser} from './../jwt/userchecker';
 import {checkJWT} from './../jwt/tokenchecker';
 
+//TypeORM
+createConnection()
+
+
+
 //configuration
 var config = require('./../../config');
 
@@ -34,20 +39,6 @@ app.use(bodyParser.json());
 app.disable('x-powered-by');
 app.use(helmet());
 
-
-//CSRF
-/*const csrf = require('csurf');
-const csrfProtection = csrf({
-  cookie : true
-});
-app.use(csrfProtection);
-app.get('/csrf-token',(req :any,res :any)=>{
-  res.json({csrfToken: req.csrfToken()});
-});*/
-
-//TypeORM
-createConnection();
-
 //cookie
 const cookieParser = require('cookie-parser');
 app.use(cookieParser());
@@ -57,6 +48,16 @@ app.use((req :any,res :any,next :any)=>{
   console.log(req.headers);
   next();
 })
+
+//CSRF
+const csrf = require('csurf');
+const csrfProtection = csrf({
+  cookie : {httpOnly: true,}
+});
+
+
+
+
 
 //JWT Token
 //app.use(attachUser);
@@ -109,6 +110,10 @@ pgdb.connect()
 const api = '/api'
 app.use(api,AllRoute);
 
+app.use(csrfProtection);
+app.get('/api/csrf-token',(req :any,res :any ,next:any)=>{
+  res.json({csrfToken: req.csrfToken()});
+});
 
 //firebase
 var admin = firebase.initializeApp({

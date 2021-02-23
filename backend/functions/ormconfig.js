@@ -9,5 +9,6 @@ module.exports = {
     "password": config.POSTGRESQL_PASSWORD,
     "database": config.POSTGRESQL_DATABASE,
     "entities": ['lib/entity/*.js'],
+    "autoLoadEntities": true,
     "synchronize": false
 }

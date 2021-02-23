@@ -29,10 +29,10 @@ const RouterDecider : React.FC = () => {
           <Route exact path="/auth/login" component= {Login} />
           <Route exact path="/auth/signup" component = {Signup} />
           <Route exact path="/auth/signup/:status" component = {SignUpDecider}/>   
-          <ProtectedRoute exact path="/feature" component = {Feature} authState = {authState}/>
-          <Route exact path="/loading" component = {LoadingPage}/>
-          <Route exact path="/platform" component = {Platform}/>
-          <Route exact path="/platform/add" component = {PlatformAdd}/>
+          <ProtectedRoute exact path="/platform/add" component = {PlatformAdd} authState = {authState}/>
+          <ProtectedRoute exact path="/platform/:platformid" component = {Feature} authState = {authState}/>
+          <ProtectedRoute exact path="/" component = {Platform} authState = {authState}/>
+
           
         </Switch>
     </>    

@@ -44,9 +44,7 @@ const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
   const MenuItemList = MenuItemListOption.map((item)=>{
       return (
-          <>
-           <MenuItem onClick={()=>handleClose(item.actionTag)}>{item.tag}</MenuItem>
-          </>
+           <MenuItem key={item.tag} onClick={()=>handleClose(item.actionTag)}>{item.tag}</MenuItem>
       )
   })
     return (

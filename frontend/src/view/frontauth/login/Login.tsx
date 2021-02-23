@@ -36,13 +36,6 @@ const Login : React.FC = () => {
 
     }
 
-    useEffect(()=>{
-      //status.hasSuccess && history.push('/feature');
-      if(status.hasSuccess){
-        window.location.replace(String(config.API_CLIENT+'/feature'));
-      }
-    },[status.hasSuccess])
-
     //Oauth Button Option
     const oauthButton = [
       {
@@ -78,7 +71,7 @@ const Login : React.FC = () => {
             className={classes.oauthButtonGrid}
           >
             <span className={classes.oauthButtonIconGrid}> <FontAwesomeIcon icon={['fab',item.svg as IconName]} className={classes.oauthButtonIcon} size="2x" /> </span>
-            <Typography variant="button" display="block" className={classes.oauthButtonText} gutterBottom> <b> Sign in with {item.tag} </b> </Typography>
+            <Typography variant="button" display="block" className={classes.oauthButtonText} gutterBottom>  Sign in with {item.tag}  </Typography>
             </Grid>
         </Button>
       </Box>

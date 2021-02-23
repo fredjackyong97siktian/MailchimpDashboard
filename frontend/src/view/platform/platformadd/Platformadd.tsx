@@ -13,15 +13,20 @@ import Button from '@material-ui/core/Button';
 import { Divider } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import PlatformForm from './../../../utility/form/auth/platform/PlatformForm';
+import { useSelector } from 'react-redux';
+import LoadingPage from './../../../view/modal/Loadingpage/LoadingPage';
+import Errorpage from './../../modal/Errorpage/Errorpage';
+import {RootState} from './../../../reducer';
 
 const PlatformAdd : React.FC = () => {
-   const platformOnclick = () => {
-    window.location.replace(String( ));
-   }
+  const status = useSelector((state:RootState)=>state.loading);
    const classes = useStyles();
 //
    return(
     <div className={classes.root}>
+      {status.loading ? <LoadingPage /> : <></>}
+      {status.hasError ? <Errorpage message={status.message} explaination={status.explaination}/> : <> </>}
+
         <CssBaseline />
         <Grid container className={classes.background}>
           <Grid item xs={12} >    

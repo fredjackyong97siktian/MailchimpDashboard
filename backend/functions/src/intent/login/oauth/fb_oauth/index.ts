@@ -56,7 +56,7 @@ export const FBOauth = (data :any , router: any) => {
         passwordsMatch,
         JWT
       })*/
-      res.redirect('http://localhost:3000/feature')
+      res.redirect('http://localhost:3000/')
 
 
      /* data = {

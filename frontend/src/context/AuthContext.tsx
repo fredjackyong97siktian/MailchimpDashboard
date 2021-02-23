@@ -1,6 +1,7 @@
 import React, {useState, createContext ,useEffect , useContext} from 'react';
 import {useHistory} from 'react-router-dom';
 import {FetchContext} from './FetchContext';
+import axios from 'axios'
 
 interface AuthContextI {
     userInfo: any,
@@ -63,10 +64,13 @@ const AuthProvider = ({children} :any) => {
              auth();
     },[authAxios])
 
+    //*Have Problem!!!
     const logout = () => {
         const logoutCall = async () => {
             try{
+                console.log('LogOut 1st Stage')
                 await authAxios.post('logout');
+                console.log('LogOut 2nd Stage')
                 localStorage.removeItem('userInfo');
                 localStorage.removeItem('expiresAt');
                 setAuthState(false);
@@ -74,13 +78,13 @@ const AuthProvider = ({children} :any) => {
                     userInfo : {},
                     expiresAt : null
                 })
+                console.log('Done Logout')
                 }catch{
                     console.log("Something Wrong")
                 }
              }
         logoutCall();
-
-        history.push('/auth/login');
+       // history.push('/auth/login');
     }
 
     /*const isAuth = () => {

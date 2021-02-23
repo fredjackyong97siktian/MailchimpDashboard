@@ -16,14 +16,13 @@ const FetchProvider = ({children} : any)=>{
     const authAxios= axios.create({
         baseURL: config.API_BACKEND,
     })
-    /*useEffect(()=>{
+    useEffect(()=>{
         const getCsrfToken = async()=>{
-            const {data} = await authAxios.get('/csrf-token');
+            const {data} = await authAxios.get('csrf-token');
             authAxios.defaults.headers['X-CSRF-Token']= data.csrfToken;
-            console.log(data);
         }
         getCsrfToken();
-    },[])*/
+    },[])
     
     return (
         <Provider

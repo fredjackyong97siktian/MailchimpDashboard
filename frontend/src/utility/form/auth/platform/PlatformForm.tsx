@@ -11,6 +11,7 @@ import {useDispatch  } from 'react-redux';
 import {AuthContext} from './../../../../context/AuthContext';
 import {CPlatform} from './redux/PlatformAction';
 import { Typography } from '@material-ui/core';
+import {FetchContext} from './../../../../context/FetchContext';
 import InputAdornment from "@material-ui/core/InputAdornment";
 import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
 import IconButton from "@material-ui/core/IconButton";
@@ -20,6 +21,8 @@ import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 
 const SignupForm : React.FC = () => {
     const {authData} = useContext(AuthContext);
+    const {authAxios} = useContext(FetchContext);
+
     const email = authData.userInfo.email;
     const classes = useStylesForm();
     const dispatch = useDispatch();
@@ -30,7 +33,7 @@ const SignupForm : React.FC = () => {
 
     const onSubmitForm = async (data: PlatformAdd) => {
         data.email = email;    
-        dispatch(CPlatform(data));
+        dispatch(CPlatform(data,authAxios));
     };
 
     return( 
