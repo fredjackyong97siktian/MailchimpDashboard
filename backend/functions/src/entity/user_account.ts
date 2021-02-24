@@ -7,8 +7,6 @@ const bcrypt = require('bcrypt');
 @Entity('user_account')
 export class UserAccount {
     
-
-    @IsNotEmpty()
     @PrimaryGeneratedColumn()
     id: number;
 

@@ -4,8 +4,9 @@ import Oauth from './login/oauth/index'
 import LoginRoute from './login/route'
 import PlatformRoute from './platform/route'
 import {auth , logout} from './auth'
-import express  from 'express';
+import express , {Request, Response} from 'express';
 import {checkJWT} from './../jwt/tokenchecker';
+
 const rootRouter = express.Router();
 
 //Public
@@ -16,6 +17,7 @@ rootRouter.use(public_prefix+'/login',LoginRoute)
 //Protected
 //const private_prefix = '/:platformid'
 rootRouter.use('/platform' , PlatformRoute)
+
 
 //Auth
 rootRouter.post('/verify/profile', checkJWT, auth)  

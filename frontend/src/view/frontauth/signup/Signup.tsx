@@ -10,10 +10,8 @@ import Container from '@material-ui/core/Container';
 import SignupForm from '../../../utility/form/auth/signup/SignupForm'
 import { useSelector } from 'react-redux';
 import {RootState} from './../../../reducer';
-import LoadingPage from './../../../view/modal/Loadingpage/LoadingPage';
-import Errorpage from './../../modal/Errorpage/Errorpage';
-import Successpage from './../../modal/Successpage/Successpage';
 import {success} from './Signup-message';
+import {ELS} from './../../modal';
 
 export default function SignUp() {
   const status = useSelector((state:RootState)=>state.loading);
@@ -21,11 +19,9 @@ export default function SignUp() {
 
   return (
     <>
-     {status.loading ? <LoadingPage /> : <></>}
-     {status.hasError ? <Errorpage message={status.message} explaination={status.explaination} /> : <> </>}
-     {status.hasSuccess ? <Successpage success={success} /> : <> </> }
-    <Container component="main" maxWidth="xs">
 
+    <Container component="main" maxWidth="xs">
+      <ELS success={success}/>
       <CssBaseline />
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>

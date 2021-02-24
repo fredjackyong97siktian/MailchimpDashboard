@@ -19,6 +19,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { IconName } from '@fortawesome/fontawesome-svg-core';
 import './../../../utility/icon/IconLibrary'
 import Box from '@material-ui/core/Box';
+import {ELS} from './../../modal';
 import Divider from '@material-ui/core/Divider';
 const Login : React.FC = () => {
     const status = useSelector((state:RootState)=>state.loading);
@@ -80,8 +81,7 @@ const Login : React.FC = () => {
     })
     return (
       <>
-     {status.loading ? <LoadingPage /> : <></>}
-     {status.hasError ? <Errorpage message={status.message} explaination={status.explaination}/> : <> </>}
+      <ELS />
 
     <Container component="main" maxWidth="xs">
       <CssBaseline />

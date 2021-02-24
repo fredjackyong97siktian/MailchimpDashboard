@@ -1,14 +1,13 @@
 import  {Request, Response} from 'express';
-import {getRepository } from 'typeorm';
+import {createConnection, getRepository , getManager , getConnection, Connection} from 'typeorm';
 import { UserAccount } from "./../../entity/user_account";
 import { Platform } from "./../../entity/platform";
 const bcrypt = require('bcrypt');
 
 export const CPlatformS = async (req : Request, res : Response) => {
     try {
-        
-        const userRepository = getRepository(UserAccount)
-        const user = await userRepository.findOne({email: req.body.email});
+        const entityManager = getManager();
+        const user = await entityManager.findOne(UserAccount,{email: req.body.email});
         const platformRepository = getRepository(Platform)
 
         const platformDetail = new Platform();
@@ -35,20 +34,22 @@ export const CPlatformS = async (req : Request, res : Response) => {
 };
 
 export const RPlatformM = async (req : Request, res : Response) => {
-    try {
-        const userRepository = getRepository(UserAccount)
-        const user = await userRepository.findOne({email: req.body.email});
-
-        let platformDetail= {}
+    try {   
+        console.log(req.body.email)
+        const user = await getRepository(UserAccount).findOne({select:["id"],where:{email:req.body.email}});
+        console.log(user);
         if(user){
             const platformRepository = getRepository(Platform);
-
-            platformDetail = await platformRepository.find({select: ["platform_name","platform_id"],where: {user_account_id: user.id},order:{id:"DESC"},cache:true});
+            const platformDetail = await platformRepository.find({select: ["platform_name","platform_id"],where: {user_account_id: user.id},order:{id:"DESC"},cache:true});
+            
+            res.status(201).json({
+                success: true,
+                platformDetail
+            });
+        } else {
+            throw "User Not Found, Please Try Again"
         }
-        res.status(201).json({
-            success: true,
-            platformDetail
-        });
+
     } catch (error) {
         res.status(409).json({
             success: false,

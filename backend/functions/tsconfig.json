@@ -14,8 +14,8 @@
     "strict": true,
     "target": "es2017",
     "strictPropertyInitialization": false,
-  "experimentalDecorators": true,
-  "emitDecoratorMetadata": true
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
   },
   "compileOnSave": true,
   "include": [

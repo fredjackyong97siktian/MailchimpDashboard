@@ -1,17 +1,15 @@
 import AllRoute from './route';
 import passport from "passport";
 import 'reflect-metadata';
-import {createConnection} from'typeorm';  
+import {createConnection,getManager, Connection} from'typeorm';  
+import { UserAccount } from "./../entity/user_account";
 import {attachUser} from './../jwt/userchecker';
 import {checkJWT} from './../jwt/tokenchecker';
-
-//TypeORM
-createConnection()
-
-
-
+import {Request, Response} from 'express';
+import {TryDBConnect} from './../orm';
 //configuration
 var config = require('./../../config');
+
 
 const bodyParser = require('body-parser');
 
@@ -43,11 +41,11 @@ app.use(helmet());
 const cookieParser = require('cookie-parser');
 app.use(cookieParser());
 
-app.use((req :any,res :any,next :any)=>{
+/*app.use((req :any,res :any,next :any)=>{
   console.log('Req Header')
   console.log(req.headers);
   next();
-})
+})*/
 
 //CSRF
 const csrf = require('csurf');
@@ -106,6 +104,16 @@ pgdb.connect()
     .catch((error :any )=> {
         console.log('ERROR:', error.message || error);
 });
+
+
+//TypeORM
+app.use(async (req: Request, res: Response, next:any) => {
+  await TryDBConnect(() => {
+    res.json({
+      error: 'Database connection error, please try again later',
+    });
+  }, next);
+})
 
 const api = '/api'
 app.use(api,AllRoute);

@@ -9,12 +9,14 @@ interface AuthContextI {
 }
 
  interface ProviderContext {
+     loading: boolean,
     authData: any,
     authState :boolean
     logout: () => void
 }
 
 const AuthContextInitial = {
+    loading:false,
     authData:{},
     authState: false,
     logout: () => {}
@@ -30,6 +32,7 @@ const AuthProvider = ({children} :any) => {
     const userInfo = localStorage.getItem('userInfo');
     const expiresAt = localStorage.getItem('expiresAt');
 
+    const [loading,setLoading] = useState(true);
     const [authState,setAuthState] = useState(true);
     const [authData, setAuthData] = useState<AuthContextI>({
         expiresAt,
@@ -50,27 +53,28 @@ const AuthProvider = ({children} :any) => {
     }
 
     useEffect(()=>{
+        
         const auth = async () => {
             try{
+                setLoading(true);
                 const {data} = await authAxios.post('verify/profile');
                 setAuthInfo(data)
                 setAuthState(true);
                 }catch{
-                  setAuthState(false);
-                  console.error('Unauthorized')
+                    setAuthState(false);
+                    console.error('Unauthorized')
+                }finally{
+                    setLoading(false);
                 }
              }
              console.log(auth);
              auth();
     },[authAxios])
 
-    //*Have Problem!!!
     const logout = () => {
         const logoutCall = async () => {
             try{
-                console.log('LogOut 1st Stage')
                 await authAxios.post('logout');
-                console.log('LogOut 2nd Stage')
                 localStorage.removeItem('userInfo');
                 localStorage.removeItem('expiresAt');
                 setAuthState(false);
@@ -101,6 +105,7 @@ const AuthProvider = ({children} :any) => {
     return(
         <Provider
           value={{
+              loading,
               authData,
               authState,
               logout
