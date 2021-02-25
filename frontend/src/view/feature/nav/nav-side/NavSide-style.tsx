@@ -31,6 +31,9 @@ const useStyles = makeStyles((theme) => ({
         padding: '0 8px',
         ...theme.mixins.toolbar,
       },
+      toolbarLogo:{
+        width:'73%'
+      },
       navbottom: {
         position: 'absolute',
         bottom: 0, 

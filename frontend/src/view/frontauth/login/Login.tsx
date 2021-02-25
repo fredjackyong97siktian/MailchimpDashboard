@@ -63,7 +63,7 @@ const Login : React.FC = () => {
       return(
       <>
       <Box mt={2}>
-        <Button variant="contained" onClick= {() => handleClick(item.actionTag)} className={classes.oauthButton} style={{backgroundColor: item.colorButton}}>
+        <Button variant="contained" onClick= {() => handleClick(item.actionTag)} className={classes.oauthButton} style={item.tag==='Facebook'? {backgroundColor: item.colorButton} : {backgroundColor: 'grey'}} disabled={item.tag==='Facebook' ? false : true}>
         <Grid
             container
             direction="row"

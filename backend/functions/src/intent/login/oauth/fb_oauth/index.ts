@@ -22,7 +22,7 @@ export const FBOauth = (data :any , router: any) => {
   
        const { email, first_name, last_name } = profile._json;
        const userData = {
-          fb_id : profile.id,
+          profile_id : profile.id,
           accesstoken : accessToken,
           firstName : first_name,
           lastName : last_name,
@@ -30,10 +30,24 @@ export const FBOauth = (data :any , router: any) => {
           isactive: true
         };
         const userRepository = getRepository(UserAccount)
-        const user = userRepository.create(userData);
-        userRepository.save(user);
+        const check = await userRepository.find({where:{email:email}})
+        console.log('1st Stage')
+        if(check.length < 1){
+          console.log('2nd Stage')
+          const user = new UserAccount();
+          user.email = userData.email;
+          user.oauth_login_id = 1
+          user.oauth_profile_id = userData.profile_id;
+          user.firstname = userData.firstName;
+          user.lastname = userData.lastName;
+          user.accesstoken = userData.accesstoken;
+          user.isactive = userData.isactive;
+          await userRepository.save(user);
+        }          
+        console.log('6th Stage')
         const userDetail = await userRepository.findOne({email: email});
-        return done(null,userDetail);
+        console.log(userDetail)
+        return done(null,userDetail);   
       }
     )
   );
@@ -50,23 +64,27 @@ export const FBOauth = (data :any , router: any) => {
     }), async (req :any,res :any ,next :any)=>{
       const userData = req.user
       const JWT = setToken(userData, res);
-      const passwordsMatch = true;
+      res.redirect('http://localhost:3000/')
+     // const passwordsMatch = true;
      /* res.status(201).json({
         success: true,
         passwordsMatch,
         JWT
       })*/
-      res.redirect('http://localhost:3000/')
-
 
      /* data = {
         success:true,
         passwordsMatch,
         JWT
       }*/
-
     }
-
-
   );
+
+  router.get(
+    '/fail',(req :any, res :any)=>{
+      res.status(409).json({
+        success:false
+      })
+    }
+  )
 }

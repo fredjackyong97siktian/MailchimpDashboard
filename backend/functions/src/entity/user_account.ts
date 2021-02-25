@@ -1,5 +1,6 @@
-import {Entity, PrimaryGeneratedColumn, Column, BeforeInsert, BeforeUpdate, AfterLoad, OneToMany} from "typeorm";
+import {Entity, PrimaryGeneratedColumn, Column, BeforeInsert, BeforeUpdate, OneToOne, OneToMany, JoinColumn} from "typeorm";
 import {Platform} from './platform';
+import {OauthLogin} from './oauth_login';
 import { IsEmail, IsNotEmpty} from "class-validator";
 const { v4: uuidv4 } = require('uuid');
 const bcrypt = require('bcrypt');
@@ -7,7 +8,7 @@ const bcrypt = require('bcrypt');
 @Entity('user_account')
 export class UserAccount {
     
-    @PrimaryGeneratedColumn()
+    @PrimaryGeneratedColumn('increment')
     id: number;
 
     @Column()
@@ -70,14 +71,14 @@ export class UserAccount {
     last_login_at: Date;
 
     @Column()
-    fb_id : string;
+    oauth_login_id: number;
 
     @Column()
-    google_id : string;
+    oauth_profile_id: string;
 
     @Column()
     accesstoken : string;
-
+    
     //relations
     @OneToMany((type => Platform), platform => platform.user_account_id)
     platform: Platform[]
@@ -102,7 +103,7 @@ export class UserAccount {
     @BeforeInsert()
     @BeforeUpdate()
     emailVerification() {
-        if(!this.fb_id && !this.google_id){
+        if(!this.oauth_login_id && !this.oauth_profile_id){
             this.email_verification_code = uuidv4();
             this.email_verification_code_sent_at = new Date();
         }

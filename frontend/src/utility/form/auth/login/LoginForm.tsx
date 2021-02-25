@@ -55,11 +55,7 @@ const LoginForm : React.FC = () => {
       className={errors.password? classes.error_outline: undefined}
     />
      {errors.password? <span className={classes.error_message}> {errors.password?.message}  </span> : undefined}
-    <br/>
-    <FormControlLabel
-      control={<Checkbox  inputRef={register} name="remember" color="primary" />}
-      label="Remember me"
-    />
+    
     <Button
       type="submit"
       fullWidth

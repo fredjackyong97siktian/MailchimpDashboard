@@ -10,7 +10,7 @@ import useStyles from './NavSide-style';
 import  NavSideItemBottom  from './NavSideItem/NavSideItemBottom';
 import   NavSideItemMain  from './NavSideItem/NavSideItemMain';
 import {DrawerSetting} from './../../../../model/nav/Nav'
-
+import Logo from './/../../../logo/Logo';
 export const NavOpenContext = React.createContext({} as boolean);
 
 const NavSide : React.FC<DrawerSetting> = ({open, setOpen}) => {
@@ -34,11 +34,17 @@ const NavSide : React.FC<DrawerSetting> = ({open, setOpen}) => {
           paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
         }}
         open={open}
-      >
+      > 
+
         <div className={classes.toolbarIcon}>
+        <span className={classes.toolbarLogo}>
+         <Logo />
+         </span>
+         <span>
           <IconButton style={color} onClick={handleDrawerClose}>
             <ChevronLeftIcon />
           </IconButton>
+          </span>
         </div>
         {open ? <SearchBarCustom /> : <> </> }
         <List>

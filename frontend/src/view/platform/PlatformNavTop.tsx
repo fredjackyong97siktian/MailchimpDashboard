@@ -11,6 +11,7 @@ import {AuthContext} from '../../context/AuthContext';
 import {FetchContext} from '../../context/FetchContext';
 import IconButton from '@material-ui/core/IconButton';
 import NavTopRight from '../user/nav/NavTopAccountContextMenu';
+import Logo from '../logo/Logo';
 //<LinearProgress />
 const NavTop : React.FC = () => {
 
@@ -24,7 +25,7 @@ const NavTop : React.FC = () => {
     <AppBar position="static" elevation={0} className={clsx(classes.appBar)}>
     <Toolbar className={classes.toolbar}>
       <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.platformtitle}>
-            LOGO
+            <Logo />
       </Typography>
       <NavTopRight />
     </Toolbar>

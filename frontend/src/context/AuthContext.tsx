@@ -2,7 +2,8 @@ import React, {useState, createContext ,useEffect , useContext} from 'react';
 import {useHistory} from 'react-router-dom';
 import {FetchContext} from './FetchContext';
 import axios from 'axios'
-
+import {useDispatch  } from 'react-redux';
+import {PAGE_STATUS_RECOVER} from '../view/modal/Loadingpage/redux/LoadingConstant'
 interface AuthContextI {
     userInfo: any,
     expiresAt : any
@@ -26,6 +27,7 @@ const AuthContext = createContext<ProviderContext>(AuthContextInitial);
 const {Provider} = AuthContext;
 
 const AuthProvider = ({children} :any) => {
+    const dispatch = useDispatch();
     const {authAxios} = useContext(FetchContext);
     const history = useHistory();
 
@@ -61,6 +63,7 @@ const AuthProvider = ({children} :any) => {
                 setAuthInfo(data)
                 setAuthState(true);
                 }catch{
+                    dispatch({type:PAGE_STATUS_RECOVER});
                     setAuthState(false);
                     console.error('Unauthorized')
                 }finally{

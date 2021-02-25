@@ -4,9 +4,15 @@ CREATE DOMAIN cemail AS citext
   CHECK ( value ~ '^[a-zA-Z0-9.!#$%&''*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$' );
 CREATE EXTENSION pgcrypto;
 
+CREATE TABLE "oauth_login"(
+  "id" SERIAL NOT NULL PRIMARY KEY,
+  "oauth_name" varchar(257) NOT NULL UNIQUE,
+  "created_at" timestamp  without time zone default (now() at time zone 'utc')
+);
+
 CREATE TABLE "user_account" (
   "id" SERIAL NOT NULL PRIMARY KEY,
-  "user_account_id" char(8) NOT NULL,
+  "user_account_id" char(25) NOT NULL,
   "email" cemail NOT NULL UNIQUE,
   "password" varchar(257),
   "profile_img" varchar(257),
@@ -26,23 +32,22 @@ CREATE TABLE "user_account" (
   "email_verification_code_received_at" timestamp without time zone,
   "isactive" bool  default FALSE ,
   "last_login_at" timestamp without time zone,
-  "fb_id" varchar(257),
-  "google_id" varchar(257),
+  "oauth_login_id" int REFERENCES oauth_login(id),
+  "oauth_profile_id" varchar(257),
   "accesstoken" varchar(257),
   "refreshtoken" varchar(257),
   "created_at" timestamp  without time zone default (now() at time zone 'utc'),
   "updated_at" timestamp without time zone default (now() at time zone 'utc'),
   UNIQUE ("user_account_id","email","forget_passcode", "email_verification_code"),
-      CONSTRAINT oauth_check check ((password is null and fb_id is not null and google_id is null) 
-                                  or (password is null and fb_id is null and google_id is not null) 
-                                  or (password is not null and fb_id is null and google_id is null )),
-  CONSTRAINT chk_user_id check (user_account_id ~ '^[0-9a-zA-Z]{8}$') ,
+  CONSTRAINT oauth_check check ((password is null and oauth_login_id is not null and oauth_profile_id is not null) 
+                                  or (password is not null and oauth_login_id is null and oauth_profile_id is null )),
+  CONSTRAINT chk_user_id check (user_account_id ~ '^[0-9a-zA-Z]{25}$') ,
   CONSTRAINT chk_forget_passcode check (forget_passcode ~ '^[0-9a-zA-Z!@-_#]{10}$')
 );
 
 CREATE TABLE "platform" (
   "id" SERIAL NOT NULL PRIMARY KEY,
-  "platform_id" char(5) NOT NULL,
+  "platform_id" char(6) NOT NULL,
   "platform_name" varchar(257) NOT NULL,
   "user_account_id" int NOT NULL REFERENCES user_account(id),
   "company_name" varchar(257),
@@ -59,7 +64,7 @@ CREATE TABLE "platform" (
   "created_at" timestamp  without time zone default (now() at time zone 'utc'),
   "updated_at" timestamp without time zone default (now() at time zone 'utc'),
   UNIQUE (platform_id, platform_name),
-  CONSTRAINT chk_plat_id check (platform_id ~ '^[0-9a-zA-Z!@-_#]{5}$') 
+  CONSTRAINT chk_plat_id check (platform_id ~ '^[0-9a-zA-Z!@-_#]{6}$') 
 );
 
 CREATE TABLE "application" (
@@ -73,7 +78,7 @@ CREATE TABLE "application" (
 
 CREATE TABLE "authentication" (
   "id" SERIAL NOT NULL PRIMARY KEY,
-  "authentication_id" char (6) NOT NULL UNIQUE,
+  "authentication_id" char (10) NOT NULL UNIQUE,
   "user_account_id" int NOT NULL REFERENCES user_account(id),
   "application_id" int NOT NULL REFERENCES application(id),
   "platform_id" int NOT NULL REFERENCES platform(id),
@@ -84,7 +89,7 @@ CREATE TABLE "authentication" (
   "scope" json,
   "created_at" timestamp  without time zone default (now() at time zone 'utc') ,
   "updated_at" timestamp without time zone default (now() at time zone 'utc') ,
-  CONSTRAINT chk_auth_id check (authentication_id ~ '^[0-9a-zA-Z!@-_#]{6}$')
+  CONSTRAINT chk_auth_id check (authentication_id ~ '^[0-9a-zA-Z!@-_#]{10}$')
 );
 
 CREATE TABLE "platform_setting" (
@@ -115,7 +120,7 @@ CREATE TABLE "subcategory" (
 
 CREATE TABLE "dashboard" (
   "id" SERIAL NOT NULL PRIMARY KEY,
-  "dashboard_id" char(6) NOT NULL UNIQUE,
+  "dashboard_id" char(20) NOT NULL UNIQUE,
   "platform_id" int NOT NULL REFERENCES platform (id),
   "subcategory_id" int NOT NULL REFERENCES subcategory (id),
   "dashboard_name" varchar(257),
@@ -123,7 +128,7 @@ CREATE TABLE "dashboard" (
   "iscustom" bool  default FALSE,
   "created_at" timestamp  without time zone default (now() at time zone 'utc') ,
   "updated_at" timestamp without time zone default (now() at time zone 'utc'),
-  CONSTRAINT chk_dash_id check (dashboard_id ~ '^[0-9a-zA-Z!@-_#]{6}$') 
+  CONSTRAINT chk_dash_id check (dashboard_id ~ '^[0-9a-zA-Z!@-_#]{20}$') 
 );
 
 
@@ -142,13 +147,13 @@ CREATE TABLE "subchart" (
 
 CREATE TABLE "role" (
   "id" SERIAL NOT NULL PRIMARY KEY,
-  "role_id" char(6) NOT NULL UNIQUE,
+  "role_id" char(20) NOT NULL UNIQUE,
   "platform_id" int NOT NULL REFERENCES platform(id),
   "user_account_id" int NOT NULL REFERENCES user_account(id),
   "role_name" varchar(257),
   "created_at" timestamp  without time zone default (now() at time zone 'utc'),
   "updated_at" timestamp without time zone default (now() at time zone 'utc'),
-  CONSTRAINT chk_role_id check (role_id ~ '^[0-9a-zA-Z!@-_#]{6}$') 
+  CONSTRAINT chk_role_id check (role_id ~ '^[0-9a-zA-Z!@-_#]{20}$') 
 );
 
 CREATE TABLE "service" (
@@ -179,7 +184,7 @@ CREATE TABLE "visualization" (
 CREATE TABLE "visual_presentation" (
   "id" SERIAL NOT NULL PRIMARY KEY ,
   "visualization_id" int NOT NULL REFERENCES visualization(id),
-  "business_information_id" char(7) NOT NULL UNIQUE,
+  "business_information_id" char(20) NOT NULL UNIQUE,
   "dashboard_id" int NOT NULL REFERENCES dashboard(id),
   "arrangment" smallint,
   "created_at" timestamp  without time zone default (now() at time zone 'utc'),
@@ -210,7 +215,7 @@ CREATE TABLE "plan" (
 
 CREATE TABLE "subscription" (
   "id" SERIAL NOT NULL PRIMARY KEY,
-  "subscription_id" char(8) NOT NULL UNIQUE,
+  "subscription_id" char(20) NOT NULL UNIQUE,
   "user_account_id" int NOT NULL REFERENCES user_account(id),
   "platform_id " int NOT NULL REFERENCES platform(id),
   "plan_id" int NOT NULL REFERENCES plan(id),
@@ -219,23 +224,23 @@ CREATE TABLE "subscription" (
   "issued_date" timestamp without time zone,
   "expired_at" timestamp without time zone,
   "created_at" timestamp  without time zone default (now() at time zone 'utc'),
-  CONSTRAINT chk_subs_id check (subscription_id ~ '^[0-9a-zA-Z]{8}$') 
+  CONSTRAINT chk_subs_id check (subscription_id ~ '^[0-9a-zA-Z]{20}$') 
 );
 
 CREATE TABLE "role_assigned" (
   "id" SERIAL NOT NULL PRIMARY KEY,
-  "role_assigned_id" char(6) NOT NULL UNIQUE,
+  "role_assigned_id" char(20) NOT NULL UNIQUE,
   "platform_id" int NOT NULL REFERENCES platform(id),
   "role_id" int NOT NULL REFERENCES role(id),
   "platform_setting_id" int NOT NULL REFERENCES platform_setting(id),
   "created_at" timestamp  without time zone default (now() at time zone 'utc'),
   "updated_at" timestamp without time zone default (now() at time zone 'utc'),
-  CONSTRAINT chk_ra_id check (role_assigned_id ~ '^[0-9a-zA-Z!@-_#]{6}$') 
+  CONSTRAINT chk_ra_id check (role_assigned_id ~ '^[0-9a-zA-Z!@-_#]{20}$') 
 );
 
 CREATE TABLE "payment" (
   "id" SERIAL NOT NULL PRIMARY KEY,
-  "payment_id" char(6) NOT NULL UNIQUE,
+  "payment_id" char(20) NOT NULL UNIQUE,
   "payment_method_id" int NOT NULL REFERENCES payment_method(id),
   "user_account_id" int NOT NULL REFERENCES user_account(id),
   "subscription_id" int NOT NULL REFERENCES subscription(id),
@@ -244,7 +249,7 @@ CREATE TABLE "payment" (
   "currency" char(3),
   "status" varchar,
   "created_at" timestamp  without time zone default (now() at time zone 'utc'),
-  CONSTRAINT chk_payment_id check (payment_id ~ '^[0-9a-zA-Z!@-_#]{6}$') 
+  CONSTRAINT chk_payment_id check (payment_id ~ '^[0-9a-zA-Z!@-_#]{20}$') 
 );
 
 /*Random UserID Auto*/
@@ -290,5 +295,13 @@ CREATE TRIGGER update_customer_modtime BEFORE UPDATE ON visual_presentation FOR 
 CREATE TRIGGER update_customer_modtime BEFORE UPDATE ON plan FOR EACH ROW EXECUTE PROCEDURE  update_modified_column();
 CREATE TRIGGER update_customer_modtime BEFORE UPDATE ON role_assigned FOR EACH ROW EXECUTE PROCEDURE  update_modified_column();
 
-ALTER TABLE user_account ALTER user_account_id SET DEFAULT random_userID(8);
-ALTER TABLE platform ALTER platform_id SET DEFAULT random_userID(5);
+ALTER TABLE user_account ALTER user_account_id SET DEFAULT random_userID(25);
+ALTER TABLE platform ALTER platform_id SET DEFAULT random_userID(6);
+ALTER TABLE authentication ALTER authentication_id SET DEFAULT random_userID(10);
+ALTER TABLE dashboard ALTER dashboard_id SET DEFAULT random_userID(20);
+ALTER TABLE role  ALTER role_id SET DEFAULT random_userID(20);
+ALTER TABLE role_assigned  ALTER role_assigned_id SET DEFAULT random_userID(20);
+ALTER TABLE payment ALTER payment_id SET DEFAULT random_userID(20);
+ALTER TABLE subscription  ALTER subscription_id SET DEFAULT random_userID(20);
+
+INSERT INTO oauth_login ("oauth_name") VALUES ('Facebook'),('Google'),('LinkedIn');

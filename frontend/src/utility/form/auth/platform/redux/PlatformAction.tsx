@@ -13,7 +13,7 @@ export const CPlatform = (information : PlatformAdd ,authAxios:any ) => async(di
         console.log(Inputdata);
         dispatch({type: PLATFORM_ADD , payload: information})
         dispatch({type: PAGE_STATUS_SUCCESS,payload: data});
-        window.location.replace(String(config.API_CLIENT+'/platform'));
+        window.location.replace(String(config.API_CLIENT+'/'));
 
     }catch(error){
         const payload = {message: error.message || error,
