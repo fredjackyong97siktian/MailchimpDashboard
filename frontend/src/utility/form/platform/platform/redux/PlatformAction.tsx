@@ -1,8 +1,8 @@
 import * as effect from './PlatformEffect'
 import {PLATFORM_ADD} from './PlatformConstant';
 import {PAGE_STATUS_LOADING, PAGE_STATUS_SUCCESS, PAGE_STATUS_ERROR} from '../../../../../view/modal/Loadingpage/redux/LoadingConstant'
-import {PlatformAdd} from './../../../../../model/forminput/FormInputAuth'  
-import config from './../../../../../config';
+import {PlatformAdd} from '../../../../../model/forminput/FormInputAuth'  
+import config from '../../../../../config';
 //Action Creators
 export const CPlatform = (information : PlatformAdd ,authAxios:any ) => async(dispatch : any) => {
     dispatch({type:PAGE_STATUS_LOADING});

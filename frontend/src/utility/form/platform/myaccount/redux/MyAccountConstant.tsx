@@ -1,0 +1,1 @@
+export const MYACCOUNT_EDIT = 'MYACCOUNT_EDIT'

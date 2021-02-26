@@ -8,7 +8,8 @@ import SignUpDecider from "./view/frontauth/signup/Signup-decider";
 import ProtectedRoute from './ProtectedRoute';
 import {AuthContext} from './context/AuthContext';
 import Platform from './view/platform/platformdisplay/Platform';
-import PlatformAdd from './view/platform/platformadd/Platformadd'
+import PlatformAdd from './view/platform/platformadd/Platformadd';
+import MyAccount from './view/user/myaccount/MyAccount';
 const RouterDecider : React.FC = () => {
   const {authState} = useContext(AuthContext);
 
@@ -27,13 +28,13 @@ const RouterDecider : React.FC = () => {
     <>
         <Switch>
           <Route exact path="/auth/login" component= {Login} />
+          <Route exact path="/auth/test" component= {MyAccount} />
           <Route exact path="/auth/signup" component = {Signup} />
           <Route exact path="/auth/signup/:status" component = {SignUpDecider}/>   
           <ProtectedRoute exact path="/platform/add" component = {PlatformAdd} authState = {authState}/>
           <ProtectedRoute exact path="/platform/:platformid" component = {Feature} authState = {authState}/>
           <ProtectedRoute exact path="/" component = {Platform} authState = {authState}/>
-
-          
+          <ProtectedRoute exact path="/myacount" component= {MyAccount} authState = {authState}/>          
         </Switch>
     </>    
    ); 
