@@ -3,6 +3,7 @@ import EmailRoute from './email/route'
 import Oauth from './login/oauth/index'
 import LoginRoute from './login/route'
 import PlatformRoute from './platform/route'
+import MyaccountRoute from './myaccount/route'
 import {auth , logout} from './auth'
 import express , {Request, Response} from 'express';
 import {checkJWT} from './../jwt/tokenchecker';
@@ -22,6 +23,9 @@ rootRouter.use('/platform' , PlatformRoute)
 //Auth
 rootRouter.post('/verify/profile', checkJWT, auth)  
 rootRouter.post('/logout', logout)  
+
+//MyAccount
+rootRouter.use('/myaccount',MyaccountRoute)
 
 //Others
 rootRouter.use('/email',EmailRoute);

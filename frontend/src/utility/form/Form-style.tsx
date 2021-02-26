@@ -25,7 +25,11 @@ const useStylesForm = makeStyles((theme) => ({
       },
       submit: {
         margin: theme.spacing(3, 0, 2),
+      },    
+      borderbottom: {
+        borderBottom: `1px solid ${theme.palette.divider}`
       },
+    
 }));
 
   export default useStylesForm;
