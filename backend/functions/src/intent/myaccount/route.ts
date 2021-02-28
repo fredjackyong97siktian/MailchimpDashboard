@@ -1,8 +1,9 @@
 //Login
-import {RMyaccountS} from './controller';
+import {RMyaccountProfileS, UMyaccountProfileS} from './controller';
 import express, {Request, Response} from 'express';
 
 const router = express.Router();
 
-router.get('/edit',RMyaccountS)
+router.post('/edit',RMyaccountProfileS)
+router.post('/update',UMyaccountProfileS)
 export default router;

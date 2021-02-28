@@ -6,8 +6,9 @@ const bcrypt = require('bcrypt');
 
 export const CPlatformS = async (req : Request, res : Response) => {
     try {
+
         const entityManager = getManager();
-        const user = await entityManager.findOne(UserAccount,{email: req.body.email});
+        const user = await entityManager.findOne(UserAccount,{user_account_id: req.user?.user_id});
         const platformRepository = getRepository(Platform)
 
         const platformDetail = new Platform();

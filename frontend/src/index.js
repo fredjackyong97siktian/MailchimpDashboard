@@ -10,19 +10,24 @@ import thunk from 'redux-thunk'
 import {reducers} from './reducer';
 import {AuthProvider} from './context/AuthContext'
 import {FetchProvider} from './context/FetchContext'
+import { SnackbarProvider} from 'notistack';
 const store = createStore(reducers, compose(applyMiddleware(thunk)))
 
 ReactDOM.render(
   <React.StrictMode>
+
     <Provider store={store}>
       <Router>
       <FetchProvider>
         <AuthProvider >
-            <RouterDecider/>
+            <SnackbarProvider maxSnack={3} >
+              <RouterDecider/>
+            </SnackbarProvider>
         </AuthProvider>
         </FetchProvider>
       </Router>
     </Provider>
+
   </React.StrictMode>,
   document.getElementById('root')
 );

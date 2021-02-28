@@ -7,7 +7,8 @@ import MyaccountRoute from './myaccount/route'
 import {auth , logout} from './auth'
 import express , {Request, Response} from 'express';
 import {checkJWT} from './../jwt/tokenchecker';
-
+import {attachUser} from './../jwt/userchecker';
+import router from './signup/route'
 const rootRouter = express.Router();
 
 //Public
@@ -15,7 +16,15 @@ const public_prefix = '/auth'
 rootRouter.use(public_prefix+'/signup',SignupRoute)
 rootRouter.use(public_prefix+'/login',LoginRoute)
 
-//Protected
+//Others
+rootRouter.use('/email',EmailRoute);
+
+//Oauth
+const third_party = '/oauth'
+rootRouter.use(third_party+'/signup', Oauth);
+
+/* --------------------------- Protected -------------------- */
+rootRouter.use(attachUser);
 //const private_prefix = '/:platformid'
 rootRouter.use('/platform' , PlatformRoute)
 
@@ -27,11 +36,8 @@ rootRouter.post('/logout', logout)
 //MyAccount
 rootRouter.use('/myaccount',MyaccountRoute)
 
-//Others
-rootRouter.use('/email',EmailRoute);
 
-//Oauth
-const third_party = '/oauth'
-rootRouter.use(third_party+'/signup', Oauth);
+
+
 
 export default rootRouter

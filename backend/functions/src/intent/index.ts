@@ -10,6 +10,14 @@ import {TryDBConnect} from './../orm';
 //configuration
 var config = require('./../../config');
 
+declare global {
+  namespace Express {
+    interface User {
+      email: string,
+      user_id : string
+    }
+  }
+}
 
 const bodyParser = require('body-parser');
 
@@ -57,8 +65,7 @@ const csrfProtection = csrf({
 
 
 
-//JWT Token
-//app.use(attachUser);
+
 /*const jwt = require('express-jwt');
 
 export const checkJWT = jwt({
@@ -122,6 +129,9 @@ app.use(csrfProtection);
 app.get('/api/csrf-token',(req :any,res :any ,next:any)=>{
   res.json({csrfToken: req.csrfToken()});
 });
+
+//JWT Token
+//app.use(attachUser);
 
 //firebase
 var admin = firebase.initializeApp({
