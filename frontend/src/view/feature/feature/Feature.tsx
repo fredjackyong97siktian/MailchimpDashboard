@@ -1,0 +1,64 @@
+import React, { ReactDOM, useState , useContext , useEffect } from 'react';
+import {RPlatformS} from './redux/FeatureAction';
+import { useParams } from "react-router";
+import { useSelector } from 'react-redux';
+import {RootState} from './../../../reducer';
+import clsx from 'clsx';
+import Container from '@material-ui/core/Container';
+import {AuthContext} from '../../../context/AuthContext';
+import {FetchContext} from '../../../context/FetchContext';
+import {useDispatch  } from 'react-redux';
+import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
+import NavSide from '../nav/nav-side/NavSide'
+import NavTop from '../nav/nav-top/NavTop'
+import Box from '@material-ui/core/Box';
+import useStyles from './Feature-style'
+import CssBaseline from '@material-ui/core/CssBaseline';
+import { SetStateAction } from 'react';
+import {FeatureRoute} from './FeatureRoute';
+import Dashboard from './../dashboard/Dashboard';
+import {
+  Link,
+  Redirect,
+  Route,
+  Switch,
+  useRouteMatch
+} from 'react-router-dom'
+
+interface Params {
+  platformid: string
+}
+
+const Feature : React.FC = () => {
+
+  const dispatch = useDispatch();
+  const {authData} = useContext(AuthContext);
+  const {authAxios} = useContext(FetchContext);
+   const {platformid}  = useParams<Params>();
+   const [open,setOpen] = useState(true);
+   const classes = useStyles();
+  //redux value 
+  const PlatformDetail = useSelector((state:RootState)=>state.feature);
+   useEffect(()=>{
+      const PlatformFetch = () => {
+        dispatch(RPlatformS(authAxios,platformid))
+      }
+      PlatformFetch();
+   },[])
+
+   return(
+    <div className={classes.root}>
+      <NavTop nav={{open : open,setOpen:setOpen}} type={'Feature'}/>
+      <NavSide setOpen={setOpen} open={open}/>
+      <main className={classes.content}>
+        <div className={classes.appBarSpacer} />
+        <Container maxWidth="xl" className={classes.container}>
+          <Dashboard />
+        </Container>
+      </main>
+    </div>    
+   ); 
+}
+
+export default Feature

@@ -38,6 +38,8 @@ const NavTopAccountContextMenu:React.FC = () => {
             actionTag: "logout"
         },    
     ]
+
+
     return (
         <>
         <ContextMenu switchFunction={switchFunction} MenuItemListOption={MenuItemListOption} IconButtonShown={ <AccountCircleIcon style={{fill: "green", fontSize:'35px'}}/>} />

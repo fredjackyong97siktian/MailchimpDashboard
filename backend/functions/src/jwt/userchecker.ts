@@ -8,8 +8,8 @@ export const attachUser = (req :any , res :any , next :any)=> {
 
     const decodedToken = jwtDecode(token);
 
-    console.log(req.body.email);
-    console.log(decodedToken.email);
+    //console.log(req.body.email);
+    //console.log(decodedToken.email);
     //|| req.body.email !== decodedToken.email
     if(!decodedToken   ){
         return res.status(401).json({

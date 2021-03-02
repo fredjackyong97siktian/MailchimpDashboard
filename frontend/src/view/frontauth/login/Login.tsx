@@ -20,6 +20,8 @@ import { IconName } from '@fortawesome/fontawesome-svg-core';
 import './../../../utility/icon/IconLibrary'
 import Box from '@material-ui/core/Box';
 import {ELS} from './../../modal';
+import { FaFacebookSquare ,FaLinkedin,FaGoogle } from 'react-icons/fa';
+
 import Divider from '@material-ui/core/Divider';
 const Login : React.FC = () => {
     const status = useSelector((state:RootState)=>state.loading);
@@ -42,19 +44,19 @@ const Login : React.FC = () => {
       {
         tag: "Facebook",
         actionTag:"Facebook",
-        svg: 'facebook-f',
+        icon: <FaFacebookSquare size={30}/>,
         colorButton: "#3B5998"
       },
       { 
         tag: "Google",
         actionTag:"Google",
-        svg:'google',
+        icon: <FaGoogle size={30}/>,
         colorButton: "#EA4335"
       },
       {
         tag: "Linkedin",
         actionTag:"Linkedin",
-        svg: 'linkedin-in',
+        icon: <FaLinkedin size={30}/>,
         colorButton: "#0077B5"
       }
     ]
@@ -71,7 +73,7 @@ const Login : React.FC = () => {
             alignItems="stretch"
             className={classes.oauthButtonGrid}
           >
-            <span className={classes.oauthButtonIconGrid}> <FontAwesomeIcon icon={['fab',item.svg as IconName]} className={classes.oauthButtonIcon} size="2x" /> </span>
+            <span className={classes.oauthButtonIconGrid}> {item.icon}</span>
             <Typography variant="button" display="block" className={classes.oauthButtonText} gutterBottom>  Sign in with {item.tag}  </Typography>
             </Grid>
         </Button>
@@ -102,6 +104,7 @@ const Login : React.FC = () => {
           </Grid>
           <Grid item>
             <Link href="/auth/signup" variant="body2">
+              
               {"Don't have an account? Sign Up"}
             </Link>
           </Grid>

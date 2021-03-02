@@ -39,6 +39,9 @@ const useStyles = makeStyles((theme) => ({
     platformtitle:{
       color:'white',
       flexGrow: 1,      
+    },
+    platformbar:{
+      textTransform:'none'
     }
 
 }));

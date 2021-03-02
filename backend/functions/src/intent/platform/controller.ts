@@ -36,9 +36,7 @@ export const CPlatformS = async (req : Request, res : Response) => {
 
 export const RPlatformM = async (req : Request, res : Response) => {
     try {   
-        console.log(req.body.email)
         const user = await getRepository(UserAccount).findOne({select:["id"],where:{email:req.body.email}});
-        console.log(user);
         if(user){
             const platformRepository = getRepository(Platform);
             const platformDetail = await platformRepository.find({select: ["platform_name","platform_id"],where: {user_account_id: user.id},order:{id:"DESC"},cache:true});
@@ -58,3 +56,27 @@ export const RPlatformM = async (req : Request, res : Response) => {
         });
     }
 };
+
+export const RPlatformS = async (req : Request, res : Response) => { 
+    try {
+        const user = await getRepository(UserAccount).findOne({select:["id"],where:{email:req.user?.email}});
+        if(user){
+            const platformParams   = (req.params.platformid).split('-');
+            const platformRepository = getRepository(Platform);
+            const platformDetail = await platformRepository.findOne({select: ["platform_name","platform_id","company_name"],where: {user_account_id: user.id , platform_name:platformParams[0],platform_id:platformParams[1]},cache:true});
+            
+            res.status(201).json({
+                success: true,
+                platformDetail
+            });
+        } else {
+            throw "User Not Found, Please Try Again"
+        }
+    }catch(error){
+        res.status(409).json({
+            success: false,
+            error: error.message || error
+        });       
+    }
+
+}

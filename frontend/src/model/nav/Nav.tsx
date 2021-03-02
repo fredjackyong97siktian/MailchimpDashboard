@@ -12,6 +12,7 @@ export interface DrawerSetting {
 export interface NavTopI {
     nav : DrawerSetting ,
     type : string,
+
 }
 
 //component of the drawer open and close

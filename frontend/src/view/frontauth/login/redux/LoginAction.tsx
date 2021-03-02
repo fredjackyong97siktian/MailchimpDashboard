@@ -16,7 +16,7 @@ export const RLogin = (information : FormInputLogin ) => async(dispatch : any) =
                 { code: 402 }
              );
         }
-        dispatch({type: LOGIN_READ , payload: information})
+        dispatch({type: LOGIN_READ})
         dispatch({type: PAGE_STATUS_SUCCESS,payload: data});
         window.location.replace(String(config.API_CLIENT));
 

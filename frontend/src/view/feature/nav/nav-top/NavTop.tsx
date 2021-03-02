@@ -6,12 +6,15 @@ import MenuIcon from '@material-ui/icons/Menu';
 import Typography from '@material-ui/core/Typography';
 import useStyles from './NavTop-style'; 
 import {NavTopI} from './../../../../model/nav/Nav'
+import NavTopPlatform from './NavTopPlatform';
+import Button from '@material-ui/core/Button';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import {AuthContext} from './../../../../context/AuthContext';
 import {FetchContext} from './../../../../context/FetchContext';
 import IconButton from '@material-ui/core/IconButton';
 import NavTopRight from '../../../user/nav/NavTopAccountContextMenu';
 //<LinearProgress />
+
 const NavTop : React.FC<NavTopI> = ({nav,type}) => {
     let platform;
     type === 'Platform' ? platform = true : platform = false; 
@@ -37,7 +40,7 @@ const NavTop : React.FC<NavTopI> = ({nav,type}) => {
           <MenuIcon />
         </IconButton>
       <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
-        
+        <NavTopPlatform />
       </Typography>
       <NavTopRight />
     </Toolbar>

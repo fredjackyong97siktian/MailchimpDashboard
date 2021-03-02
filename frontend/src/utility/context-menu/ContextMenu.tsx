@@ -8,7 +8,8 @@ import IconButton from '@material-ui/core/IconButton';
 interface ContextMenuI{
     switchFunction : (check:string)=>void,
     MenuItemListOption: Array<{tag: string, actionTag:string}>,
-    IconButtonShown : React.ReactNode
+    IconButtonShown : React.ReactNode,
+    MenuFontSize ?: string
 }
 const StyledMenu = withStyles({
     paper: {
@@ -30,7 +31,7 @@ const StyledMenu = withStyles({
     />
   ));
 
-const ContextMenu: React.FC<ContextMenuI> = ({switchFunction, MenuItemListOption, IconButtonShown}) => {
+const ContextMenu: React.FC<ContextMenuI> = ({switchFunction, MenuItemListOption, IconButtonShown , MenuFontSize}) => {
 const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -42,9 +43,14 @@ const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     switchFunction(actionTag);
   };
 
+  //adjustable fontsize
+  let fontSize={};
+  MenuFontSize ? fontSize = {fontSize:MenuFontSize} : fontSize = {fontSize:'15px'}
+  
   const MenuItemList = MenuItemListOption.map((item)=>{
+    
       return (
-           <MenuItem key={item.tag} onClick={()=>handleClose(item.actionTag)}>{item.tag}</MenuItem>
+           <MenuItem key={item.tag} style={fontSize} onClick={()=>handleClose(item.actionTag)}>{item.tag}</MenuItem>
       )
   })
     return (
