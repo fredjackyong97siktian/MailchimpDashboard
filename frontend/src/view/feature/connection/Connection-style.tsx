@@ -2,17 +2,31 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
+  grid:{
+    margin:'5px'
+  },
+  sectionitem:{
+    marginTop:'10px',
+    marginBottom:'10px'
+  },
   topictitle:{
     color:'black',
     fontWeight:'bold',
     fontSize:'28px'
-  },  
+  },
+  subtopictitle:{
+    color:'black',
+    fontWeight:'bold',
+    fontSize:'18px'  
+  },
   paper:{
-        paddingTop: theme.spacing(1),
-        padding: theme.spacing(2),
         display: 'flex',
-        overflow: 'auto',
+ 
         flexDirection: 'column',
+  },
+  paperPadding:{
+    paddingTop: theme.spacing(1),
+    paddingLeft: theme.spacing(1),
   },
   papertitle:{
     fontSize:'20px',
@@ -40,7 +54,7 @@ const useStyles = makeStyles((theme) => ({
   },
   appstatustext:{
       fontSize:'10px',
-      
+      fontWeight:'bold'
   }
 
   }));

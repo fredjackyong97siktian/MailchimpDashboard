@@ -2,8 +2,21 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
+    navtopweb:{
+      display:'none',
+      [theme.breakpoints.up('md')]: {
+        display:'flex'
+      },   
+    },
+    navtopmobile:{
+      display:'flex',
+      [theme.breakpoints.up('md')]: {
+        display:'none'
+      },   
+    },
     root: {
-      display: 'flex',
+      display:'flex'
+      
     },
     toolbar: {
       paddingRight: 24, // keep right padding when drawer closed

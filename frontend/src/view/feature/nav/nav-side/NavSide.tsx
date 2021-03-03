@@ -13,7 +13,7 @@ import {DrawerSetting} from './../../../../model/nav/Nav'
 import Logo from './/../../../logo/Logo';
 export const NavOpenContext = React.createContext({} as boolean);
 
-const NavSide : React.FC<DrawerSetting> = ({open, setOpen}) => {
+const NavSide : React.FC<DrawerSetting> = ({open, setOpen ,variant}) => {
     const classes = useStyles();
     const color = {color:'white'}
     const background = {background:'#605865'}    
@@ -26,10 +26,10 @@ const NavSide : React.FC<DrawerSetting> = ({open, setOpen}) => {
     };
 
    return(
-    <>
+
       <NavOpenContext.Provider value={open}>
       <Drawer
-        variant="permanent"
+        variant={variant}
         classes={{
           paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
         }}
@@ -58,7 +58,7 @@ const NavSide : React.FC<DrawerSetting> = ({open, setOpen}) => {
         </span>
       </Drawer>
       </NavOpenContext.Provider>
-    </>    
+  
    ); 
 }
 

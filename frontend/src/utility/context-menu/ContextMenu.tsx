@@ -9,7 +9,8 @@ interface ContextMenuI{
     switchFunction : (check:string)=>void,
     MenuItemListOption: Array<{tag: string, actionTag:string}>,
     IconButtonShown : React.ReactNode,
-    MenuFontSize ?: string
+    MenuFontSize ?: string,
+    backgroundColor ?: string
 }
 const StyledMenu = withStyles({
     paper: {
@@ -31,7 +32,7 @@ const StyledMenu = withStyles({
     />
   ));
 
-const ContextMenu: React.FC<ContextMenuI> = ({switchFunction, MenuItemListOption, IconButtonShown , MenuFontSize}) => {
+const ContextMenu: React.FC<ContextMenuI> = ({switchFunction, MenuItemListOption, IconButtonShown , MenuFontSize, backgroundColor}) => {
 const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -55,10 +56,10 @@ const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   })
     return (
        <div>
-      <IconButton
+      <IconButton size='small'
         aria-controls="customized-menu"
         aria-haspopup="true"
-        style={{padding: 7}}
+        style={{padding: 7 ,backgroundColor: backgroundColor? backgroundColor: '' }}
         onClick={handleClick}
       >
         {IconButtonShown}

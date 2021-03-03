@@ -4,7 +4,7 @@ import { SetStateAction } from 'react';
 export interface DrawerSetting {
     open: boolean ;
     setOpen: React.Dispatch<SetStateAction<boolean>> ;
-   
+    variant ?: "permanent" | "temporary" | undefined,
     // setValuesList: (val: number[]) => void  will also satisfy, but it is
     // better to be explict and pass React.Dispatch<SetStateAction<number[]>>
 }

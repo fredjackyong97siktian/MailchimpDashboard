@@ -29,14 +29,18 @@ import {
 interface Params {
   platformid: string
 }
-
+interface variantI{
+  variant: "permanent" | "temporary" | undefined
+}
 const Feature : React.FC = () => {
-
+  const [width,setWidth] = useState(false);
+  const [open,setOpen] = useState(true);
+  const [nav,setNav] = useState<variantI>({variant:undefined});
   const dispatch = useDispatch();
   const {authData} = useContext(AuthContext);
   const {authAxios} = useContext(FetchContext);
    const {platformid}  = useParams<Params>();
-   const [open,setOpen] = useState(true);
+
    const classes = useStyles();
   //redux value 
   const PlatformDetail = useSelector((state:RootState)=>state.feature);
@@ -47,10 +51,22 @@ const Feature : React.FC = () => {
       PlatformFetch();
    },[])
 
+   useEffect(()=>{
+
+    if(window.innerWidth <= 760){
+      setNav({variant:"temporary"});
+      setOpen(false);
+    } else{
+      setNav({variant:"permanent"})
+    }
+ },[window.innerWidth])  
+
    return(
     <div className={classes.root}>
+      <React.Fragment key='left'>
       <NavTop nav={{open : open,setOpen:setOpen}} type={'Feature'}/>
-      <NavSide setOpen={setOpen} open={open}/>
+      <NavSide variant={nav.variant} setOpen={setOpen} open={open}/>
+      </React.Fragment>
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
         <Container maxWidth="xl" className={classes.container}>

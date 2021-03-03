@@ -4,7 +4,7 @@ import Paper from '@material-ui/core/Paper';
 import makeStyle from './Dashboard-style';
 interface DashboardGridI {
     title: string,
-    prop : Array<React.ElementType>,
+    prop : React.ReactNode,
 }
 
 /*            <Grid item xs={12}>
@@ -28,6 +28,7 @@ export const DashboardGrid :React.FC<DashboardGridI> = ({title,prop}) => {
                 <span className={classes.topictitle}>
                  {title}
                 </span>
+                {prop}
             </Grid>
             
         </>
