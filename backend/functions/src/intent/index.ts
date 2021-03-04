@@ -1,12 +1,10 @@
 import AllRoute from './route';
 import passport from "passport";
 import 'reflect-metadata';
-import {createConnection,getManager, Connection} from'typeorm';  
-import { UserAccount } from "./../entity/user_account";
-import {attachUser} from './../jwt/userchecker';
 import {checkJWT} from './../jwt/tokenchecker';
 import {Request, Response} from 'express';
 import {TryDBConnect} from './../orm';
+
 //configuration
 var config = require('./../../config');
 
@@ -32,6 +30,7 @@ const functions = require('firebase-functions');
 const express = require('express');
 const cors = require('cors');
 const app = express();
+app.use(express.json())
 
 //passport
 app.use(passport.initialize());

@@ -4,7 +4,7 @@ CREATE DOMAIN cemail AS citext
   CHECK ( value ~ '^[a-zA-Z0-9.!#$%&''*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$' );
 CREATE EXTENSION pgcrypto;
 
-CREATE TABLE "oauth_login"(
+CREATE TABLE "oauth" (
   "id" SERIAL NOT NULL PRIMARY KEY,
   "oauth_name" varchar(257) NOT NULL UNIQUE,
   "created_at" timestamp  without time zone default (now() at time zone 'utc')
@@ -14,7 +14,7 @@ CREATE TABLE "user_account" (
   "id" SERIAL NOT NULL PRIMARY KEY,
   "user_account_id" char(25) NOT NULL,
   "email" cemail NOT NULL UNIQUE,
-  "password" varchar(257),
+  "password" varchar(257) UNIQUE,
   "profile_img" varchar(257),
   "firstname" varchar(257),
   "lastname" varchar(257),
@@ -32,24 +32,31 @@ CREATE TABLE "user_account" (
   "email_verification_code_received_at" timestamp without time zone,
   "isactive" bool  default FALSE ,
   "last_login_at" timestamp without time zone,
-  "oauth_login_id" int REFERENCES oauth_login(id),
-  "oauth_profile_id" varchar(257),
-  "accesstoken" varchar(257),
-  "refreshtoken" varchar(257),
   "created_at" timestamp  without time zone default (now() at time zone 'utc'),
   "updated_at" timestamp without time zone default (now() at time zone 'utc'),
   UNIQUE ("user_account_id","email","forget_passcode", "email_verification_code"),
-  CONSTRAINT oauth_check check ((password is null and oauth_login_id is not null and oauth_profile_id is not null) 
-                                  or (password is not null and oauth_login_id is null and oauth_profile_id is null )),
+  /*CONSTRAINT oauth_check check ((password is null and oauth_login_id is not null and oauth_profile_id is not null) 
+                                  or (password is not null and oauth_login_id is null and oauth_profile_id is null )),*/
   CONSTRAINT chk_user_id check (user_account_id ~ '^[0-9a-zA-Z]{25}$') ,
   CONSTRAINT chk_forget_passcode check (forget_passcode ~ '^[0-9a-zA-Z!@-_#]{10}$')
+);
+
+CREATE TABLE "oauth_login" (
+  "id" SERIAL NOT NULL PRIMARY KEY,
+  "userAccountId" int NOT NULL REFERENCES user_account(id),
+  "oauthId" int NOT NULL REFERENCES oauth(id),
+  "oauth_profile_id" varchar(257),
+  "access_token" varchar(257),
+  "refresh_token" varchar(257),
+  "created_at" timestamp  without time zone default (now() at time zone 'utc'),
+  "updated_at" timestamp without time zone default (now() at time zone 'utc')
 );
 
 CREATE TABLE "platform" (
   "id" SERIAL NOT NULL PRIMARY KEY,
   "platform_id" char(6) NOT NULL,
   "platform_name" varchar(257) NOT NULL,
-  "user_account_id" int NOT NULL REFERENCES user_account(id),
+  "userAccountId" int NOT NULL REFERENCES user_account(id),
   "company_name" varchar(257),
   "company_website" varchar(257),
   "company_industry" varchar(257),
@@ -79,9 +86,9 @@ CREATE TABLE "application" (
 CREATE TABLE "authentication" (
   "id" SERIAL NOT NULL PRIMARY KEY,
   "authentication_id" char (10) NOT NULL UNIQUE,
-  "user_account_id" int NOT NULL REFERENCES user_account(id),
-  "application_id" int NOT NULL REFERENCES application(id),
-  "platform_id" int NOT NULL REFERENCES platform(id),
+  "userAccountId" int NOT NULL REFERENCES user_account(id),
+  "applicationId" int NOT NULL REFERENCES application(id),
+  "platformId" int NOT NULL REFERENCES platform(id),
   "access_token" varchar (275),
   "token_type" varchar (275),
   "expired_in" int,
@@ -99,7 +106,7 @@ CREATE TABLE "platform_setting" (
 
 CREATE TABLE "platform_setting_authorization" (
   "id" SERIAL NOT NULL PRIMARY KEY ,
-  "platform_setting_id" int NOT NULL REFERENCES platform_setting(id),
+  "platform_settingId" int NOT NULL REFERENCES platform_setting(id),
   "setting_description" text,
   "permission" smallint
 );
@@ -113,7 +120,7 @@ CREATE TABLE "category" (
 
 CREATE TABLE "subcategory" (
   "id" SERIAL NOT NULL PRIMARY KEY,
-  "category_id" int REFERENCES category(id),
+  "categoryId" int REFERENCES category(id),
   "name" varchar(257),
   "isactive" bool  default TRUE
 );
@@ -121,8 +128,8 @@ CREATE TABLE "subcategory" (
 CREATE TABLE "dashboard" (
   "id" SERIAL NOT NULL PRIMARY KEY,
   "dashboard_id" char(20) NOT NULL UNIQUE,
-  "platform_id" int NOT NULL REFERENCES platform (id),
-  "subcategory_id" int NOT NULL REFERENCES subcategory (id),
+  "platformId" int NOT NULL REFERENCES platform (id),
+  "subcategoryId" int NOT NULL REFERENCES subcategory (id),
   "dashboard_name" varchar(257),
   "isactive" bool  default TRUE,
   "iscustom" bool  default FALSE,
@@ -140,7 +147,7 @@ CREATE TABLE "chart" (
 
 CREATE TABLE "subchart" (
   "id" SERIAL NOT NULL PRIMARY KEY ,
-  "chart_id" int REFERENCES chart(id),
+  "chartId" int REFERENCES chart(id),
   "subchart_name" varchar(257),
   "reference_component" varchar(257)
 );
@@ -148,8 +155,8 @@ CREATE TABLE "subchart" (
 CREATE TABLE "role" (
   "id" SERIAL NOT NULL PRIMARY KEY,
   "role_id" char(20) NOT NULL UNIQUE,
-  "platform_id" int NOT NULL REFERENCES platform(id),
-  "user_account_id" int NOT NULL REFERENCES user_account(id),
+  "platformId" int NOT NULL REFERENCES platform(id),
+  "userAccountId" int NOT NULL REFERENCES user_account(id),
   "role_name" varchar(257),
   "created_at" timestamp  without time zone default (now() at time zone 'utc'),
   "updated_at" timestamp without time zone default (now() at time zone 'utc'),
@@ -158,14 +165,15 @@ CREATE TABLE "role" (
 
 CREATE TABLE "service" (
   "id" SERIAL NOT NULL PRIMARY KEY ,
-  "category_id" int NOT NULL REFERENCES category(id),
-  "application_id" int NOT NULL REFERENCES application(id) 
+  "categoryId" int NOT NULL REFERENCES category(id),
+  "applicationId" int NOT NULL REFERENCES application(id) ,
+   UNIQUE ("categoryId", "applicationId" )
 );
 
 CREATE TABLE "role_dashboard_authorization" (
   "id" SERIAL NOT NULL PRIMARY KEY ,
-  "dashboard_id" int NOT NULL REFERENCES dashboard(id),
-  "role_id" int NOT NULL REFERENCES role(id),
+  "dashboardId" int NOT NULL REFERENCES dashboard(id),
+  "roleId" int NOT NULL REFERENCES role(id),
   "permission" smallint,
   "created_at" timestamp  without time zone default (now() at time zone 'utc'),
   "updated_at" timestamp without time zone default (now() at time zone 'utc')
@@ -177,15 +185,15 @@ CREATE TABLE "payment_method" (
 
 CREATE TABLE "visualization" (
   "id" SERIAL NOT NULL PRIMARY KEY,
-  "subcategory_id" int NOT NULL REFERENCES subcategory(id),
-  "subchart_id" int NOT NULL REFERENCES subchart(id)
+  "subcategoryId" int NOT NULL REFERENCES subcategory(id),
+  "subchartId" int NOT NULL REFERENCES subchart(id)
 );
 
 CREATE TABLE "visual_presentation" (
   "id" SERIAL NOT NULL PRIMARY KEY ,
-  "visualization_id" int NOT NULL REFERENCES visualization(id),
-  "business_information_id" char(20) NOT NULL UNIQUE,
-  "dashboard_id" int NOT NULL REFERENCES dashboard(id),
+  "visualizationId" int NOT NULL REFERENCES visualization(id),
+  "business_informationId" char(20) NOT NULL UNIQUE,
+  "dashboardId" int NOT NULL REFERENCES dashboard(id),
   "arrangment" smallint,
   "created_at" timestamp  without time zone default (now() at time zone 'utc'),
   "updated_at" timestamp without time zone default (now() at time zone 'utc')
@@ -194,8 +202,8 @@ CREATE TABLE "visual_presentation" (
 
 CREATE TABLE "favourite" (
   "id" SERIAL NOT NULL PRIMARY KEY,
-  "user_account_id" int NOT NULL REFERENCES user_account(id),
-  "dashboard_id" int NOT NULL REFERENCES dashboard(id),
+  "userAccountId" int NOT NULL REFERENCES user_account(id),
+  "dashboardId" int NOT NULL REFERENCES dashboard(id),
   "created_at" timestamp  without time zone default (now() at time zone 'utc')
 );
 
@@ -216,9 +224,9 @@ CREATE TABLE "plan" (
 CREATE TABLE "subscription" (
   "id" SERIAL NOT NULL PRIMARY KEY,
   "subscription_id" char(20) NOT NULL UNIQUE,
-  "user_account_id" int NOT NULL REFERENCES user_account(id),
-  "platform_id " int NOT NULL REFERENCES platform(id),
-  "plan_id" int NOT NULL REFERENCES plan(id),
+  "userAccountId" int NOT NULL REFERENCES user_account(id),
+  "platformId " int NOT NULL REFERENCES platform(id),
+  "planId" int NOT NULL REFERENCES plan(id),
   "isactive" bool,
   "bill" varchar(257),
   "issued_date" timestamp without time zone,
@@ -230,9 +238,9 @@ CREATE TABLE "subscription" (
 CREATE TABLE "role_assigned" (
   "id" SERIAL NOT NULL PRIMARY KEY,
   "role_assigned_id" char(20) NOT NULL UNIQUE,
-  "platform_id" int NOT NULL REFERENCES platform(id),
-  "role_id" int NOT NULL REFERENCES role(id),
-  "platform_setting_id" int NOT NULL REFERENCES platform_setting(id),
+  "platformId" int NOT NULL REFERENCES platform(id),
+  "roleId" int NOT NULL REFERENCES role(id),
+  "platform_settingId" int NOT NULL REFERENCES platform_setting(id),
   "created_at" timestamp  without time zone default (now() at time zone 'utc'),
   "updated_at" timestamp without time zone default (now() at time zone 'utc'),
   CONSTRAINT chk_ra_id check (role_assigned_id ~ '^[0-9a-zA-Z!@-_#]{20}$') 
@@ -241,9 +249,9 @@ CREATE TABLE "role_assigned" (
 CREATE TABLE "payment" (
   "id" SERIAL NOT NULL PRIMARY KEY,
   "payment_id" char(20) NOT NULL UNIQUE,
-  "payment_method_id" int NOT NULL REFERENCES payment_method(id),
-  "user_account_id" int NOT NULL REFERENCES user_account(id),
-  "subscription_id" int NOT NULL REFERENCES subscription(id),
+  "payment_methodId" int NOT NULL REFERENCES payment_method(id),
+  "userAccountId" int NOT NULL REFERENCES user_account(id),
+  "subscriptionId" int NOT NULL REFERENCES subscription(id),
   "payment_date" timestamp without time zone,
   "amount" money,
   "currency" char(3),
@@ -294,6 +302,7 @@ CREATE TRIGGER update_customer_modtime BEFORE UPDATE ON role_dashboard_authoriza
 CREATE TRIGGER update_customer_modtime BEFORE UPDATE ON visual_presentation FOR EACH ROW EXECUTE PROCEDURE  update_modified_column();
 CREATE TRIGGER update_customer_modtime BEFORE UPDATE ON plan FOR EACH ROW EXECUTE PROCEDURE  update_modified_column();
 CREATE TRIGGER update_customer_modtime BEFORE UPDATE ON role_assigned FOR EACH ROW EXECUTE PROCEDURE  update_modified_column();
+CREATE TRIGGER update_customer_modtime BEFORE UPDATE ON oauth_login FOR EACH ROW EXECUTE PROCEDURE  update_modified_column();
 
 ALTER TABLE user_account ALTER user_account_id SET DEFAULT random_userID(25);
 ALTER TABLE platform ALTER platform_id SET DEFAULT random_userID(6);
@@ -304,4 +313,24 @@ ALTER TABLE role_assigned  ALTER role_assigned_id SET DEFAULT random_userID(20);
 ALTER TABLE payment ALTER payment_id SET DEFAULT random_userID(20);
 ALTER TABLE subscription  ALTER subscription_id SET DEFAULT random_userID(20);
 
-INSERT INTO oauth_login ("oauth_name") VALUES ('Facebook'),('Google'),('LinkedIn');
+INSERT INTO oauth ("oauth_name") VALUES ('Facebook'),('Google'),('LinkedIn');
+
+ALTER TABLE application 
+    ADD imglocation varchar(257);
+
+ALTER TABLE service
+    ADD description varchar(257);
+
+INSERT INTO application (id,name,auth_method,imglocation,direct_url_component) VALUES 
+(1,'Facebook','oauth2','img/brand/facebook.svg',''),
+(2,'LinkedIn','oauth2','img/brand/linkedin.svg','');
+
+INSERT INTO category (id, name, isactive) VALUES 
+(1, 'Product',true),
+(2, 'Marketing',true),
+(3, 'Human Resource',true);
+
+INSERT INTO service ("id","categoryId","applicationId","description") VALUES 
+(1,1,1,'Collecting the information like a,b,c'),
+(2,2,1,'Product Information like a,b,c'),
+(3,3,2,'As you know lo like a,b,c');

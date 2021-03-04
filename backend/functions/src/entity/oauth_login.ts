@@ -1,16 +1,37 @@
-import {Entity, PrimaryGeneratedColumn, Column, UpdateDateColumn, BeforeInsert, BeforeUpdate, AfterLoad, OneToMany} from "typeorm";
+import {Entity, PrimaryGeneratedColumn, Column, UpdateDateColumn, ManyToOne, BeforeUpdate, AfterLoad, OneToMany} from "typeorm";
 import {UserAccount} from './user_account';
-
+import {Oauth} from './oauth';
 @Entity('oauth_login')
-export class OauthLogin {
+export class OauthLogin{
     
     @PrimaryGeneratedColumn('increment')
     id: number;
 
     @Column()
-    oauth_name : string;
+    userAccountId : number;
+
+    @Column()
+    oauthId : number;
+
+    @Column()
+    oauth_profile_id : string;
+
+    @Column()
+    access_token : string;
+
+    @Column()
+    refresh_token : string;
 
     @UpdateDateColumn()
     created_at : Date;
 
+    @UpdateDateColumn()
+    updated_at : Date;
+
+    @ManyToOne(type => UserAccount, useraccount => useraccount.oauthlogins)
+    userAccount : UserAccount;
+
+    @ManyToOne(type => Oauth, oauth => oauth.oauthlogins)
+    oauth : Oauth;
+    
 }

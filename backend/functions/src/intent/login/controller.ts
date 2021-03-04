@@ -9,7 +9,7 @@ export const RLoginS = async (req : Request, res : Response) => {
         const userRepository = getRepository(UserAccount)
         const user = await userRepository.findOne({email: req.body.email});
         let passwordsMatch = false;
-        if(user){
+        if(user ){
             passwordsMatch = await bcrypt.compare(req.body.password, user.password)    
         }
 

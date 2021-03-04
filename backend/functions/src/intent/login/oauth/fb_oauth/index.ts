@@ -4,6 +4,9 @@ import strategy from "passport-facebook";
 import {setToken} from '../../setToken';
 import {getRepository} from 'typeorm';
 import { UserAccount } from "../../../../entity/user_account";
+import {OauthLogin} from "../../../../entity/oauth_login";
+
+const { v4: uuidv4 } = require('uuid');
 var config = require('./../../../../../config');
 
 export const FBOauth = (data :any , router: any) => {
@@ -31,22 +34,36 @@ export const FBOauth = (data :any , router: any) => {
         };
         const userRepository = getRepository(UserAccount)
         const check = await userRepository.find({where:{email:email}})
-        console.log('1st Stage')
         if(check.length < 1){
-          console.log('2nd Stage')
           const user = new UserAccount();
           user.email = userData.email;
-          user.oauth_login_id = 1
-          user.oauth_profile_id = userData.profile_id;
+          //For Temporary
+          user.password = uuidv4();
           user.firstname = userData.firstName;
           user.lastname = userData.lastName;
-          user.accesstoken = userData.accesstoken;
           user.isactive = userData.isactive;
-          await userRepository.save(user);
+          await userRepository.save(user);         
         }          
-        console.log('6th Stage')
         const userDetail = await userRepository.findOne({email: email});
-        console.log(userDetail)
+        console.log('USERDETAIL')
+        console.log(userDetail);
+        //Not Yet Account Linking algorithms. Will implement once mature.
+        const OauthLoginRepository = getRepository(OauthLogin);
+        const oauthLogin = await OauthLoginRepository.find({where:{userAccountId:userDetail?.id,oauthId:1}})
+        if(oauthLogin.length < 1 && userDetail) {
+          await OauthLoginRepository
+                .createQueryBuilder()
+                .insert()
+                .into(OauthLogin)
+                .values([{
+                  "userAccountId" : userDetail.id,
+                  "oauthId" : 1,
+                  "oauth_profile_id":  userData.profile_id,
+                  "access_token" :  userData.accesstoken
+                }])
+                .execute();
+          }
+
         return done(null,userDetail);   
       }
     )

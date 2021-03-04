@@ -15,8 +15,8 @@ export class Platform {
     @Column()
     platform_name : string; 
 
-    @Column({name:'user_account_id'})
-    user_account_id : number;
+    @Column()
+    userAccountId : number;
 
     @Column()
     company_name: string;
@@ -48,9 +48,8 @@ export class Platform {
     @Column()
     mobile : string;
 
-    @ManyToOne(type => UserAccount, user_account => user_account.id)
-    @JoinColumn({name:'user_account_id'})
-    user_account : UserAccount;
+    @ManyToOne(type => UserAccount, user_account => user_account.platforms)
+    userAccount : UserAccount;
 
 
 }

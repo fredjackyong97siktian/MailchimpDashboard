@@ -69,19 +69,14 @@ export class UserAccount {
 
     @Column()
     last_login_at: Date;
-
-    @Column()
-    oauth_login_id: number;
-
-    @Column()
-    oauth_profile_id: string;
-
-    @Column()
-    accesstoken : string;
-    
+   
     //relations
-    @OneToMany((type => Platform), platform => platform.user_account_id)
-    platform: Platform[]
+    @OneToMany((type => Platform), platform => platform.userAccount)
+    platforms: Platform[]
+
+     //relations
+    @OneToMany((type => OauthLogin), oauthlogin => oauthlogin.userAccount)
+    oauthlogins: OauthLogin[]   
 
     @BeforeInsert()
     @BeforeUpdate()
@@ -103,7 +98,7 @@ export class UserAccount {
     @BeforeInsert()
     @BeforeUpdate()
     emailVerification() {
-        if(!this.oauth_login_id && !this.oauth_profile_id){
+        if(!this.oauthlogins){
             this.email_verification_code = uuidv4();
             this.email_verification_code_sent_at = new Date();
         }

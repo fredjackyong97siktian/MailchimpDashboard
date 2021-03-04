@@ -15,7 +15,7 @@ export const CPlatformS = async (req : Request, res : Response) => {
         platformDetail.platform_name = req.body.platformname
         platformDetail.company_name = req.body.companyname
         if(user){
-            platformDetail.user_account_id = user.id
+            platformDetail.userAccountId = user.id
         }else {
             throw 'User not Found.'
         }
@@ -39,7 +39,7 @@ export const RPlatformM = async (req : Request, res : Response) => {
         const user = await getRepository(UserAccount).findOne({select:["id"],where:{email:req.body.email}});
         if(user){
             const platformRepository = getRepository(Platform);
-            const platformDetail = await platformRepository.find({select: ["platform_name","platform_id"],where: {user_account_id: user.id},order:{id:"DESC"},cache:true});
+            const platformDetail = await platformRepository.find({select: ["platform_name","platform_id"],where: {userAccountId: user.id},order:{id:"DESC"},cache:true});
             
             res.status(201).json({
                 success: true,
@@ -63,7 +63,7 @@ export const RPlatformS = async (req : Request, res : Response) => {
         if(user){
             const platformParams   = (req.params.platformid).split('-');
             const platformRepository = getRepository(Platform);
-            const platformDetail = await platformRepository.findOne({select: ["platform_name","platform_id","company_name"],where: {user_account_id: user.id , platform_name:platformParams[0],platform_id:platformParams[1]},cache:true});
+            const platformDetail = await platformRepository.findOne({select: ["platform_name","platform_id","company_name"],where: {userAccountId: user.id , platform_name:platformParams[0],platform_id:platformParams[1]},cache:true});
             
             res.status(201).json({
                 success: true,
