@@ -1,5 +1,6 @@
 import {Entity, PrimaryGeneratedColumn, Column, BeforeInsert, BeforeUpdate, OneToOne, OneToMany, JoinColumn} from "typeorm";
 import {Service} from './service';
+import {Authentication} from './authentication';
 
 @Entity('application')
 export class Application {
@@ -21,6 +22,9 @@ export class Application {
 
     //relations
     @OneToMany((type => Service), service => service.application)
-    service: Service[]      
+    services: Service[]      
+
+    @OneToMany((type => Authentication), authentication => authentication.application)
+    authentication: Authentication[]   
 
 }

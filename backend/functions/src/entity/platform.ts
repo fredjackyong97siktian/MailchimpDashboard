@@ -1,5 +1,7 @@
-import {Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn} from "typeorm";
+import {Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, OneToMany} from "typeorm";
 import {UserAccount} from './user_account';
+import {Authentication} from './authentication';
+
 const { v4: uuidv4 } = require('uuid');
 const bcrypt = require('bcrypt');
 
@@ -51,5 +53,7 @@ export class Platform {
     @ManyToOne(type => UserAccount, user_account => user_account.platforms)
     userAccount : UserAccount;
 
+    @OneToMany(type => Authentication , authentication => authentication.platform)
+    authentications: Authentication[];
 
 }

@@ -19,11 +19,13 @@ export const FBOauth = (data :any , router: any) => {
         clientID: config.FB_CLIENT_ID,
         clientSecret: config.FB_CLIENT_SECRET,
         callbackURL: config.FB_CLIENT_CALLBACK,
-        profileFields: ['id', 'emails', 'name', 'photos',]
+        profileFields: ['id', 'emails','displayName', 'name', 'photos',]
       },
       async function(accessToken, refreshToken, profile, done) {
   
-       const { email, first_name, last_name } = profile._json;
+       const { email, first_name, last_name  ,displayName} = profile._json;
+       console.log('this is displayName')
+       console.log(displayName)
        const userData = {
           profile_id : profile.id,
           accesstoken : accessToken,

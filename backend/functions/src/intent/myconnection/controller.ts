@@ -12,6 +12,10 @@ export const RConnectionM = async (req : Request, res : Response) => {
         .addSelect(['services.description'])
         .leftJoin('services.application','application')
         .addSelect(['application.name','application.auth_method','application.direct_url_component','application.imglocation'])
+        .leftJoin('services.authenticationPermissions','authenticationPermissions')
+        .addSelect('authenticationPermissions.id')
+        .leftJoin('authenticationPermissions.authentication','authentication')
+        .addSelect('authentication.user_account_id')
         .getMany()
 
         res.status(201).json({

@@ -1,6 +1,7 @@
-import {Entity, PrimaryGeneratedColumn, Column, ManyToOne,JoinColumn} from "typeorm";
+import {Entity, PrimaryGeneratedColumn, Column, ManyToOne,JoinColumn, OneToMany} from "typeorm";
 import {Application} from './application';
 import {Category} from './category';
+import {AuthenticationPermission} from './authentication_permission';
 
 @Entity('service')
 export class Service {
@@ -20,6 +21,9 @@ export class Service {
     @ManyToOne(type => Category, category => category.services)
     category : Category;
 
-    @ManyToOne(type => Application, application => application.service)
+    @ManyToOne(type => Application, application => application.services)
     application : Application;
+
+    @OneToMany(type => AuthenticationPermission, ap => ap.service)
+    authenticationPermissions : AuthenticationPermission[];
 }

@@ -1,4 +1,4 @@
-import {Entity, PrimaryGeneratedColumn, Column, UpdateDateColumn, ManyToOne, BeforeUpdate, AfterLoad, OneToMany} from "typeorm";
+import {Entity, PrimaryGeneratedColumn, Column, UpdateDateColumn, ManyToOne } from "typeorm";
 import {UserAccount} from './user_account';
 import {Oauth} from './oauth';
 @Entity('oauth_login')

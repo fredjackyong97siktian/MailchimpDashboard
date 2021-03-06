@@ -2,6 +2,8 @@ import {Entity, PrimaryGeneratedColumn, Column, BeforeInsert, BeforeUpdate, OneT
 import {Platform} from './platform';
 import {OauthLogin} from './oauth_login';
 import { IsEmail, IsNotEmpty} from "class-validator";
+import {Authentication} from './authentication';
+
 const { v4: uuidv4 } = require('uuid');
 const bcrypt = require('bcrypt');
 
@@ -77,6 +79,9 @@ export class UserAccount {
      //relations
     @OneToMany((type => OauthLogin), oauthlogin => oauthlogin.userAccount)
     oauthlogins: OauthLogin[]   
+
+    @OneToMany((type=>Authentication),authentication => authentication.userAccount)
+    authentications : Authentication[]
 
     @BeforeInsert()
     @BeforeUpdate()

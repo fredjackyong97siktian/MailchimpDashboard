@@ -16,4 +16,5 @@ export class Category {
     //relations
     @OneToMany((type => Service), service => service.category)
     services: Service[]    
+   
 }
