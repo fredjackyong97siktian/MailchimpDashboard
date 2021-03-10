@@ -9,24 +9,15 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import LoginForm from '../../../utility/form/auth/login/LoginForm'
-import { useSelector } from 'react-redux';
-import {RootState} from './../../../reducer';
-import LoadingPage from './../../../view/modal/Loadingpage/LoadingPage';
-import Errorpage from './../../modal/Errorpage/Errorpage';
-import { useHistory } from "react-router-dom";
 import config from './../../../config';
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { IconName } from '@fortawesome/fontawesome-svg-core';
-import './../../../utility/icon/IconLibrary'
 import Box from '@material-ui/core/Box';
 import {ELS} from './../../modal';
 import { FaFacebookSquare ,FaLinkedin,FaGoogle } from 'react-icons/fa';
+import electron from 'electron'
+const BrowserWindow = electron.remote.BrowserWindow
 
-import Divider from '@material-ui/core/Divider';
 const Login : React.FC = () => {
-    const status = useSelector((state:RootState)=>state.loading);
     const classes = useStyles();
-    const history = useHistory();
     console.log(config.FACEBOOK_API);
     const handleClick = (type : string) => {
       switch(type){
@@ -81,6 +72,17 @@ const Login : React.FC = () => {
       </>
       )
     })
+
+    const browserClick = () => {
+        let win : any = new BrowserWindow({ show: false })
+        win.on('closed', function () {
+          win = null
+      })
+        win.loadURL("github.com")
+        win.once('ready-to-show', () => {
+            win.show()
+        })
+    }
     return (
       <>
       <ELS />
@@ -97,14 +99,13 @@ const Login : React.FC = () => {
           <LoginForm />
         <Grid container>
           <Grid item xs>
+            <Button onClick={browserClick}> Click Me</Button>
             <Link href="#" variant="body2">
               Forgot password?
-              
             </Link>
           </Grid>
           <Grid item>
             <Link href="/auth/signup" variant="body2">
-              
               {"Don't have an account? Sign Up"}
             </Link>
           </Grid>

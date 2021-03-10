@@ -1,7 +1,6 @@
 import React, {useState, createContext ,useEffect , useContext} from 'react';
 import {useHistory} from 'react-router-dom';
 import {FetchContext} from './FetchContext';
-import axios from 'axios'
 import {useDispatch  } from 'react-redux';
 import {PAGE_STATUS_RECOVER} from '../view/modal/Loadingpage/redux/LoadingConstant'
 interface AuthContextI {

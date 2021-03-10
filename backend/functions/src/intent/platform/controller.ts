@@ -1,7 +1,7 @@
 import  {Request, Response} from 'express';
 import {createConnection, getRepository , getManager , getConnection, Connection} from 'typeorm';
-import { UserAccount } from "./../../entity/user_account";
-import { Platform } from "./../../entity/platform";
+import { UserAccount } from "../../entity/user_account";
+import { Platform } from "../../entity/platform";
 const bcrypt = require('bcrypt');
 
 export const CPlatformS = async (req : Request, res : Response) => {

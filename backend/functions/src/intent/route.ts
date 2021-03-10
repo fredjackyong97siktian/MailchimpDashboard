@@ -4,7 +4,7 @@ import Oauth from './login/oauth/index'
 import LoginRoute from './login/route'
 import PlatformRoute from './platform/route'
 import MyaccountRoute from './myaccount/route'
-import MyConnectionRoute from './myconnection/route'
+import MyConnectionRoute from './platform/myconnection/route'
 import {auth , logout} from './auth'
 import express , {Request, Response} from 'express';
 import {checkJWT} from './../jwt/tokenchecker';
@@ -29,7 +29,7 @@ rootRouter.use(attachUser);
 //const private_prefix = '/:platformid'
 rootRouter.use('/platform' , PlatformRoute)
 //MyConnection
-rootRouter.use('/myconnection', MyConnectionRoute)
+//rootRouter.use('/myconnection', MyConnectionRoute)
 
 //Auth
 rootRouter.post('/verify/profile', checkJWT, auth)  

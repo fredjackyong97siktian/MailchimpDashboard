@@ -322,8 +322,8 @@ ALTER TABLE service
     ADD description varchar(257);
 
 INSERT INTO application (id,name,auth_method,imglocation,direct_url_component) VALUES 
-(1,'Facebook','oauth2','img/brand/facebook.svg',''),
-(2,'LinkedIn','oauth2','img/brand/linkedin.svg','');
+(1,'Facebook','oauth2','facebook',''),
+(2,'LinkedIn','oauth2','linkedin','');
 
 INSERT INTO category (id, name, isactive) VALUES 
 (1, 'Product',true),
