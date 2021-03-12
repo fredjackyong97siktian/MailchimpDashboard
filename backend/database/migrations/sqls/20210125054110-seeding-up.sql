@@ -85,18 +85,14 @@ CREATE TABLE "application" (
 
 CREATE TABLE "authentication" (
   "id" SERIAL NOT NULL PRIMARY KEY,
-  "authentication_id" char (10) NOT NULL UNIQUE,
+  "authentication_id" char (36) NOT NULL UNIQUE,
   "userAccountId" int NOT NULL REFERENCES user_account(id),
   "applicationId" int NOT NULL REFERENCES application(id),
   "platformId" int NOT NULL REFERENCES platform(id),
-  "access_token" varchar (275),
-  "token_type" varchar (275),
-  "expired_in" int,
-  "refresh_token" varchar (275),
   "scope" json,
   "created_at" timestamp  without time zone default (now() at time zone 'utc') ,
   "updated_at" timestamp without time zone default (now() at time zone 'utc') ,
-  CONSTRAINT chk_auth_id check (authentication_id ~ '^[0-9a-zA-Z!@-_#]{10}$')
+  CONSTRAINT chk_auth_id check (authentication_id ~ '^[0-9a-zA-Z!@-_#]{36}$')
 );
 
 CREATE TABLE "platform_setting" (
@@ -306,7 +302,6 @@ CREATE TRIGGER update_customer_modtime BEFORE UPDATE ON oauth_login FOR EACH ROW
 
 ALTER TABLE user_account ALTER user_account_id SET DEFAULT random_userID(25);
 ALTER TABLE platform ALTER platform_id SET DEFAULT random_userID(6);
-ALTER TABLE authentication ALTER authentication_id SET DEFAULT random_userID(10);
 ALTER TABLE dashboard ALTER dashboard_id SET DEFAULT random_userID(20);
 ALTER TABLE role  ALTER role_id SET DEFAULT random_userID(20);
 ALTER TABLE role_assigned  ALTER role_assigned_id SET DEFAULT random_userID(20);

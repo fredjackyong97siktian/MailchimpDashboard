@@ -9,17 +9,11 @@ import useStylesForm from '../../Form-style';
 import {useDispatch  } from 'react-redux';
 import {AuthContext} from '../../../../context/AuthContext';
 import {PAGE_STATUS_LOADING, PAGE_STATUS_SUCCESS, PAGE_STATUS_ERROR} from '../../../../view/modal/Loadingpage/redux/LoadingConstant'
-import {CPlatform} from './redux/MyAccountAction';
 import { Typography, FormControl } from '@material-ui/core';
 import {FetchContext} from '../../../../context/FetchContext';
 import countries from './Countries.json';
 import countriescommon from './CountriesCommon.json';
 import { useSnackbar } from 'notistack';
-import Select from '@material-ui/core/Select';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import clsx from 'clsx'
-import axios from 'axios'
 import {UserDetailI} from './../../../../model/myaccount/myaccount';
 
 const MyAccountForm : React.FC = () => {

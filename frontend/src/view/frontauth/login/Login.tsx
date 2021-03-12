@@ -13,12 +13,9 @@ import config from './../../../config';
 import Box from '@material-ui/core/Box';
 import {ELS} from './../../modal';
 import { FaFacebookSquare ,FaLinkedin,FaGoogle } from 'react-icons/fa';
-import electron from 'electron'
-const BrowserWindow = electron.remote.BrowserWindow
 
 const Login : React.FC = () => {
     const classes = useStyles();
-    console.log(config.FACEBOOK_API);
     const handleClick = (type : string) => {
       switch(type){
         case 'Facebook':
@@ -27,7 +24,6 @@ const Login : React.FC = () => {
         case 'Google':
           break;
       }
-
     }
 
     //Oauth Button Option
@@ -73,20 +69,9 @@ const Login : React.FC = () => {
       )
     })
 
-    const browserClick = () => {
-        let win : any = new BrowserWindow({ show: false })
-        win.on('closed', function () {
-          win = null
-      })
-        win.loadURL("github.com")
-        win.once('ready-to-show', () => {
-            win.show()
-        })
-    }
     return (
       <>
       <ELS />
-
     <Container component="main" maxWidth="xs">
       <CssBaseline />
       <div className={classes.paper}>
@@ -99,7 +84,7 @@ const Login : React.FC = () => {
           <LoginForm />
         <Grid container>
           <Grid item xs>
-            <Button onClick={browserClick}> Click Me</Button>
+
             <Link href="#" variant="body2">
               Forgot password?
             </Link>

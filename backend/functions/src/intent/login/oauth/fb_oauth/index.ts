@@ -1,4 +1,3 @@
-import express from "express";
 import passport from "passport";
 import strategy from "passport-facebook";
 import {setToken} from '../../setToken';

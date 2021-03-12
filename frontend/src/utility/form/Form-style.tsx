@@ -1,6 +1,15 @@
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStylesForm = makeStyles((theme) => ({
+    paper: {
+      marginTop: theme.spacing(20),
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      [theme.breakpoints.down('sm')]: {
+        marginTop: theme.spacing(1)
+      },
+    },
     error_message: {
         '&:before':{
             display: 'inline',

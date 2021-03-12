@@ -13,11 +13,13 @@ import Paper from '@material-ui/core/Paper';
 import NavSide from '../nav/nav-side/NavSide'
 import NavTop from '../nav/nav-top/NavTop'
 import Box from '@material-ui/core/Box';
+import Button from '@material-ui/core/Button';
 import useStyles from './Feature-style'
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { SetStateAction } from 'react';
 import {FeatureRoute} from './FeatureRoute';
 import Dashboard from './../dashboard/Dashboard';
+import {windowpopOpen} from './../../../windowpop/windowpop';
 import {
   Link,
   Redirect,
@@ -67,6 +69,7 @@ const Feature : React.FC = () => {
       <NavTop nav={{open : open,setOpen:setOpen}} type={'Feature'}/>
       <NavSide variant={nav.variant} setOpen={setOpen} open={open}/>
       </React.Fragment>
+      <Button onClick={()=>windowpopOpen('http://localhost:3000/auth/app/zoho/people')}> Click Me</Button>
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
         <Container maxWidth="xl" className={classes.container}>

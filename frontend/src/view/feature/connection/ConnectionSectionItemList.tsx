@@ -25,9 +25,9 @@ export const ConnectionSectionItemList :React.FC<serviceI> = ({id,description,se
 
     useEffect(()=>{
         const AuthApp = async() => {
-            const {data} = await authAxios.post("platform/"+platformid+"/myconnection/app",{serviceid:id})
-            console.log(data);
-            setAuthApp(data.data);
+            //const {data} = await authAxios.post("platform/"+platformid+"/myconnection/app",{serviceid:id})
+            //console.log(data);
+            //setAuthApp(data.data);
             setLoading(false);
         }
         AuthApp();        
