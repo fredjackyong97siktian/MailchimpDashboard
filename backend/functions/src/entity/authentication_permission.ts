@@ -9,6 +9,9 @@ export class AuthenticationPermission {
     id: number;
 
     @Column()
+    ap_id:string;
+    
+    @Column()
     authenticationId: number;
 
     @Column()

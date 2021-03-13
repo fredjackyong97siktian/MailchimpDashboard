@@ -35,7 +35,7 @@ const ZohoPeopleForm :React.FC = () => {
         dispatch({type:PAGE_STATUS_LOADING});
         try{
             const {data} = await authAxios.post(`${config.API_BACKEND}oauth/app/zoho/people/domain`, domain );
-            if(data.success) {
+            if(data.success && data.id) {
                 window.location.replace(`https://accounts.zoho.com/oauth/v2/auth?scope=ZOHOPEOPLE.forms.ALL&client_id=${CLIENT_ID}&response_type=code&access_type=online&redirect_uri=${REDIRECT_URL}`) 
             }else {
                 throw "No Input Found";

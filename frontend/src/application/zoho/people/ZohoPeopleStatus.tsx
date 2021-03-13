@@ -31,12 +31,17 @@ const ZohoPeopleStatus :React.FC = () => {
         dispatch({type:PAGE_STATUS_LOADING});
         const status = async()=> {
             try{
-                const data = await axios.post(`https://accounts.zoho.${domain}/oauth/v2/token`,param);
+                //CORS error?
+                console.log('checking checking');
+                const data = await axios.post(`https://accounts.zoho${domain}/oauth/v2/token`,param);
                 //save the access token into the firebase
-
+                console.log('checking 123');
+                console.log(data);
                 dispatch({type:PAGE_STATUS_SUCCESS});
             }catch(error){
-                dispatch({type:PAGE_STATUS_ERROR});
+                const payload = {message: error.message || error,
+                    explaination: ''}
+                    dispatch({type:PAGE_STATUS_ERROR, payload: payload});
             }
         }
         status();

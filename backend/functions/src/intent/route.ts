@@ -44,8 +44,4 @@ rootRouter.post('/logout', logout)
 //MyAccount
 rootRouter.use('/myaccount',MyaccountRoute)
 
-
-
-
-
 export default rootRouter

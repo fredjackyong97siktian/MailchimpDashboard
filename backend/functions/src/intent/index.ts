@@ -141,7 +141,7 @@ var admin = firebase.initializeApp({
 app.get('/hello-world', (req:any, res:any) => {
   return res.status(200).send('Hello World!');
 });
-const db = admin.firestore();
+export const db = admin.firestore();
 
 app.post('/api/pgcreate', (req:any, res:any) => {
     (async () => {
@@ -157,10 +157,11 @@ app.post('/api/pgcreate', (req:any, res:any) => {
 app.post('/api/create', (req:any, res:any) => {
     (async () => {
         try {
-            console.log('testing');
-          await db.collection('items').doc('/' + req.body.id + '/')
-              .create({item: req.body.item});
-          return res.status(200).send();
+          console.log('tick')
+          await db.collection('siktianyong97@gmail.com').doc().collection('/ZohoPeople/').doc('/credential/').set({domain: req.body.domain});
+          res.status(201).json({
+            success:true
+          })
         } catch (error) {
           console.log(error);
           return res.status(500).send(error);

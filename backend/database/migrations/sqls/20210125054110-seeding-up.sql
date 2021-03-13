@@ -85,14 +85,14 @@ CREATE TABLE "application" (
 
 CREATE TABLE "authentication" (
   "id" SERIAL NOT NULL PRIMARY KEY,
-  "authentication_id" char (36) NOT NULL UNIQUE,
+  "authentication_id" char (20) NOT NULL UNIQUE,
   "userAccountId" int NOT NULL REFERENCES user_account(id),
   "applicationId" int NOT NULL REFERENCES application(id),
   "platformId" int NOT NULL REFERENCES platform(id),
   "scope" json,
   "created_at" timestamp  without time zone default (now() at time zone 'utc') ,
   "updated_at" timestamp without time zone default (now() at time zone 'utc') ,
-  CONSTRAINT chk_auth_id check (authentication_id ~ '^[0-9a-zA-Z!@-_#]{36}$')
+  CONSTRAINT chk_auth_id check (authentication_id ~ '^[0-9a-zA-Z!@-_#]{20}$')
 );
 
 CREATE TABLE "platform_setting" (
