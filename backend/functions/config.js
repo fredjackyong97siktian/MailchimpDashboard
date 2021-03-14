@@ -22,5 +22,7 @@ module.exports = {
     BACKEND_API:process.env.BACKEND_API,
     CLIENT_API:process.env.CLIENT_API,
 
-
+    ZOHO_CLIENT_ID:process.env.ZOHO_CLIENT_ID,
+    ZOHO_CLIENT_SECRET:process.env.ZOHO_CLIENT_SECRET,
+    ZOHO_REDIRECT_URL:process.env.ZOHO_REDIRECT_URL,
 }

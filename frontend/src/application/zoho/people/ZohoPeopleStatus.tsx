@@ -27,16 +27,19 @@ const ZohoPeopleStatus :React.FC = () => {
         redirect_uri : config.ZOHO.REDIRECT_URL,
         code : granttype
     }
+
     useEffect(()=>{
         dispatch({type:PAGE_STATUS_LOADING});
         const status = async()=> {
             try{
-                //CORS error?
                 console.log('checking checking');
-                const data = await axios.post(`https://accounts.zoho${domain}/oauth/v2/token`,param);
+                axios.defaults.headers.post['Content-Type'] ='application/json';
+                //console.log(`https://accounts.zoho${domain}/oauth/v2/token?grant_type=authorization_code&client_id=${param.client_id}&client_secret=${param.client_secret}&redirect_uri=${param.redirect_uri}&code=${param.code}`)
+                const data = await axios.post(`https://accounts.zoho.com/oauth/v2/token?grant_type=authorization_code&client_id=1000.NVBOOVBKCSHSNCLEKR7FC5V4TQIUCL&client_secret=ac07b1a5b92e9685c08c8c5c1b69c5eaedea1e2e3a&redirect_uri=http://localhost:3000/&code=1000.ce9dce80365710c96eada488c2d11a52.e0a66d7c29290a339c49552fdbc20c1d`
+                );
                 //save the access token into the firebase
                 console.log('checking 123');
-                console.log(data);
+                //alert(data);
                 dispatch({type:PAGE_STATUS_SUCCESS});
             }catch(error){
                 const payload = {message: error.message || error,

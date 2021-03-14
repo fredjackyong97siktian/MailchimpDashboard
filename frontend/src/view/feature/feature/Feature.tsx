@@ -20,6 +20,7 @@ import { SetStateAction } from 'react';
 import {FeatureRoute} from './FeatureRoute';
 import Dashboard from './../dashboard/Dashboard';
 import {windowpopOpen} from './../../../windowpop/windowpop';
+import config from '../../../config';
 import {
   Link,
   Redirect,
@@ -62,14 +63,15 @@ const Feature : React.FC = () => {
       setNav({variant:"permanent"})
     }
  },[window.innerWidth])  
-
+ const CLIENT_ID = config.ZOHO.CLIENT_ID
+ const REDIRECT_URL = config.ZOHO.REDIRECT_URL
    return(
     <div className={classes.root}>
       <React.Fragment key='left'>
       <NavTop nav={{open : open,setOpen:setOpen}} type={'Feature'}/>
       <NavSide variant={nav.variant} setOpen={setOpen} open={open}/>
       </React.Fragment>
-      <Button onClick={()=>windowpopOpen('http://localhost:3000/auth/app/zoho/people')}> Click Me</Button>
+      <Button onClick={()=>windowpopOpen(`https://accounts.zoho.com/oauth/v2/auth?scope=ZOHOPEOPLE.dashboard.ALL&client_id=${CLIENT_ID}&response_type=code&access_type=offline&redirect_uri=${REDIRECT_URL}&prompt=consent​`)}> Click Me</Button>
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
         <Container maxWidth="xl" className={classes.container}>

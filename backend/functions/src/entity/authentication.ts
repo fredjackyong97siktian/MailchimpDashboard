@@ -20,18 +20,6 @@ export class Authentication {
 
     @Column()
     platformId : number;
-
-    @Column()
-    access_token : string;
-
-    @Column()
-    token_type : string;
-
-    @Column()
-    expired_in : number;
-
-    @Column()
-    refresh_token : string;
     
     @UpdateDateColumn()
     created_at : Date;

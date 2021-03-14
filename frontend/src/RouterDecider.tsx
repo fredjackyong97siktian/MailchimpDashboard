@@ -35,7 +35,7 @@ const RouterDecider : React.FC = () => {
           <Route exact path="/auth/signup" component = {Signup} />
           <Route exact path="/auth/signup/:status" component = {SignUpDecider}/>   
           <Route exact path="/auth/app/zoho/people" component = {ZohoPeople}/>   
-          <Route exact path="/auth/app/zoho/people/status/:granttype/:domain" component = {ZohoPeopleStatus}/>  
+          <Route  path="/auth/app/zoho/people/status/:granttype/:domain" component = {ZohoPeopleStatus}/>  
           <ProtectedRoute exact path="/platform/add" component = {PlatformAdd} authState = {authState}/>
           <ProtectedRoute path="/platform/:platformid" component = {Feature} authState = {authState}/>
           <ProtectedRoute exact path="/" component = {Platform} authState = {authState}/>
