@@ -2,6 +2,7 @@ import {Entity, PrimaryGeneratedColumn, Column, ManyToOne,JoinColumn, OneToMany}
 import {Application} from './application';
 import {Category} from './category';
 import {AuthenticationPermission} from './authentication_permission';
+import {Scope} from './scope';
 
 @Entity('service')
 export class Service {
@@ -29,4 +30,7 @@ export class Service {
 
     @OneToMany(type => AuthenticationPermission, ap => ap.service)
     authenticationPermissions : AuthenticationPermission[];
+
+    @OneToMany(type=> Scope, scope=>scope.service)
+    scopes : Scope[];
 }

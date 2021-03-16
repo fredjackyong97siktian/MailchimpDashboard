@@ -13,14 +13,14 @@ const NavSideItemMain : React.FC = () =>{
   const background = {background:'#605865'}   
   const openNav = useContext(NavOpenContext);
   const ListItemArray = [
-    {
+/*    {
       tag : "Favourite",
       icon : <StarIcon /> 
     },
     {
       tag : "Dashboard",
       icon : <DashboardIcon />      
-    },
+    },*/
     {
       tag : "Category",
       icon :  <CategoryIcon />   

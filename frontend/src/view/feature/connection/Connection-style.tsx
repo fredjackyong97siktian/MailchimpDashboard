@@ -3,7 +3,13 @@ import { makeStyles } from '@material-ui/core/styles';
 const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
   grid:{
-    margin:'5px'
+    margin:'5px',
+  },
+  position:{
+    display: "flex",
+    flexDirection: "row",
+    alignItems:"center",
+    justifyContent: "center"
   },
   sectionitem:{
     marginTop:'10px',
@@ -21,7 +27,6 @@ const useStyles = makeStyles((theme) => ({
   },
   paper:{
         display: 'flex',
- 
         flexDirection: 'column',
   },
   paperPadding:{
@@ -55,6 +60,14 @@ const useStyles = makeStyles((theme) => ({
   appstatustext:{
       fontSize:'10px',
       fontWeight:'bold'
+  },
+  buttonWidth:{
+    backgroundColor: 'transparent',
+    width:'100%'
+  },
+  buttonMargin:{
+    marginTop:'10px',
+    marginBottom:'30px'
   }
 
   }));

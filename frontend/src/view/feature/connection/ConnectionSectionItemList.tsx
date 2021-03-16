@@ -10,7 +10,7 @@ import {useParams} from 'react-router-dom'
 import {FetchContext} from '../../../context/FetchContext';
 import {apI} from './ConnectionInterface';
 import CircularProgress from '@material-ui/core/CircularProgress';
-
+import {ConnectionSectionContextMenuScope} from './ConnectionSectionContextMenu';
 interface Params {
     platformid: string
 }
@@ -23,18 +23,29 @@ export const ConnectionSectionItemList :React.FC<serviceI> = ({id,description,se
     const [loading, setLoading] = useState(true);
     const [authApp, setAuthApp] = useState<Array<apI>>([]);
 
+    // Will move this into Connection Scope
     useEffect(()=>{
         const AuthApp = async() => {
-            //const {data} = await authAxios.post("platform/"+platformid+"/myconnection/app",{serviceid:id})
-            //console.log(data);
-            //setAuthApp(data.data);
-            setLoading(false);
+            const {data} = await authAxios.post("platform/"+platformid+"/myconnection/app",{serviceid:id})
+            console.log(data);
+            setAuthApp(data.data);
+            setLoading(false);  
         }
         AuthApp();        
     },[])
 
     console.log(authApp);
     //console.log(application.imglocation)
+    /*                            <Grid item xs={4} sm={2} className={classes.appdetail}>
+                                <Grid container direction="column" alignItems="center" className={classes.appstatus}>  
+                                    <Grid item xs={12} >
+                                        
+                                    </Grid>     
+                                    <Grid item xs={12} className={classes.appstatustext} style={{ color: 'black'}}>
+                                    
+                                    </Grid>                               
+                                </Grid>
+                            </Grid>*/
     return(
           <Grid item xs={12} md={6} lg={4} >
           <Paper className={clsx(classes.paper,classes.grid,classes.paperPadding)} >
@@ -44,7 +55,7 @@ export const ConnectionSectionItemList :React.FC<serviceI> = ({id,description,se
                             <Grid item xs={3} sm={2} className={classes.icon}>
                                <Icon name={application.imglocation}/>
                             </Grid>
-                            <Grid item xs={4} sm={7} className={classes.appdetail}>
+                            <Grid item xs={8} sm={9} className={classes.appdetail}>
                                 <Grid container direction="column" justify="flex-start" alignItems="flex-start" >
                                     <Grid item xs={12} className={classes.appn}>
                                         {service_name}
@@ -54,13 +65,18 @@ export const ConnectionSectionItemList :React.FC<serviceI> = ({id,description,se
                                     </Grid>                               
                                 </Grid>
                             </Grid>
-                            {!loading ? <ConnectionSectionItemListStatus status={authApp ? 'connected' : 'disconnected' }/> : <CircularProgress />}
-                            
+
+                            <Grid item xs={1} className={classes.appdetail}>
+                                <Grid container direction="column" justify="flex-end" alignItems="flex-end" >    
+                                    <Grid item xs={12} className={classes.appd}>
+                                        <ConnectionSectionContextMenuScope serviceId={id}/>
+                                    </Grid>                               
+                                </Grid>
+                            </Grid>
                         </Grid>
                     </Grid>
                 </Grid>
             </Paper>
             </Grid>
-
     )
 }

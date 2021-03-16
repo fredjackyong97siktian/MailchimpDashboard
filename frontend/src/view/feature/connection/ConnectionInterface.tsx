@@ -19,13 +19,26 @@ export interface categoryI {
 }
 
 export interface authenticationI {
-    authentication_id: string,
-    access_token: string,
-    expired_in: number,
-    refresh_token: string   
+    authentication_id: string
 }
 
 export interface apI {
     id: number,
     authentication: authenticationI
+}
+
+export interface scopeI {
+    id: number,
+    serviceId: number,
+    name: string,
+    term: string,
+    api: string,
+    method: string,
+    scope_id: string
+}
+
+export interface scopeDisplayI{
+    service_name: string,
+    scopes: Array<scopeI>,
+    application:applicationI
 }

@@ -1,0 +1,2 @@
+ALTER TABLE scope ALTER COLUMN scope_id DROP DEFAULT ;
+DROP TABLE scope;

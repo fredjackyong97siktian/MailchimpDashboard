@@ -25,10 +25,11 @@ rootRouter.use('/email',EmailRoute);
 //Oauth
 const third_party = '/oauth'
 rootRouter.use(third_party+'/signup', Oauth);
-rootRouter.use(third_party+'/app/zoho/people', ZohoPeople);
+
 
 /* --------------------------- Protected -------------------- */
 rootRouter.use(attachUser);
+rootRouter.use(third_party+'/app/zoho/people', ZohoPeople);
 //const private_prefix = '/:platformid'
 rootRouter.use('/platform' , PlatformRoute)
 //MyConnection

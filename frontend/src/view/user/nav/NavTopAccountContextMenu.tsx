@@ -15,7 +15,7 @@ const NavTopAccountContextMenu:React.FC = () => {
     const switchFunction = (check: string) => {
         switch(check){
             case 'myaccount':
-                window.location.href= config.API_CLIENT+'/myacount'
+                window.location.href= config.API_CLIENT+'/myaccount'
                 break;
             case 'logout':
                 dispatch({type:PAGE_STATUS_LOADING});

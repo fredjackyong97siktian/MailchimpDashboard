@@ -29,6 +29,7 @@ DROP TRIGGER update_customer_modtime  ON role_assigned ;
 DROP FUNCTION update_modified_column;
 DROP FUNCTION random_userID;
 
+DROP TABLE "authentication_permission";
 DROP TABLE "payment";
 DROP TABLE "role_assigned";
 DROP TABLE "subscription";

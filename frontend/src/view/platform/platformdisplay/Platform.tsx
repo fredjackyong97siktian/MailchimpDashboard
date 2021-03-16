@@ -65,8 +65,7 @@ const Platform : React.FC = () => {
                     Your's Platform
                 </Typography>
                 <Grid container direction="row"  alignItems="flex-start" spacing={3} className={classes.platformGrid} >
-                    <PlatformItemAdd/>
-                    {platformOwn}
+                  {platformOwn ? platformOwn :<PlatformItemAdd/> }
                 </Grid>
                 <Divider />
                 <Typography className={clsx(classes.platformTitle,classes.textBlack)}>

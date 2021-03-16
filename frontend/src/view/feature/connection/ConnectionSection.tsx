@@ -26,8 +26,8 @@ export const ConnectionSection:React.FC = () => {
         dispatch({type:PAGE_STATUS_LOADING});
         const category = async() => {
             try{
-                //const {data} = await authAxios.get("platform/"+platformid+"/myconnection")
-                //setCategory(data.data)
+                const {data} = await authAxios.get("platform/"+platformid+"/myconnection")
+                setCategory(data.data)
                 dispatch({type: PAGE_STATUS_SUCCESS});
             }
             catch(error){

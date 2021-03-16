@@ -78,7 +78,7 @@ CREATE TABLE "application" (
   "id" SERIAL NOT NULL PRIMARY KEY,
   "name" varchar(257),
   "auth_method" varchar(257),
-  "direct_url_component" varchar(257),
+  "direct_url_component" text,
   "created_at" timestamp  without time zone default (now() at time zone 'utc'),
   "updated_at" timestamp without time zone default (now() at time zone 'utc')
 );
@@ -89,7 +89,6 @@ CREATE TABLE "authentication" (
   "userAccountId" int NOT NULL REFERENCES user_account(id),
   "applicationId" int NOT NULL REFERENCES application(id),
   "platformId" int NOT NULL REFERENCES platform(id),
-  "scope" json,
   "created_at" timestamp  without time zone default (now() at time zone 'utc') ,
   "updated_at" timestamp without time zone default (now() at time zone 'utc') ,
   CONSTRAINT chk_auth_id check (authentication_id ~ '^[0-9a-zA-Z!@-_#]{20}$')
@@ -161,8 +160,10 @@ CREATE TABLE "role" (
 
 CREATE TABLE "service" (
   "id" SERIAL NOT NULL PRIMARY KEY ,
+  "service_name" varchar(256),
   "categoryId" int NOT NULL REFERENCES category(id),
   "applicationId" int NOT NULL REFERENCES application(id) ,
+  "scope" varchar(256)[],
    UNIQUE ("categoryId", "applicationId" )
 );
 
@@ -256,6 +257,15 @@ CREATE TABLE "payment" (
   CONSTRAINT chk_payment_id check (payment_id ~ '^[0-9a-zA-Z!@-_#]{20}$') 
 );
 
+CREATE TABLE "authentication_permission" (
+  "id" SERIAL NOT NULL PRIMARY KEY,
+  "ap_id" char (20) NOT NULL UNIQUE,
+  "authenticationId" int NOT NULL REFERENCES authentication(id),
+  "serviceId" int NOT NULL REFERENCES service(id),
+  "created_at" timestamp  without time zone default (now() at time zone 'utc'),
+  "updated_at" timestamp without time zone default (now() at time zone 'utc')
+);
+
 /*Random UserID Auto*/
 Create or replace function random_userID(length integer) returns text as
 $$
@@ -315,17 +325,3 @@ ALTER TABLE application
 
 ALTER TABLE service
     ADD description varchar(257);
-
-INSERT INTO application (id,name,auth_method,imglocation,direct_url_component) VALUES 
-(1,'Facebook','oauth2','facebook',''),
-(2,'LinkedIn','oauth2','linkedin','');
-
-INSERT INTO category (id, name, isactive) VALUES 
-(1, 'Product',true),
-(2, 'Marketing',true),
-(3, 'Human Resource',true);
-
-INSERT INTO service ("id","categoryId","applicationId","description") VALUES 
-(1,1,1,'Collecting the information like a,b,c'),
-(2,2,1,'Product Information like a,b,c'),
-(3,3,2,'As you know lo like a,b,c');

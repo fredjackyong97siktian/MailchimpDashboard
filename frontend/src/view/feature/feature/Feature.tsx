@@ -19,7 +19,6 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import { SetStateAction } from 'react';
 import {FeatureRoute} from './FeatureRoute';
 import Dashboard from './../dashboard/Dashboard';
-import {windowpopOpen} from './../../../windowpop/windowpop';
 import config from '../../../config';
 import {
   Link,
@@ -71,7 +70,6 @@ const Feature : React.FC = () => {
       <NavTop nav={{open : open,setOpen:setOpen}} type={'Feature'}/>
       <NavSide variant={nav.variant} setOpen={setOpen} open={open}/>
       </React.Fragment>
-      <Button onClick={()=>windowpopOpen(`https://accounts.zoho.com/oauth/v2/auth?scope=ZOHOPEOPLE.dashboard.ALL&client_id=${CLIENT_ID}&response_type=code&access_type=offline&redirect_uri=${REDIRECT_URL}&prompt=consent​`)}> Click Me</Button>
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
         <Container maxWidth="xl" className={classes.container}>

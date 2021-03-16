@@ -10,16 +10,17 @@ import HelpIcon from '@material-ui/icons/Help';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import CancelIcon from '@material-ui/icons/Cancel';
 import { Button, IconButton } from '@material-ui/core';
+import {applicationI} from './ConnectionInterface';
 import {ConnectionSectionContextMenuDisconnected,
     ConnectionSectionContextMenuConnected,
-    ConnectionSectionContextMenuNoConnection} from './ConnectionSectionContextMenu';
+    ConnectionSectionContextMenuScope} from './ConnectionSectionContextMenu';
 
 interface propI {
     status: 'connected'| 'disconnected'| 'noconnection',
-
+    application: applicationI
 }
 
-export const ConnectionSectionItemListStatus :React.FC<propI> = ({status}) => {
+export const ConnectionSectionItemListStatus :React.FC<propI> = ({status,application}) => {
     const classes = makeStyle();
     let statusDetail={
         color:'green',
@@ -40,7 +41,7 @@ export const ConnectionSectionItemListStatus :React.FC<propI> = ({status}) => {
                 color:'red',
                 display:'Disconnected',
                 icon: <CancelIcon style={{ fontSize: 35, color:'red'}}/>,
-                context: <ConnectionSectionContextMenuDisconnected/> }
+                context: <ConnectionSectionContextMenuDisconnected /> }
                 break;
        /* case 'noconnection':
             statusDetail = {
@@ -50,22 +51,23 @@ export const ConnectionSectionItemListStatus :React.FC<propI> = ({status}) => {
                 context:<ConnectionSectionContextMenuNoConnection />}
                 break;*/
     }
+    /*{statusDetail.icon}  {statusDetail.display}*/
     return(
         <>
             <Grid item xs={4} sm={2} className={classes.appdetail}>
                 <Grid container direction="column" alignItems="center" className={classes.appstatus}>  
                     <Grid item xs={12} >
-                        {statusDetail.icon}
+                        
                     </Grid>     
                     <Grid item xs={12} className={classes.appstatustext} style={{ color: statusDetail.color}}>
-                        {statusDetail.display}
+                       
                     </Grid>                               
                 </Grid>
             </Grid>
             <Grid item xs={1} className={classes.appdetail}>
                  <Grid container direction="column" justify="flex-end" alignItems="flex-end" >    
                     <Grid item xs={12} className={classes.appd}>
-                        {statusDetail.context}
+                        
                     </Grid>                               
                 </Grid>
             </Grid>

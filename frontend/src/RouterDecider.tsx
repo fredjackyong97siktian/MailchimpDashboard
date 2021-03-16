@@ -11,7 +11,7 @@ import Platform from './view/platform/platformdisplay/Platform';
 import PlatformAdd from './view/platform/platformadd/Platformadd';
 import MyAccount from './view/user/myaccount/MyAccount';
 import ZohoPeople from './application/zoho/people/ZohoPeople';
-import ZohoPeopleStatus from './application/zoho/people/ZohoPeopleStatus';
+import ApplicationStatus from './application/ApplicationStatus';
 
 const RouterDecider : React.FC = () => {
   const {authState} = useContext(AuthContext);
@@ -35,7 +35,7 @@ const RouterDecider : React.FC = () => {
           <Route exact path="/auth/signup" component = {Signup} />
           <Route exact path="/auth/signup/:status" component = {SignUpDecider}/>   
           <Route exact path="/auth/app/zoho/people" component = {ZohoPeople}/>   
-          <Route  path="/auth/app/zoho/people/status/:granttype/:domain" component = {ZohoPeopleStatus}/>  
+          <Route exact path="/auth/app/complete/:status" component = {ApplicationStatus}/>  
           <ProtectedRoute exact path="/platform/add" component = {PlatformAdd} authState = {authState}/>
           <ProtectedRoute path="/platform/:platformid" component = {Feature} authState = {authState}/>
           <ProtectedRoute exact path="/" component = {Platform} authState = {authState}/>

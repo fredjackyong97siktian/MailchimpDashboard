@@ -2,7 +2,10 @@
 import  {Request, Response} from 'express';
 import {getRepository,getManager} from 'typeorm';
 import {Authentication} from './../../../entity/authentication';
+import {AuthenticationPermission} from './../../../entity/authentication_permission';
 import {UserAccount} from './../../../entity/user_account';
+import {Platform} from './../../../entity/platform';
+import {Application} from './../../../entity/application';
 import {db} from './../../../intent/index';
 var config = require('../../../../config');
 
@@ -36,50 +39,48 @@ export const GTZohoPeople = async (req : Request, res : Response) => {
     try {
         /* Check if user have connect to this application before */
         /* If Not Connect Before */
-        const user = await getManager().findOne(UserAccount,{user_account_id: req.user?.user_id});
-        if(user){
-        const axios = require('axios');
-        console.log(req.query)
-        const code = req.query.code;
-        const accountsServer = req.query['accounts-server'];
-        
-       // await db.collection('siktianyong97@gmail.com').doc(info.id).collection('/ZohoPeople/').doc('/credential/').update({granttoken: code})
-        const {data} = await axios.post(`${accountsServer}/oauth/v2/token?grant_type=authorization_code&client_id=${config.ZOHO_CLIENT_ID}&client_secret=${config.ZOHO_CLIENT_SECRET}&redirect_uri=${config.ZOHO_REDIRECT_URL}&code=${code}`)
-        data.accountServer = accountsServer;
-        //save the Grant Token into Firebase
-        const docRef = await db.collection(user.user_account_id).doc()
-        const Authentication_id = docRef.id;
-        await docRef.collection('/ZohoPeople/').doc('/credential/').set(data)
+        const user = await getRepository(UserAccount).findOne({select:['id','user_account_id'],where :{user_account_id: req.user?.user_id}});
+        const platform = await getRepository(Platform).findOne({select:['id'],where :{userAccountId: user?.id}});
+        console.log(user)
+        if(user && platform ){
+            const axios = require('axios');
+            console.log(req.query)
+            const code = req.query.code;
+            const accountsServer = req.query['accounts-server'];
+            
+            // await db.collection('siktianyong97@gmail.com').doc(info.id).collection('/ZohoPeople/').doc('/credential/').update({granttoken: code})
+            const {data} = await axios.post(`${accountsServer}/oauth/v2/token?grant_type=authorization_code&client_id=${config.ZOHO_CLIENT_ID}&client_secret=${config.ZOHO_CLIENT_SECRET}&redirect_uri=${config.ZOHO_REDIRECT_URL}&code=${code}`)
+            data.accountServer = accountsServer;
+            //save the Grant Token into Firebase
+            const docRef = await db.collection(user.user_account_id).doc()
+            const Authentication_id = docRef.id;
+            await docRef.collection('/ZohoPeople/').doc('/credential/').set(data)
 
+            //save the id into authentication
 
-        //save the id into authentication
-
-         const auth = new Authentication();
-        auth.authentication_id = Authentication_id
-        auth.userAccountId = user.id
-        //can create a collection of object that store the information of application
-        auth.applicationId = 4
-        auth.platformId = 1
-        await getRepository(Authentication).save(auth);     
-        
-        /*If Connect Before*/
-        /*Just Update */
+            const auth = new Authentication();
+            auth.authentication_id = Authentication_id
+            auth.userAccountId = user.id
+            //can create a collection of object that store the information of application
+            auth.applicationId = 1
+            //If used for mutiple platform, this shuld be changed
+            auth.platformId = platform?.id;
+            await getRepository(Authentication).save(auth);     
 
         } else {
             throw 'User not Found.'
-        }
-
-
-
-        res.status(201).json({
-            success: true,
-
-        });
-        //res.redirect(`${config.CLIENT_API}auth/app/zoho/people/status/${code}/${info.domain}`)
+        }            
+            /*If Connect Before*/
+            /* Just Update Access Token*/
+        res.redirect(`${config.CLIENT_API}auth/app/complete/success`)
     } catch (error) {
-        //If Error, then redirect to another place
+        console.log(error)
+        res.redirect(`${config.CLIENT_API}auth/app/complete/fail`)
     }
 };
+
+/* Need to do one API that to */
+
 
 /*export const AccessTZohoPeople = async (req : Request, res : Response) => {
     try {
