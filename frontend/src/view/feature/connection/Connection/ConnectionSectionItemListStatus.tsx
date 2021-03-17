@@ -1,7 +1,7 @@
 import React from 'react';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
-import makeStyle from './Connection-style';
+import makeStyle from '../Connection-style';
 import {SiXero }  from 'react-icons/si';
 import clsx from 'clsx';
 import {IoEllipsisVerticalSharp, IoBeaker} from 'react-icons/io5'
@@ -10,7 +10,7 @@ import HelpIcon from '@material-ui/icons/Help';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import CancelIcon from '@material-ui/icons/Cancel';
 import { Button, IconButton } from '@material-ui/core';
-import {applicationI} from './ConnectionInterface';
+import {applicationI} from '../ConnectionInterface';
 import {ConnectionSectionContextMenuDisconnected,
     ConnectionSectionContextMenuConnected,
     ConnectionSectionContextMenuScope} from './ConnectionSectionContextMenu';

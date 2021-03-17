@@ -1,11 +1,11 @@
 import React from 'react';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
-import makeStyle from './Connection-style';
+import makeStyle from '../Connection-style';
 import clsx from 'clsx';
 import {ConnectionSectionItemList} from './ConnectionSectionItemList';
-import {DashboardGrid} from '../dashboard/DashboardGrid';
-import {categoryI} from './ConnectionInterface';
+import {DashboardGrid} from '../../dashboard/DashboardGrid';
+import {categoryI} from '../ConnectionInterface';
 
 
 export const ConnectionSectionItem  :React.FC<categoryI> = ({name, services}) => {

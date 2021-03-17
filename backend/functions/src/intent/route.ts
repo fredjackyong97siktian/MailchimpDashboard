@@ -6,6 +6,7 @@ import PlatformRoute from './platform/route'
 import MyaccountRoute from './myaccount/route'
 //import MyConnectionRoute from './platform/myconnection/route'
 import ZohoPeople from '../application/zoho/people/route';
+import QuickBook from '../application/quickbook/route';
 import {auth , logout} from './auth'
 import express , {Request, Response} from 'express';
 import {checkJWT} from './../jwt/tokenchecker';
@@ -26,10 +27,11 @@ rootRouter.use('/email',EmailRoute);
 const third_party = '/oauth'
 rootRouter.use(third_party+'/signup', Oauth);
 
-
 /* --------------------------- Protected -------------------- */
 rootRouter.use(attachUser);
 rootRouter.use(third_party+'/app/zoho/people', ZohoPeople);
+rootRouter.use(third_party+'/app/quickbook', QuickBook);
+
 //const private_prefix = '/:platformid'
 rootRouter.use('/platform' , PlatformRoute)
 //MyConnection

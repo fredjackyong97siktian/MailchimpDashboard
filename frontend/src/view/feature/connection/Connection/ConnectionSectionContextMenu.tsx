@@ -1,10 +1,10 @@
 import React from 'react';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
-import makeStyle from './Connection-style';
-import ContextMenu from '../../../utility/context-menu/ContextMenu';
+import makeStyle from '../Connection-style';
+import ContextMenu from '../../../../utility/context-menu/ContextMenu';
 import {IoEllipsisVerticalSharp} from 'react-icons/io5'
-import {windowpopOpen} from './../../../windowpop/windowpop';
+import {windowpopOpen} from '../../../../windowpop/windowpop';
 import {useHistory , useParams} from 'react-router-dom'
 interface Params {
     platformid: string

@@ -1,15 +1,15 @@
 import React, {useEffect , useState ,useContext} from 'react';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
-import makeStyle from './Connection-style';
+import makeStyle from '../Connection-style';
 import clsx from 'clsx';
-import {DashboardGrid} from '../dashboard/DashboardGrid';
+import {DashboardGrid} from '../../dashboard/DashboardGrid';
 import {ConnectionSectionItem} from './ConnectionSectionItem';
-import {FetchContext} from '../../../context/FetchContext';
+import {FetchContext} from '../../../../context/FetchContext';
 import {useHistory , useParams} from 'react-router-dom'
-import {categoryI} from './ConnectionInterface';
+import {categoryI} from '../ConnectionInterface';
 import {useDispatch  } from 'react-redux';
-import {PAGE_STATUS_LOADING, PAGE_STATUS_SUCCESS, PAGE_STATUS_ERROR} from '../../modal/Loadingpage/redux/LoadingConstant'
+import {PAGE_STATUS_LOADING, PAGE_STATUS_SUCCESS, PAGE_STATUS_ERROR} from '../../../modal/Loadingpage/redux/LoadingConstant'
 
 interface Params {
     platformid: string

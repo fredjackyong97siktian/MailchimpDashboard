@@ -66,6 +66,7 @@ export const RConnectionScopeS = async (req : Request, res : Response) => {
         .addSelect(['scopes.id','scopes.scope_id','scopes.serviceId','scopes.name','scopes.term','scopes.api','scopes.method'])
         .leftJoin('service.application','application')
         .addSelect(['application.name','application.auth_method','application.direct_url_component','application.imglocation'])
+        .where('service.id = :id',{id:req.params.serviceId})
         .getOne()
         res.status(201).json({
             success: true,

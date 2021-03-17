@@ -1,14 +1,14 @@
 import React , {useEffect, useState ,useContext} from 'react';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
-import makeStyle from './Connection-style';
+import makeStyle from '../Connection-style';
 import clsx from 'clsx';
 import {ConnectionSectionItemListStatus} from './ConnectionSectionItemListStatus';
-import {serviceI} from './ConnectionInterface';
-import Icon from './../../../img/brand';
+import {serviceI} from '../ConnectionInterface';
+import Icon from '../../../../img/brand';
 import {useParams} from 'react-router-dom'
-import {FetchContext} from '../../../context/FetchContext';
-import {apI} from './ConnectionInterface';
+import {FetchContext} from '../../../../context/FetchContext';
+import {apI} from '../ConnectionInterface';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import {ConnectionSectionContextMenuScope} from './ConnectionSectionContextMenu';
 interface Params {
@@ -65,7 +65,6 @@ export const ConnectionSectionItemList :React.FC<serviceI> = ({id,description,se
                                     </Grid>                               
                                 </Grid>
                             </Grid>
-
                             <Grid item xs={1} className={classes.appdetail}>
                                 <Grid container direction="column" justify="flex-end" alignItems="flex-end" >    
                                     <Grid item xs={12} className={classes.appd}>

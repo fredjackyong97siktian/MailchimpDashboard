@@ -12,7 +12,7 @@ import {PAGE_STATUS_LOADING, PAGE_STATUS_SUCCESS, PAGE_STATUS_ERROR} from '../..
 import {scopeDisplayI} from '../ConnectionInterface';
 import {scopeI} from './../ConnectionInterface';
 import Icon from './../../../../img/brand';
-
+import {windowpopOpen} from './../../../../windowpop/windowpop'
 interface Params {
     platformid: string,
     serviceId: string
@@ -68,6 +68,7 @@ export const ConnectionScopeSection:React.FC = () => {
                         <span className={classes.grid}>
                          {scope.service_name}
                         </span>
+                        <Button className={classes.buttonDetail} onClick={()=>windowpopOpen(scope.application.direct_url_component)}> Connect </Button>
                     </span>
                 </Grid>
                 <Grid container direction="row" justify="flex-start" className={clsx(classes.subtopictitle,classes.paperPadding)}>

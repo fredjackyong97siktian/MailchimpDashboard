@@ -68,6 +68,14 @@ const useStyles = makeStyles((theme) => ({
   buttonMargin:{
     marginTop:'10px',
     marginBottom:'30px'
+  },
+  buttonDetail: {
+    margin:'0',
+    backgroundColor:'green',
+    fontSize:'7px',
+    width:'10px',
+    height:'15px',
+
   }
 
   }));
