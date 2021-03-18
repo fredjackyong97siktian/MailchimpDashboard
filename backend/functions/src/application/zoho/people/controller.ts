@@ -2,32 +2,18 @@
 import  {Request, Response} from 'express';
 import {firebaseSave} from './../../firebaseSave';
 var config = require('../../../../config');
-
+var sid: any
+var scope: any
 //Create
-/*export const DomainZohoPeople = async (req : Request, res : Response) => {
+export const ConnectZohoPeople = async (req : Request, res : Response) => {
     try {
-        //Obtain the data from Postgresql to check if there is previous connection of Zoho
-        //check the id with the doc. if exist, then update, else set.
-
-        /* If not exist */
-        // will put userID here, temporary putting email
-        //const docRef = await db.collection('siktianyong97@gmail.com').doc()
-        //const id = docRef.id;
-        //merge is true mean if it is existed, then it will merge with new data
-        //await docRef.collection('/ZohoPeople/').doc('/credential/').set({domain: req.body.domain})
-        //res.cookie('atemprorarystoreid',{id:id,domain:req.body.domain})
-        /* If exist */
-        
-
-        /*res.status(201).json({
-          success:true,
-         // id
-        })    
-
+        sid = req.query.id;
+        scope = req.query.scope;
+        res.redirect(`https://accounts.zoho.com/oauth/v2/auth?scope=${scope}&client_id=1000.NVBOOVBKCSHSNCLEKR7FC5V4TQIUCL&response_type=code&access_type=online&redirect_uri=http://localhost:5001/bsupkit-45126/us-central1/app/api/oauth/app/zoho/people/callback&prompt=consent`)        
     } catch (error) {
-        //If Error, then redirect to another place
+        res.redirect(`${config.CLIENT_API}auth/app/complete/fail`)
     }
-};*/
+};
 
 export const GTZohoPeople = async (req : Request, res : Response) => {
     try {
@@ -39,11 +25,8 @@ export const GTZohoPeople = async (req : Request, res : Response) => {
         // await db.collection('siktianyong97@gmail.com').doc(info.id).collection('/ZohoPeople/').doc('/credential/').update({granttoken: code})
         const {data} = await axios.post(`${accountsServer}/oauth/v2/token?grant_type=authorization_code&client_id=${config.ZOHO_CLIENT_ID}&client_secret=${config.ZOHO_CLIENT_SECRET}&redirect_uri=${config.ZOHO_REDIRECT_URL}&code=${code}`)
         data.accountServer = accountsServer;
-
-        const firebaseData = firebaseSave({userId:req.user?.user_id,application:'ZohoPeople',applicationId:1, data: data})
-        if (firebaseData){res.redirect(`${config.CLIENT_API}auth/app/complete/success`) } else { throw 'User not throw' }
-
-
+        firebaseSave({userId:req.user?.user_id,application:'ZohoPeople',applicationId:1, sid:sid,scope:scope, data: data ,req:req, res:res})
+        res.redirect(`${config.CLIENT_API}auth/app/complete/success`)   
     } catch (error) {
         console.log(error)
         res.redirect(`${config.CLIENT_API}auth/app/complete/fail`)

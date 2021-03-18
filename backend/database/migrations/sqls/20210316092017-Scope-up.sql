@@ -13,10 +13,10 @@ CREATE TABLE "scope" (
 ALTER TABLE scope  ALTER scope_id SET DEFAULT random_userID(25);
 
 INSERT INTO scope ("serviceId",name,term) VALUES 
-(1,'Employee','employee.ALL'),
-(1,'Forms','forms.READ'),
-(1,'Dashboard','dashboard.ALL'),
-(1,'Automation','automation.ALL'),
-(1,'TimeTracker','timetracker.ALL'),
-(1,'Attendance','attendance.ALL'),
-(1,'Leave','leave.READ');
+(1,'Employee','ZOHOPEOPLE.employee.ALL'),
+(1,'Forms','ZOHOPEOPLE.forms.READ'),
+(1,'Dashboard','ZOHOPEOPLE.dashboard.ALL'),
+(1,'Automation','ZOHOPEOPLE.automation.ALL'),
+(1,'TimeTracker','ZOHOPEOPLE.timetracker.ALL'),
+(1,'Attendance','ZOHOPEOPLE.attendance.ALL'),
+(1,'Leave','ZOHOPEOPLE.leave.READ');

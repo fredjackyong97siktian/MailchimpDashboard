@@ -55,7 +55,7 @@ export const ConnectionScopeSection:React.FC = () => {
     const scopeOption = scope.scopes.map((item : scopeI)=>{
        return(
        <Grid item xs={12} md={6} lg={4} className={classes.paperPadding}> 
-            <Button variant="contained"   className={classes.buttonWidth}> {item.name } </Button > 
+            <Button variant="contained" onClick={()=>windowpopOpen(`${scope.application.direct_url_component}id=${serviceId}&scope=${item.term}`)} className={classes.buttonWidth}> {item.name } </Button > 
        </Grid>)
     })
 //  <ConnectionSectionItem />
@@ -66,7 +66,7 @@ export const ConnectionScopeSection:React.FC = () => {
                     <span className={clsx(classes.subtopictitle,classes.paperPadding,classes.position)}>
                         <Icon name={scope.application.imglocation} />
                         <span className={classes.grid}>
-                         {scope.service_name}
+                         {scope.service_name} 
                         </span>
                         <Button className={classes.buttonDetail} onClick={()=>windowpopOpen(scope.application.direct_url_component)}> Connect </Button>
                     </span>
