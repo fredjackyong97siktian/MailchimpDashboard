@@ -46,8 +46,8 @@ export const FBOauth = (data :any , router: any) => {
           await userRepository.save(user);         
         }          
         const userDetail = await userRepository.findOne({email: email});
-        console.log('USERDETAIL')
-        console.log(userDetail);
+        //console.log('USERDETAIL')
+        //console.log(userDetail);
         //Not Yet Account Linking algorithms. Will implement once mature.
         const OauthLoginRepository = getRepository(OauthLogin);
         const oauthLogin = await OauthLoginRepository.find({where:{userAccountId:userDetail?.id,oauthId:1}})

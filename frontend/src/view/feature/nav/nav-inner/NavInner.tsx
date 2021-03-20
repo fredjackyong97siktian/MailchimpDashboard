@@ -11,6 +11,14 @@ import clsx from 'clsx';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import Drawer from '@material-ui/core/Drawer';
+import {
+  Link,
+  Redirect,
+  Route,
+  Switch,
+  useRouteMatch
+} from 'react-router-dom'
+
 interface TabPanelProps {
     children?: React.ReactNode;
     index: any;
@@ -20,8 +28,11 @@ interface TabPanelProps {
 type Orientation = "vertical" | "horizontal"
 
 interface TabInfor {
+  path: string,
+  name: string,
   label: string,
-  component: React.ReactNode;
+  component: React.ReactNode,
+  exact ?: boolean,
 }
 
 interface TabComponent {
@@ -57,6 +68,7 @@ interface TabComponent {
   }
     
 export const AccountNav: React.FC<TabComponent> = ({tabcomponent,orientation}) =>{
+    let {path} = useRouteMatch();
     const classes = useStyles();
     const [value, setValue] = useState(0);
     const [open, setOpen] = useState(false);
@@ -75,9 +87,8 @@ export const AccountNav: React.FC<TabComponent> = ({tabcomponent,orientation}) =
   let index = -1;
   const tab = tabcomponent.map((item)=>{
     index++;
-    console.log(index);
     return(
-        <Tab className={classes.tab} label={item.label} {...a11yProps(0)} />
+        <Tab className={classes.tab} label={item.label} {...a11yProps(0)} component={Link} to={`${path}${item.path}`} />
     )
   })
 
@@ -85,15 +96,16 @@ export const AccountNav: React.FC<TabComponent> = ({tabcomponent,orientation}) =
   let indexp = -1;
   const tabpanel = tabcomponent.map((item)=>{
     indexp++;
-    console.log(indexp);
+
     return(
-      <>
+    <Route path={`${path}${item.path}`} 
+                      exact={item.exact} name={item.name} >
         <TabPanel value={value} index={indexp} >
             <Paper className={classes.paper}>
-              {item.component}
+                {item.component}
             </Paper>
         </TabPanel>
-      </>
+    </Route>
     )
   })
 
@@ -143,7 +155,9 @@ export const AccountNav: React.FC<TabComponent> = ({tabcomponent,orientation}) =
         <div className={classes.root} style={{display:tabOrientationDisplay}}>
           
         {tabOrientation}
+        <Switch>
         {tabpanel}
+        </Switch>
         </div>
         </>
     )

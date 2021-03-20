@@ -1,5 +1,7 @@
 import React, { ReactDOM, useContext } from 'react';
 import {  Switch, Route} from "react-router-dom";
+import ForgetPassword from './view/frontauth/forgetpassword/ForgetPassword';
+import ForgetPasswordRecover from './view/frontauth/forgetpassword/ForgetPasswordRecover';
 import Login from "./view/frontauth/login/Login";
 import Signup from "./view/frontauth/signup/Signup";
 import Feature from "./view/feature/feature/Feature";
@@ -31,6 +33,8 @@ const RouterDecider : React.FC = () => {
     <>
         <Switch>
           <Route exact path="/auth/login" component= {Login} />
+          <Route exact path="/auth/forgetpassword" component= {ForgetPassword} />
+          <Route exact path="/auth/recover" component= {ForgetPasswordRecover} />
           <Route exact path="/auth/test" component= {MyAccount} />
           <Route exact path="/auth/signup" component = {Signup} />
           <Route exact path="/auth/signup/:status" component = {SignUpDecider}/>   
@@ -39,7 +43,7 @@ const RouterDecider : React.FC = () => {
           <ProtectedRoute exact path="/platform/add" component = {PlatformAdd} authState = {authState}/>
           <ProtectedRoute path="/platform/:platformid" component = {Feature} authState = {authState}/>
           <ProtectedRoute exact path="/" component = {Platform} authState = {authState}/>
-          <ProtectedRoute exact path="/myaccount" component= {MyAccount} authState = {authState}/>          
+          <ProtectedRoute path="/myaccount" component= {MyAccount} authState = {authState}/>          
         </Switch>
     </>    
    ); 

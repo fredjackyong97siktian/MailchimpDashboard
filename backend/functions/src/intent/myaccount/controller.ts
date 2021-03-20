@@ -41,3 +41,30 @@ export const UMyaccountProfileS = async (req : Request, res : Response) => {
         });
     }
 };
+
+export const UMyaccountChangePasswordS = async (req : Request, res : Response) => {
+    try {
+        const user = await getRepository(UserAccount).findOne({email: req.user?.email});
+        let passwordsMatch = false;
+        if(user ){
+            passwordsMatch = await bcrypt.compare(req.body.oldpassword, user.password)    
+        }
+        console.log('PasswordMatch')
+        console.log(passwordsMatch)
+        if(passwordsMatch && user){
+            await getRepository(UserAccount).update({user_account_id:req.user?.user_id},{password:req.body.password}); 
+        }else{
+            throw 'Password is not matched'
+        }
+        console.log('Passed')       
+        res.status(201).json({
+            success: true,
+        });
+        
+    } catch (error) {
+        res.status(409).json({
+            success: false,
+            error: error.message || error
+        });
+    }
+};

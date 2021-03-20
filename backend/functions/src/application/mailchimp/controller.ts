@@ -1,57 +1,17 @@
 //SignUp Folder
 import  {Request, Response} from 'express';
 import {firebaseSave } from './../firebaseSave';
+import axios from 'axios';
+import { URLSearchParams } from "url"
 var config = require('../../../config');
-var oauthClient : any = null;
 var sid : any;
 var scope : any;
-
-export const CallQuickBookSDK = async (req : Request, res : Response) => {
+export const CallMailchimp = async (req : Request, res : Response) => {
     try {
         sid = req.query.id;
         scope = req.query.scope;
 
-        var OAuthClient = require('intuit-oauth');
-
-        oauthClient = new OAuthClient({
-            clientId: config.QUICKBOOK_CLIENT_ID,            // enter the apps `clientId`
-            clientSecret: config.QUICKBOOK_CLIENT_SECRET,    // enter the apps `clientSecret`
-            environment: 'sandbox',                          // enter either `sandbox` or `production`
-            redirectUri: config.QUICKBOOK_REDIRECT_URL,      // enter the redirectUri
-            logging: true                               // by default the value is `false`
-        });
-
-        let ScopeObtain;
-        switch(req.query.scope){
-            case 'OAuthClient.scopes.Accounting':
-                ScopeObtain = OAuthClient.scopes.Accounting;
-                break;
-            case 'OAuthClient.scopes.OpenId':
-                ScopeObtain = OAuthClient.scopes.OpenId;
-                break;
-            case 'OAuthClient.scopes.Profile':
-                ScopeObtain = OAuthClient.scopes.Profile;
-                break;
-            case 'OAuthClient.scopes.Email':
-                ScopeObtain = OAuthClient.scopes.Email;
-                break;
-            case 'OAuthClient.scopes.Phone':
-                ScopeObtain = OAuthClient.scopes.Phone;
-                break;
-            case 'OAuthClient.scopes.Address':    
-                ScopeObtain = OAuthClient.scopes.Address;
-                break;
-            default:
-                ScopeObtain = OAuthClient.scopes.Accounting;
-                break;
-        }
-        const authUri = oauthClient.authorizeUri({
-            scope: [ScopeObtain],
-            state: 'testState',
-          }); // can be an array of multiple scopes ex : {scope:[OAuthClient.scopes.Accounting,OAuthClient.scopes.OpenId]}
-           
-          // Redirect the authUri
-          res.redirect(authUri);
+        res.redirect(`https://login.mailchimp.com/oauth2/authorize?response_type=code&client_id=${config.MAILCHIMP_CLIENT_ID}&redirect_uri=${config.MAILCHIMP_REDIRECT_URL}`);
     } catch (error) {
         console.log(error)
         res.status(409).json({
@@ -60,16 +20,21 @@ export const CallQuickBookSDK = async (req : Request, res : Response) => {
     }
 };
 
-export const CallBackQuickBookSDK = async (req : Request, res : Response) => {
+export const CallBackMailchimp = async (req : Request, res : Response) => {
     try {
-        const parseRedirect = req.url;
-        // Exchange the auth code retrieved from the **req.url** on the redirectUri
-        oauthClient
-        .createToken(parseRedirect)
-        .then(function (authResponse :any) {
-            const data = authResponse.getJson();
-            firebaseSave({userId:req.user?.user_id,application:'QuickBook',applicationId:2, data: data, sid:sid, scope:scope, req:req, res:res})
-        }) 
+
+          const code = (req.query as any).code
+          const tokenDetail = {
+            grant_type: "authorization_code",
+            client_id: config.MAILCHIMP_CLIENT_ID,
+            client_secret: config.MAILCHIMP_CLIENT_SECRET,
+            redirect_uri: config.MAILCHIMP_REDIRECT_URL,
+            code : code
+        }
+        /********************************** Need to save access token and server prefix ********************************** */
+        const {data} = await axios.post("https://login.mailchimp.com/oauth2/token",new URLSearchParams(tokenDetail))
+        firebaseSave({userId:req.user?.user_id,application:'Mailchimp',applicationId:3, data: data, sid:sid, scope:scope, req:req, res:res})
+
         res.redirect(`${config.CLIENT_API}auth/app/complete/success`)         
     } catch (error) {
         console.log(error)

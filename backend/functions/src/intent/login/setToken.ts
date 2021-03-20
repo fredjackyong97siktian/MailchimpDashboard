@@ -17,7 +17,7 @@ export const setToken = (user: any ,res : any) => {
         //secure:true,
         //sameSite:true
     })
-
+    
     const JWT = {
         jwtToken: true,
       //  userInfo: userInfo,

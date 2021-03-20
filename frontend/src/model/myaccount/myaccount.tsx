@@ -20,3 +20,10 @@ export interface UserDetailI {
     country: string,
     state: string
 }
+
+export interface ChangePasswordI {
+    oldpassword?: string,
+    password: string,
+    repassword: string
+
+}

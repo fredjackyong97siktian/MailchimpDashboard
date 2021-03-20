@@ -124,7 +124,7 @@ app.use(async (req: Request, res: Response, next:any) => {
 const api = '/api'
 app.use(api,AllRoute);
 
-app.use(csrfProtection);
+//app.use(csrfProtection);
 app.get('/api/csrf-token',(req :any,res :any ,next:any)=>{
   res.json({csrfToken: req.csrfToken()});
 });

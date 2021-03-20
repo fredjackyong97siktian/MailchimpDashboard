@@ -25,7 +25,7 @@ CREATE TABLE "user_account" (
   "postal_code" varchar(257),
   "country" varchar(257),
   "mobile"varchar(257),
-  "forget_passcode" char(10) ,
+  "forget_passcode" UUID ,
   "forget_passcode_receive_at" timestamp without time zone,
   "email_verification_code" UUID ,
   "email_verification_code_sent_at" timestamp without time zone,
@@ -37,8 +37,7 @@ CREATE TABLE "user_account" (
   UNIQUE ("user_account_id","email","forget_passcode", "email_verification_code"),
   /*CONSTRAINT oauth_check check ((password is null and oauth_login_id is not null and oauth_profile_id is not null) 
                                   or (password is not null and oauth_login_id is null and oauth_profile_id is null )),*/
-  CONSTRAINT chk_user_id check (user_account_id ~ '^[0-9a-zA-Z]{25}$') ,
-  CONSTRAINT chk_forget_passcode check (forget_passcode ~ '^[0-9a-zA-Z!@-_#]{10}$')
+  CONSTRAINT chk_user_id check (user_account_id ~ '^[0-9a-zA-Z]{25}$')
 );
 
 CREATE TABLE "oauth_login" (

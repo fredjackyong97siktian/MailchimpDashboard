@@ -5,16 +5,16 @@ import Grid from '@material-ui/core/Grid';
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import {MyAccountFormValidSchema} from './MyAccountFormValidSchema';
-import useStylesForm from '../../Form-style';
+import useStylesForm from '../../../Form-style';
 import {useDispatch  } from 'react-redux';
-import {AuthContext} from '../../../../context/AuthContext';
-import {PAGE_STATUS_LOADING, PAGE_STATUS_SUCCESS, PAGE_STATUS_ERROR} from '../../../../view/modal/Loadingpage/redux/LoadingConstant'
+import {AuthContext} from '../../../../../context/AuthContext';
+import {PAGE_STATUS_LOADING, PAGE_STATUS_SUCCESS, PAGE_STATUS_ERROR} from '../../../../../view/modal/Loadingpage/redux/LoadingConstant'
 import { Typography, FormControl } from '@material-ui/core';
-import {FetchContext} from '../../../../context/FetchContext';
+import {FetchContext} from '../../../../../context/FetchContext';
 import countries from './Countries.json';
 import countriescommon from './CountriesCommon.json';
 import { useSnackbar } from 'notistack';
-import {UserDetailI} from './../../../../model/myaccount/myaccount';
+import {UserDetailI} from '../../../../../model/myaccount/myaccount';
 
 const MyAccountForm : React.FC = () => {
     const { enqueueSnackbar } = useSnackbar();

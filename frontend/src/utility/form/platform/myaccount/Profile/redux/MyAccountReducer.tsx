@@ -1,5 +1,5 @@
 import {MYACCOUNT_EDIT} from './MyAccountConstant';
-import {PlatformAdd} from '../../../../../model/forminput/FormInputAuth' 
+import {PlatformAdd} from '../../../../../../model/forminput/FormInputAuth' 
 
 const initiateState : PlatformAdd = {
         email : '',

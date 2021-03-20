@@ -51,7 +51,6 @@ const Platform : React.FC = () => {
     return(<PlatformItemOwn key={item.platform_id} platform_id={item.platform_id} platformname={item.platform_name} onClick={handleClick} />)
   })
   //Access
-
    return(
     <div className={classes.root}>
         <ELS />
@@ -65,7 +64,7 @@ const Platform : React.FC = () => {
                     Your's Platform
                 </Typography>
                 <Grid container direction="row"  alignItems="flex-start" spacing={3} className={classes.platformGrid} >
-                  {platformOwn ? platformOwn :<PlatformItemAdd/> }
+                  {platformOwnDetail.length !== 0 ? platformOwn : <PlatformItemAdd/> }
                 </Grid>
                 <Divider />
                 <Typography className={clsx(classes.platformTitle,classes.textBlack)}>
