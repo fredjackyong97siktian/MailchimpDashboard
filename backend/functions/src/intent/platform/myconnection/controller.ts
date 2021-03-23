@@ -1,8 +1,8 @@
 import  {Request, Response} from 'express';
-import {createConnection, getRepository , getManager , getConnection, Connection} from 'typeorm';
+import {createConnection, getRepository , getManager , getConnection, Connection, Brackets} from 'typeorm';
 import { Category } from '../../../entity/category';
-import { AuthenticationPermission } from '../../../entity/authentication_permission';
-import {Service} from '../../../entity/service';
+import { AuthenticationService} from '../../../entity/authenticationservice';
+import {Metrics} from '../../../entity/metrics';
 
 export const RConnectionM = async (req : Request, res : Response) => {
     try {
@@ -28,19 +28,17 @@ export const RConnectionM = async (req : Request, res : Response) => {
 
 export const RConnectionS = async (req : Request, res : Response) => {
     try {
-        console.log(req.user?.email)
         if(req.user){
-            const data = await getRepository(AuthenticationPermission)
-            .createQueryBuilder('authentication_permission')
-            .select(['authentication_permission.id'])
-            .leftJoin('authentication_permission.authentication','authentication')
+            const data = await getRepository(AuthenticationService)
+            .createQueryBuilder('authenticationservice')
+            .select(['authenticationservice.id'])
+            .leftJoin('authenticationservice.authentication','authentication')
             .addSelect(['authentication.authentication_id'])
             .leftJoin('authentication.userAccount','userAccount')
             .where('userAccount.email = :email',{email: req.user.email})
-            .andWhere('authentication_permission.serviceId = :id',{id: req.body.serviceid})
+            .andWhere('authenticationservice.serviceId = :id',{id: req.body.serviceid})
             .getOne()
 
-            console.log(data);
             res.status(201).json({
                 success: true,
                 data 
@@ -57,21 +55,31 @@ export const RConnectionS = async (req : Request, res : Response) => {
     }
 };
 
-export const RConnectionScopeS = async (req : Request, res : Response) => {
+export const RMetricsM = async (req : Request, res : Response) => {
     try {
-        const data = await getRepository(Service)
-        .createQueryBuilder('service')
-        .select(['service.service_name'])
-        .leftJoin('service.scopes','scopes')
-        .addSelect(['scopes.id','scopes.scope_id','scopes.serviceId','scopes.name','scopes.term','scopes.api','scopes.method'])
-        .leftJoin('service.application','application')
-        .addSelect(['application.name','application.auth_method','application.direct_url_component','application.imglocation'])
-        .where('service.id = :id',{id:req.params.serviceId})
-        .getOne()
-        res.status(201).json({
-            success: true,
-            data
-        });
+        if(req.user){
+            const data = await getRepository(Metrics)
+            .createQueryBuilder('metrics')
+            .select(['metrics.id','metrics.metrics_id','metrics.name','metrics.detail'])
+            .leftJoin('metrics.authenticationMetrics','am')
+            .addSelect(['am.metrics_id'])
+            .where('metrics.serviceId = :id',{id: req.params.serviceid})
+            .andWhere('isactive = true')
+            .andWhere(new Brackets(qb => {
+                qb.where("am.authenticationserviceId = :id", { id: req.body.authenticationserviceId })
+                  .orWhere('am.authenticationserviceId is null')
+            }))
+            .orderBy("metrics.id", "ASC")
+            .getRawMany()
+
+            res.status(201).json({
+                success: true,
+                data 
+            });
+        }else {
+            throw 'No User Found';
+        }
+
     } catch (error) {
         res.status(409).json({
             success: false,

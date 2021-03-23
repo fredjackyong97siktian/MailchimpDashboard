@@ -94,13 +94,12 @@ export const ConnectionSectionContextMenuScope :React.FC<scopeI> = ({serviceId})
     const {platformid}  = useParams<Params>();
     const history = useHistory();
     const classes = makeStyle();
-    console.log('i told uou ')
-    console.log(serviceId);
+
     //switchFunction
     const switchFunction = (check: string) => {
         switch(check){
             case 's':
-                history.push(`/platform/${platformid}/service/${serviceId}`)
+                history.push({pathname:`/platform/${platformid}/service/${serviceId}`})
                 break;
             default:
                 break;

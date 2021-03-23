@@ -22,7 +22,6 @@ export const CallMailchimp = async (req : Request, res : Response) => {
 
 export const CallBackMailchimp = async (req : Request, res : Response) => {
     try {
-
           const code = (req.query as any).code
           const tokenDetail = {
             grant_type: "authorization_code",

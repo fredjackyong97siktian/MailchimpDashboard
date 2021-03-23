@@ -2,17 +2,16 @@ import React, {useEffect , useState ,useContext} from 'react';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
-import makeStyle from './../Connection-style';
+import makeStyle from '../Connection-style';
 import clsx from 'clsx';
 import {DashboardGrid} from '../../dashboard/DashboardGrid';
 import {FetchContext} from '../../../../context/FetchContext';
 import {useHistory , useParams} from 'react-router-dom'
 import {useDispatch  } from 'react-redux';
 import {PAGE_STATUS_LOADING, PAGE_STATUS_SUCCESS, PAGE_STATUS_ERROR} from '../../../modal/Loadingpage/redux/LoadingConstant'
-import {scopeDisplayI} from '../ConnectionInterface';
-import {scopeI} from './../ConnectionInterface';
-import Icon from './../../../../img/brand';
-import {windowpopOpen} from './../../../../windowpop/windowpop'
+import {metricsDisplayI ,metricsI} from '../ConnectionInterface';
+import Icon from '../../../../img/brand';
+import {windowpopOpen} from '../../../../windowpop/windowpop'
 interface Params {
     platformid: string,
     serviceId: string
@@ -22,7 +21,7 @@ export const ConnectionScopeSection:React.FC = () => {
     const {platformid,serviceId}  = useParams<Params>();
     const classes = makeStyle();
     const {authAxios} = useContext(FetchContext);
-    const [scope, setScope] = useState<scopeDisplayI>({
+    const [scope, setScope] = useState<metricsDisplayI>({
         service_name:'',
         scopes:[],
         application: {
@@ -39,7 +38,7 @@ export const ConnectionScopeSection:React.FC = () => {
         dispatch({type:PAGE_STATUS_LOADING});
         const category = async() => {
             try{
-                const {data} = await authAxios.post(`platform/${platformid}/myconnection/app/${serviceId}`)
+                const {data} = await authAxios.get(`platform/${platformid}/myconnection/service/${serviceId}`,)
                 setScope(data.data);
                 dispatch({type: PAGE_STATUS_SUCCESS});
             }
@@ -51,11 +50,11 @@ export const ConnectionScopeSection:React.FC = () => {
         }
         category()
     },[authAxios])
-
-    const scopeOption = scope.scopes.map((item : scopeI)=>{
+// <Button variant="contained" onClick={()=>windowpopOpen(`${scope.application.direct_url_component}id=${serviceId}&scope=${item.term}`)} className={classes.buttonWidth}> {item.name } </Button > 
+    const scopeOption = scope.scopes.map((item : metricsI)=>{
        return(
        <Grid item xs={12} md={6} lg={4} className={classes.paperPadding}> 
-            <Button variant="contained" onClick={()=>windowpopOpen(`${scope.application.direct_url_component}id=${serviceId}&scope=${item.term}`)} className={classes.buttonWidth}> {item.name } </Button > 
+           
        </Grid>)
     })
 //  <ConnectionSectionItem />

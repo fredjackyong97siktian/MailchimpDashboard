@@ -27,18 +27,16 @@ export interface apI {
     authentication: authenticationI
 }
 
-export interface scopeI {
-    id: number,
-    serviceId: number,
-    name: string,
-    term: string,
-    api: string,
-    method: string,
-    scope_id: string
+export interface metricsI {
+    metrics_id: string,
+    metrics_metrics_id: string,
+    metrics_name: string,
+    metrics_detail: string,
+    am_metrics_id: number
 }
 
-export interface scopeDisplayI{
+export interface metricsDisplayI{
     service_name: string,
-    scopes: Array<scopeI>,
+    scopes: Array<metricsI>,
     application:applicationI
 }

@@ -1,6 +1,6 @@
 import {Entity, PrimaryGeneratedColumn, Column, UpdateDateColumn,  OneToOne, OneToMany, JoinColumn, ManyToOne} from "typeorm";
 import {Application} from './application';
-import {AuthenticationPermission} from './authentication_permission';
+import {AuthenticationService} from './authenticationservice';
 import {Platform} from './platform';
 import {UserAccount} from './user_account';
 @Entity('authentication')
@@ -28,15 +28,15 @@ export class Authentication {
     updated_at : Date;
     
     //relations
-    @ManyToOne((type => Application), application => application.authentication)
+    @ManyToOne((type => Application), application => application.authentications)
     application: Application;     
-
-    @OneToMany((type => AuthenticationPermission), ap => ap.authentication)
-    authenticationPermission : AuthenticationPermission[] ;
 
     @ManyToOne((type => Platform), platform => platform.authentications)
     platform: Platform;
 
     @ManyToOne((type=>UserAccount),useraccount => useraccount.authentications)
     userAccount : UserAccount;    
+    
+    @OneToMany((type => AuthenticationService), ap => ap.authentication)
+    authenticationServices : AuthenticationService[] ;
 }

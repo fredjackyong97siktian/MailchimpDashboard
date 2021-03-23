@@ -4,7 +4,7 @@ import {UserAccount} from './../entity/user_account';
 import {Platform} from './../entity/platform';
 import {Authentication} from './../entity/authentication';
 import  {Request, Response} from 'express';
-import {AuthenticationPermission} from './../entity/authentication_permission';
+import {AuthenticationService} from '../entity/authenticationservice';
 import {Service} from './../entity/service';
 interface firebaseDataI {
     userId: string | undefined, 
@@ -65,7 +65,7 @@ export const firebaseSave = async({userId,application,applicationId,data,sid,sco
         
         console.log('Stage 5')
         //Got Problem
-        const ap = await getRepository(AuthenticationPermission).findOne({select:['ap_id'],where :{serviceId: sid,authenticationId:authenticationId}});
+        const ap = await getRepository(AuthenticationService).findOne({select:['ap_id'],where :{serviceId: sid,authenticationId:authenticationId}});
         if(!ap){
             //If dun have AuthenticationPermission (Mean it is new)
             console.log('Stage 6')
@@ -75,11 +75,11 @@ export const firebaseSave = async({userId,application,applicationId,data,sid,sco
             await docRefService.set({date:'TESTTEST'}) 
 
             console.log('Stage 7')
-            const AP = new AuthenticationPermission();
+            const AP = new AuthenticationService();
             AP.ap_id = ServiceId
             AP.serviceId = sid
             AP.authenticationId = authenticationId
-            await getRepository(AuthenticationPermission).save(AP);
+            await getRepository(AuthenticationService).save(AP);
             console.log('Stage 8')
             ap_id = ServiceId
         }else{

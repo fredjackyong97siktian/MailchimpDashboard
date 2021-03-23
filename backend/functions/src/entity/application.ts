@@ -25,6 +25,6 @@ export class Application {
     services: Service[]      
 
     @OneToMany((type => Authentication), authentication => authentication.application)
-    authentication: Authentication[]   
+    authentications: Authentication[]   
 
 }
