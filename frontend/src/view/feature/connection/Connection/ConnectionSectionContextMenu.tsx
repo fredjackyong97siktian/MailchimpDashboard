@@ -6,6 +6,7 @@ import ContextMenu from '../../../../utility/context-menu/ContextMenu';
 import {IoEllipsisVerticalSharp} from 'react-icons/io5'
 import {windowpopOpen} from '../../../../windowpop/windowpop';
 import {useHistory , useParams} from 'react-router-dom'
+import {contextI} from '../ConnectionInterface';
 interface Params {
     platformid: string
 }
@@ -87,10 +88,8 @@ export const ConnectionSectionContextMenuNoConnection  :React.FC = () => {
 }
 
 /* Check Scope */
-interface scopeI {
-    serviceId : number
-}
-export const ConnectionSectionContextMenuScope :React.FC<scopeI> = ({serviceId}) => {
+
+export const ConnectionSectionContextMenuMetrics :React.FC<contextI> = ({serviceId,authenticationId}) => {
     const {platformid}  = useParams<Params>();
     const history = useHistory();
     const classes = makeStyle();
@@ -99,7 +98,9 @@ export const ConnectionSectionContextMenuScope :React.FC<scopeI> = ({serviceId})
     const switchFunction = (check: string) => {
         switch(check){
             case 's':
-                history.push({pathname:`/platform/${platformid}/service/${serviceId}`})
+                history.push({
+                    pathname:`/platform/${platformid}/service/${serviceId}`,
+                    state: authenticationId})
                 break;
             default:
                 break;
@@ -108,7 +109,7 @@ export const ConnectionSectionContextMenuScope :React.FC<scopeI> = ({serviceId})
     //MenuItemListOption
         const MenuItemListOption = [
             {
-                tag: "Check Scope",
+                tag: "Check Metrics",
                 actionTag: "s"
             },  
         ]

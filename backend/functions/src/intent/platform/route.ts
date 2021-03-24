@@ -12,5 +12,5 @@ router.get('/:platformid',RPlatformS)
 //connection
 router.get('/:platformid/myconnection',RConnectionM)
 router.post('/:platformid/myconnection/app',RConnectionS)
-router.get('/:platformid/myconnection/service/:serviceid',RMetricsM)
+router.post('/:platformid/myconnection/service/:serviceid',RMetricsM)
 export default router;

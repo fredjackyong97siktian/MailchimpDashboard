@@ -1,9 +1,10 @@
 import React from 'react';
+import {iconSize} from './index';
 
-export const Zoho :React.FC = () => {
+export const Zoho :React.FC<iconSize> = ({sizeNumber}) => {
 
     return(
-	<svg width="50px" height="50px" viewBox="0 0 512 177" version="1.1" preserveAspectRatio="xMidYMid">
+	<svg width={sizeNumber} height={sizeNumber} viewBox="0 0 512 177" version="1.1" preserveAspectRatio="xMidYMid">
 		<defs>
 			<linearGradient x1="49.9958559%" y1="1.43117746%" x2="49.9958559%" y2="96.9811775%" id="linearGradient-1">
 				<stop stop-color="#FFE513" offset="0.5618%"></stop>

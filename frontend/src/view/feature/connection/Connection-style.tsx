@@ -33,8 +33,14 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: theme.spacing(1),
     paddingLeft: theme.spacing(1),
   },
+  paperMargin:{
+    margin: theme.spacing(1),
+  },
   papertitle:{
     fontSize:'20px',
+  },
+  paperBorder:{
+    borderColor:'green'
   },
   item:{
       margin: 'auto',
@@ -70,13 +76,63 @@ const useStyles = makeStyles((theme) => ({
     marginBottom:'30px'
   },
   buttonDetail: {
-    margin:'0',
-    backgroundColor:'green',
-    fontSize:'7px',
-    width:'10px',
-    height:'15px',
-
+    fontSize:'10px',
+    margin: theme.spacing(0.2)
+  },
+  buttonHeight:{
+    height:'100px'
+  },
+  buttonPadding: {
+    position:'relative',
+    padding: theme.spacing(0.5)
+  },
+  buttonGrid:{
+    textAlign:'left',
+  },
+  buttonIcon:{
+    margin:theme.spacing(0.5),
+    position:'absolute',
+  },
+  buttonApp:{
+    top:'0',
+    left:'0',    
+  },
+  buttonMetrics:{
+    '&:hover $buttonMark':{
+      display: 'inline',
+    }
+  },
+  buttonMetricsActive:{
+    borderWidth:'medium',
+    borderColor:'green'
+  },
+  buttonMark:{
+    backgroundColor:'transparent',
+    display:'none',
+    color:'grey',
+    top:'0',
+    right:'0',
+    '&:hover':{
+      color:'orange',
+    }
+  },
+  buttonMarkDetail:{
+    padding: 0 ,
+    backgroundColor: 'transparent' 
+  },
+  buttonCorrect:{
+    color:'green',
+    bottom:'0',
+    right:'0',
+  },
+  serviceList:{
+    lineHeight: 'normal',
+    fontSize:'12px',
+    fontWeight:'bold',
+    letterSpacing:'0px',
+    textTransform:'none',
   }
+
 
   }));
 

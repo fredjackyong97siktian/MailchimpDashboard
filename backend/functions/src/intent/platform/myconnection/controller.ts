@@ -3,6 +3,7 @@ import {createConnection, getRepository , getManager , getConnection, Connection
 import { Category } from '../../../entity/category';
 import { AuthenticationService} from '../../../entity/authenticationservice';
 import {Metrics} from '../../../entity/metrics';
+import {Service} from '../../../entity/service';
 
 export const RConnectionM = async (req : Request, res : Response) => {
     try {
@@ -37,7 +38,7 @@ export const RConnectionS = async (req : Request, res : Response) => {
             .leftJoin('authentication.userAccount','userAccount')
             .where('userAccount.email = :email',{email: req.user.email})
             .andWhere('authenticationservice.serviceId = :id',{id: req.body.serviceid})
-            .getOne()
+            .getRawOne()
 
             res.status(201).json({
                 success: true,
@@ -57,28 +58,45 @@ export const RConnectionS = async (req : Request, res : Response) => {
 
 export const RMetricsM = async (req : Request, res : Response) => {
     try {
-        if(req.user){
-            const data = await getRepository(Metrics)
+       // if(req.user){
+            const data = await getRepository(Service)
+            .createQueryBuilder('service')
+            .select(['service.service_name'])
+            .leftJoin('service.metrics','m')
+            .addSelect(['m.id','m.metrics_id','m.name','m.detail'])
+            .leftJoin('m.authenticationMetrics','am')
+            .addSelect(['am.id','am.metrics_id'])
+            .leftJoin('service.application','a')
+            .addSelect(['a.name','a.auth_method','a.direct_url_component','a.imglocation'])
+            .where('m.serviceId = :id',{id: req.params.serviceid})
+            .andWhere('m.isactive = true')
+            .andWhere(new Brackets(qb => {
+                qb.where("am.authenticationserviceId = :id", { id: req.body.authenticationserviceId })
+                  .orWhere('am.authenticationserviceId is null')
+            }))
+            .orderBy("m.id", "ASC")
+            .getOne()
+            /*const data = await getRepository(Metrics)
             .createQueryBuilder('metrics')
             .select(['metrics.id','metrics.metrics_id','metrics.name','metrics.detail'])
             .leftJoin('metrics.authenticationMetrics','am')
             .addSelect(['am.metrics_id'])
-            .where('metrics.serviceId = :id',{id: req.params.serviceid})
+            .where('metrics.serviceId = :id',{id: req.body.serviceid})
             .andWhere('isactive = true')
             .andWhere(new Brackets(qb => {
                 qb.where("am.authenticationserviceId = :id", { id: req.body.authenticationserviceId })
                   .orWhere('am.authenticationserviceId is null')
             }))
             .orderBy("metrics.id", "ASC")
-            .getRawMany()
+            .getRawMany()*/
 
             res.status(201).json({
                 success: true,
                 data 
             });
-        }else {
-            throw 'No User Found';
-        }
+        //}else {
+         //   throw 'No User Found';
+        //}
 
     } catch (error) {
         res.status(409).json({

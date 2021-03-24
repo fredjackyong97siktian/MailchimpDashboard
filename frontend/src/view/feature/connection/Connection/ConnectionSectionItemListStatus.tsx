@@ -13,7 +13,7 @@ import { Button, IconButton } from '@material-ui/core';
 import {applicationI} from '../ConnectionInterface';
 import {ConnectionSectionContextMenuDisconnected,
     ConnectionSectionContextMenuConnected,
-    ConnectionSectionContextMenuScope} from './ConnectionSectionContextMenu';
+    ConnectionSectionContextMenuMetrics} from './ConnectionSectionContextMenu';
 
 interface propI {
     status: 'connected'| 'disconnected'| 'noconnection',
@@ -67,7 +67,6 @@ export const ConnectionSectionItemListStatus :React.FC<propI> = ({status,applica
             <Grid item xs={1} className={classes.appdetail}>
                  <Grid container direction="column" justify="flex-end" alignItems="flex-end" >    
                     <Grid item xs={12} className={classes.appd}>
-                        
                     </Grid>                               
                 </Grid>
             </Grid>

@@ -23,20 +23,30 @@ export interface authenticationI {
 }
 
 export interface apI {
+    authenticationservice_id: number,
+    authentication_authentication_id?: number | null
+}
+
+export interface contextI {
+    serviceId : number,
+    authenticationId?: number | null,
+}
+
+export interface ametricsI {
     id: number,
-    authentication: authenticationI
+    metrics_id: string,
 }
 
 export interface metricsI {
+    id: number,
     metrics_id: string,
-    metrics_metrics_id: string,
-    metrics_name: string,
-    metrics_detail: string,
-    am_metrics_id: number
+    name: string,
+    detail: string,
+    authenticationMetrics: Array<ametricsI>
 }
 
 export interface metricsDisplayI{
     service_name: string,
-    scopes: Array<metricsI>,
+    metrics: Array<metricsI>,
     application:applicationI
 }

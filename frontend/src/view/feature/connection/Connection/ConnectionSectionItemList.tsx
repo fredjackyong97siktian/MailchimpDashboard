@@ -10,7 +10,7 @@ import {useParams} from 'react-router-dom'
 import {FetchContext} from '../../../../context/FetchContext';
 import {apI} from '../ConnectionInterface';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import {ConnectionSectionContextMenuScope} from './ConnectionSectionContextMenu';
+import {ConnectionSectionContextMenuMetrics} from './ConnectionSectionContextMenu';
 interface Params {
     platformid: string
 }
@@ -21,14 +21,15 @@ export const ConnectionSectionItemList :React.FC<serviceI> = ({id,description,se
     const {platformid}  = useParams<Params>();
     const {authAxios} = useContext(FetchContext);
     const [loading, setLoading] = useState(true);
-    const [authApp, setAuthApp] = useState<Array<apI>>([]);
+    const [authApp, setAuthApp] = useState<apI>({    
+        authenticationservice_id: 0,
+        authentication_authentication_id: null});
 
     // Will move this into Connection Scope
     useEffect(()=>{
         const AuthApp = async() => {
             const {data} = await authAxios.post("platform/"+platformid+"/myconnection/app",{serviceid:id})
-            console.log(data);
-            setAuthApp(data.data);
+            if(data.data){setAuthApp(data.data);}   
             setLoading(false);  
         }
         AuthApp();        
@@ -53,7 +54,7 @@ export const ConnectionSectionItemList :React.FC<serviceI> = ({id,description,se
                     <Grid item xs={12} >
                         <Grid container direction="row" justify="center" alignItems="center"  className={classes.item}>
                             <Grid item xs={3} sm={2} className={classes.icon}>
-                               <Icon name={application.imglocation}/>
+                               <Icon name={application.imglocation} />
                             </Grid>
                             <Grid item xs={8} sm={9} className={classes.appdetail}>
                                 <Grid container direction="column" justify="flex-start" alignItems="flex-start" >
@@ -68,7 +69,7 @@ export const ConnectionSectionItemList :React.FC<serviceI> = ({id,description,se
                             <Grid item xs={1} className={classes.appdetail}>
                                 <Grid container direction="column" justify="flex-end" alignItems="flex-end" >    
                                     <Grid item xs={12} className={classes.appd}>
-                                        <ConnectionSectionContextMenuScope serviceId={id}/>
+                                        <ConnectionSectionContextMenuMetrics serviceId={id} authenticationId={authApp.authentication_authentication_id}/>
                                     </Grid>                               
                                 </Grid>
                             </Grid>
