@@ -13,5 +13,5 @@ const useStyles = (theme: Theme) =>
       color: theme.palette.grey[500],
     },
   });
-
+export const styles = useStyles;
 export default useStyles

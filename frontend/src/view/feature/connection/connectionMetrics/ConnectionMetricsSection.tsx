@@ -1,4 +1,4 @@
-import React, {useEffect , useState ,useContext} from 'react';
+import React, {useEffect , useState ,useContext, MouseEvent} from 'react';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
@@ -11,6 +11,7 @@ import {useHistory , useParams, useLocation} from 'react-router-dom'
 import {useDispatch  } from 'react-redux';
 import {PAGE_STATUS_LOADING, PAGE_STATUS_SUCCESS, PAGE_STATUS_ERROR} from '../../../modal/Loadingpage/redux/LoadingConstant'
 import {metricsDisplayI ,metricsI} from '../ConnectionInterface';
+import ConnectionMetricsDialogCam from './ConnectionMetricsDialogCam/ConnectionMetricsDialogCam';
 import Icon from '../../../../img/brand';
 import {windowpopOpen} from '../../../../windowpop/windowpop'
 import { Location } from "history";
@@ -24,11 +25,37 @@ interface Params {
 interface Locations {
     authenticationId: string
 }
+
 export const ConnectionMetricsSection:React.FC = () => {
     const {state} = useLocation<Location>();
     const {platformid,serviceId}  = useParams<Params>();
     const classes = makeStyle();
     const {authAxios} = useContext(FetchContext);
+    const [selectedMetrics,setSelectedMetrics] = useState<Array<number>>([])
+
+    const onhandleSelectedMetrics = (selected: boolean, metricsId : number) => {
+            if(selected){
+                setSelectedMetrics([...selectedMetrics,metricsId])
+            }else{
+                setSelectedMetrics(selectedMetrics.filter(item => item !== metricsId));
+            }
+    }
+
+
+    const [dialogMetrics, setDialogMetrics] = useState({
+        metrics: '',
+        detail: ''
+    });
+
+    const onhandleDialogMetrics = (e:MouseEvent,metrics : string,detail : string) => {
+        e.stopPropagation();
+        setDialog(true);
+        setDialogMetrics({
+            metrics: metrics,
+            detail: detail            
+        })
+    }
+
     const [metrics, setMetrics] = useState<metricsDisplayI>({
         service_name:'',
         metrics:[],
@@ -39,7 +66,11 @@ export const ConnectionMetricsSection:React.FC = () => {
             imglocation: ''
         }
     });
+    const [dialog, setDialog] = useState(false);
 
+    const onhandleDialogClose = () => {
+        setDialog(false);
+    }
     const dispatch = useDispatch();
     
     useEffect(()=>{
@@ -47,9 +78,8 @@ export const ConnectionMetricsSection:React.FC = () => {
         const category = async() => {
             try{
                 const {data} = await authAxios.post(`platform/${platformid}/myconnection/service/${serviceId}`,{
-                    "authenticationserviceId":1
+                    "authenticationserviceId": state
                 })
-
                 setMetrics(data.data);
                 dispatch({type: PAGE_STATUS_SUCCESS});
             }
@@ -61,15 +91,34 @@ export const ConnectionMetricsSection:React.FC = () => {
         }
         category()
     },[authAxios])
+
+    const onSubmit = () => {
+        dispatch({type:PAGE_STATUS_LOADING});
+        const submit = async() => {
+            try{
+                selectedMetrics.sort((a,b)=>a-b)
+                
+                dispatch({type: PAGE_STATUS_SUCCESS});
+            }
+            catch(error){
+                const payload = {message: error.message || error,
+                    explaination: ''}
+                dispatch({type:PAGE_STATUS_ERROR, payload: payload});
+            }
+        }
+        submit()
+    }
 // <Button variant="contained" onClick={()=>windowpopOpen(`${scope.application.direct_url_component}id=${serviceId}&scope=${item.term}`)} className={classes.buttonWidth}> {item.name } </Button > 
+//<Button variant="outlined"  className={classes.grid} style={{color:'purple',borderColor:'purple'}}> Reset </Button>
     const scopeOption = metrics.metrics.map((item : metricsI)=>{
        return(
-        <ConnectionMetricsSectionList name={item.name} servicename={metrics.service_name} imglocation={metrics.application.imglocation}/>
+        <ConnectionMetricsSectionList metricsData={item}  servicename={metrics.service_name} imglocation={metrics.application.imglocation} onhandleSelectedMetrics={onhandleSelectedMetrics} onhandleDialogMetrics={onhandleDialogMetrics}/>
        )
     })
 //  <ConnectionSectionItem />
     return(  
-        <Grid item xs={12} >               
+        <Grid item xs={12} > 
+            <ConnectionMetricsDialogCam open={dialog} onClose={onhandleDialogClose} detail={dialogMetrics} />              
             <Paper className={classes.paper} elevation={0}>
                 <Grid container direction="row" justify="flex-start" alignItems="center" >
                     <span className={clsx(classes.subtopictitle,classes.paperPadding,classes.position)}>
@@ -87,6 +136,9 @@ export const ConnectionMetricsSection:React.FC = () => {
                 <Grid container direction="row" justify="flex-start" className={classes.buttonMargin}>
                     {scopeOption}
                 </Grid>
+                <Grid container direction="row" justify="center" className={classes.buttonMargin}>
+                    <Button onClick={onSubmit} variant="contained" className={classes.grid} style={{backgroundColor:'#03AC13',borderColor:'green'}}> Select [{selectedMetrics.length}] </Button> 
+                </Grid>                
             </Paper>
         </Grid>
     )

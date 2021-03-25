@@ -1,6 +1,7 @@
+
 interface DialogComSize {
-    width: string,
-    height: string
+    width: boolean,
+    height?: string
 }
 
 interface DialogComData {
@@ -23,5 +24,5 @@ export interface DialogComInterface {
     data: DialogComData,
     dialogStatus : DialogComOpen,
     dialogSetting : DialogComSetting,
-    type ?: string | undefined 
+    type ?: string | undefined
 }

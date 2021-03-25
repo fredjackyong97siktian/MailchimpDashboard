@@ -131,7 +131,20 @@ const useStyles = makeStyles((theme) => ({
     fontWeight:'bold',
     letterSpacing:'0px',
     textTransform:'none',
-  }
+  },
+  dialogTitle:{
+    marginBottom: theme.spacing(1)
+  },
+  dialogContent:{
+    color:'black',
+    fontWeight:'bold',
+  },
+  chartIcon:{
+    color:'white',
+    backgroundColor:'purple',
+    borderRadius:'4px'
+  },
+
 
 
   }));

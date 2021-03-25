@@ -1,4 +1,4 @@
-import React, {useEffect , useState ,useContext} from 'react';
+import React, {useEffect , useState ,useContext ,MouseEvent} from 'react';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
@@ -11,22 +11,33 @@ import HelpIcon from '@material-ui/icons/Help';
 import Icon from '../../../../img/brand';
 import clsx from 'clsx';
 import { IconButton } from '@material-ui/core';
+import {metricsI} from '../ConnectionInterface';
 
 interface MSL {
     servicename: string,
     imglocation: string,
-    name: string
+    metricsData: metricsI,
+    onhandleDialogMetrics : (e:MouseEvent, metrics:string, detail: string)=>void,
+    onhandleSelectedMetrics : (selected: boolean, metricsId : number)=>void,
 }
 
-export const ConnectionMetricsSectionList:React.FC<MSL> = ({servicename,imglocation,name}) => {
+export const ConnectionMetricsSectionList:React.FC<MSL> = ({servicename,imglocation,metricsData, onhandleDialogMetrics,onhandleSelectedMetrics}) => {
     const classes = makeStyle();
     const {authAxios} = useContext(FetchContext);
+    //let state;
+    //metricsData.authenticationMetrics[0] ? state = false : state = false;
     const [select, setSelect] = useState(false);
     
     const onSubmit = () => {
         setSelect(!select)
-    }
+        onhandleSelectedMetrics(!select,metricsData.id)
 
+    }
+    const metrics = metricsData.name;
+    const detail = metricsData.detail;
+    const onhandleDialog = (e: MouseEvent) => {
+        onhandleDialogMetrics(e,metrics,detail);
+    }
     
 
 //   <Icon name='mailchimp' size='small' />
@@ -43,12 +54,12 @@ export const ConnectionMetricsSectionList:React.FC<MSL> = ({servicename,imglocat
                         </Tooltip>
                     </Grid>
                     <Grid item xs>
-                        <IconButton onClick={onSubmit} className={clsx(classes.buttonMark,classes.buttonIcon,classes.buttonMarkDetail)} >
+                        <IconButton onClick={onhandleDialog} className={clsx(classes.buttonMark,classes.buttonIcon,classes.buttonMarkDetail)} >
                             <HelpIcon fontSize='small' />
                         </IconButton>
                     </Grid>
                     <Grid item xs className={classes.serviceList}>
-                        {name }
+                        {metricsData.name }
                     </Grid>
                     <Grid item xs >
                         {select && <CheckCircleIcon fontSize='small' className={clsx(classes.buttonCorrect,classes.buttonIcon)}/> }

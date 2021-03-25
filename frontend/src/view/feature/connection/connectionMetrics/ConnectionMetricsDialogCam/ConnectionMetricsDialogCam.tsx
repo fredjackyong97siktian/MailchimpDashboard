@@ -1,18 +1,29 @@
-import React , {useState} from 'react';
+import React , {useState,MouseEvent} from 'react';
 import DialogCom from '../../../../../utility/dialog/DialogCom';
 import ConnectionMetricsDialogCamTitle from './ConnectionMetricsDialogCamTitle';
 import ConnectionMetricsDialogCamContent from './ConnectionMetricsDialogCamContent';
 import ConnectionMetricsDialogCamAction from './ConnectionMetricsDialogCamAction';
 
-const ConnectionMetricsDialogCam: React.FC= (props) => {
-    const [open,setOpen] = useState(true);
-    const onClose = () => {
-        setOpen(false);
+interface metricsDetail {
+    metrics: string,
+    detail: string
+}
+
+interface Cam {
+    detail: metricsDetail,
+    open: boolean,
+    onClose : ()=>void
+}
+
+const ConnectionMetricsDialogCam: React.FC<Cam>= ({open,onClose, detail}) => {
+
+    const size = {
+        width: true,
     }
 
     const data = {
-        title: <ConnectionMetricsDialogCamTitle />,
-        content: <ConnectionMetricsDialogCamContent />,
+        title: <ConnectionMetricsDialogCamTitle name="Mailchimp" />,
+        content: <ConnectionMetricsDialogCamContent metrics={detail.metrics} detail={detail.detail}/>,
         action: <ConnectionMetricsDialogCamAction/>
     }
 
@@ -22,11 +33,11 @@ const ConnectionMetricsDialogCam: React.FC= (props) => {
     }
 
     const dialogSetting = {
-        onCloseSet : false
+        onCloseSet : true
     }
     return (
         <div> 
-        <DialogCom data={data} dialogStatus={dialogStatus} dialogSetting = {dialogSetting}/>
+            <DialogCom data={data} dialogStatus={dialogStatus} dialogSetting = {dialogSetting} size={size}/>
         </div>
     );
 }

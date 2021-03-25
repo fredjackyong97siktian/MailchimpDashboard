@@ -71,7 +71,7 @@ export const RMetricsM = async (req : Request, res : Response) => {
             .where('m.serviceId = :id',{id: req.params.serviceid})
             .andWhere('m.isactive = true')
             .andWhere(new Brackets(qb => {
-                qb.where("am.authenticationserviceId = :id", { id: req.body.authenticationserviceId })
+                qb.where("am.authenticationserviceId = :authenticationserviceid", { authenticationserviceid: req.body.authenticationserviceId })
                   .orWhere('am.authenticationserviceId is null')
             }))
             .orderBy("m.id", "ASC")
