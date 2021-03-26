@@ -10,19 +10,20 @@ interface metricsDetail {
 }
 
 interface Cam {
+    servicename:string,
     detail: metricsDetail,
     open: boolean,
     onClose : ()=>void
 }
 
-const ConnectionMetricsDialogCam: React.FC<Cam>= ({open,onClose, detail}) => {
+const ConnectionMetricsDialogCam: React.FC<Cam>= ({servicename,open,onClose, detail}) => {
 
     const size = {
         width: true,
     }
 
     const data = {
-        title: <ConnectionMetricsDialogCamTitle name="Mailchimp" />,
+        title: <ConnectionMetricsDialogCamTitle name={servicename} />,
         content: <ConnectionMetricsDialogCamContent metrics={detail.metrics} detail={detail.detail}/>,
         action: <ConnectionMetricsDialogCamAction/>
     }

@@ -8,12 +8,14 @@ import {ConnectionMetricsSectionList} from './ConnectionMetricsSectionList';
 import {DashboardGrid} from '../../dashboard/DashboardGrid';
 import {FetchContext} from '../../../../context/FetchContext';
 import {useHistory , useParams, useLocation} from 'react-router-dom'
-import {useDispatch  } from 'react-redux';
+import {RootState} from './../../../../reducer';
+import {useDispatch,useSelector  } from 'react-redux';
 import {PAGE_STATUS_LOADING, PAGE_STATUS_SUCCESS, PAGE_STATUS_ERROR} from '../../../modal/Loadingpage/redux/LoadingConstant'
+import {CONNECTION_CONNECTING,CONNECTION_RECOVER, CONNECTION_SERVICE_SUCCESSFUL, CONNECTION_SERVICE_FAIL, CONNECTION_METRICS_SUCCESSFUL,CONNECTION_METRICS_FAIL} from './redux/ConnectionMetricsConstant';
 import {metricsDisplayI ,metricsI} from '../ConnectionInterface';
 import ConnectionMetricsDialogCam from './ConnectionMetricsDialogCam/ConnectionMetricsDialogCam';
+import ConnectionMetricsDialogCamConnection from './ConnectionMetricsDialogCamConnection/ConnectionMetricsDialogCamConnection';
 import Icon from '../../../../img/brand';
-import {windowpopOpen} from '../../../../windowpop/windowpop'
 import { Location } from "history";
 import Box from '@material-ui/core/Box';
 import Chip from '@material-ui/core/Chip';
@@ -26,36 +28,16 @@ interface Locations {
     authenticationId: string
 }
 
+var myWindow: any;
+
 export const ConnectionMetricsSection:React.FC = () => {
     const {state} = useLocation<Location>();
     const {platformid,serviceId}  = useParams<Params>();
     const classes = makeStyle();
     const {authAxios} = useContext(FetchContext);
-    const [selectedMetrics,setSelectedMetrics] = useState<Array<number>>([])
-
-    const onhandleSelectedMetrics = (selected: boolean, metricsId : number) => {
-            if(selected){
-                setSelectedMetrics([...selectedMetrics,metricsId])
-            }else{
-                setSelectedMetrics(selectedMetrics.filter(item => item !== metricsId));
-            }
-    }
-
-
-    const [dialogMetrics, setDialogMetrics] = useState({
-        metrics: '',
-        detail: ''
-    });
-
-    const onhandleDialogMetrics = (e:MouseEvent,metrics : string,detail : string) => {
-        e.stopPropagation();
-        setDialog(true);
-        setDialogMetrics({
-            metrics: metrics,
-            detail: detail            
-        })
-    }
-
+    const dispatch = useDispatch();
+    const MetricsDetail = useSelector((state:RootState)=>state.metrics);
+    //obtaing all metrics information
     const [metrics, setMetrics] = useState<metricsDisplayI>({
         service_name:'',
         metrics:[],
@@ -66,21 +48,61 @@ export const ConnectionMetricsSection:React.FC = () => {
             imglocation: ''
         }
     });
+    //for user to check the detail of the metrics
     const [dialog, setDialog] = useState(false);
+    //setting dialog content
+    const [dialogMetrics, setDialogMetrics] = useState({
+        metrics: '',
+        detail: ''
+    });
+    //selected metrics
+    const [selectedMetrics,setSelectedMetrics] = useState<Array<number>>([])
+    //connection
+    const [connection,setConnection] = useState(false);
+
+    const onhandleSetConnectionOpen = () => {
+        setConnection(true);
+    }
+
+    const onhandleSetConnectionClose = () => {
+        setConnection(false);
+    }
+
+    const onhandleDialogMetrics = (e:MouseEvent,metrics : string,detail : string) => {
+        e.stopPropagation();
+        setDialog(true);
+        setDialogMetrics({
+            metrics: metrics,
+            detail: detail            
+        })
+    }
+
+    const onhandleSelectedMetrics = (selected: boolean, metricsId : number) => {
+            if(selected){
+                setSelectedMetrics([...selectedMetrics,metricsId])
+            }else{
+                setSelectedMetrics(selectedMetrics.filter(item => item !== metricsId));
+            }
+    }
 
     const onhandleDialogClose = () => {
         setDialog(false);
     }
-    const dispatch = useDispatch();
+
     
     useEffect(()=>{
+        alert('Let Start Again :D');
         dispatch({type:PAGE_STATUS_LOADING});
+        dispatch({type:CONNECTION_RECOVER});
         const category = async() => {
             try{
                 const {data} = await authAxios.post(`platform/${platformid}/myconnection/service/${serviceId}`,{
                     "authenticationserviceId": state
                 })
                 setMetrics(data.data);
+                dispatch({type:CONNECTION_CONNECTING,payload:{app:data.data.service_name}});
+                state && dispatch({type:CONNECTION_SERVICE_SUCCESSFUL});
+                
                 dispatch({type: PAGE_STATUS_SUCCESS});
             }
             catch(error){
@@ -93,12 +115,15 @@ export const ConnectionMetricsSection:React.FC = () => {
     },[authAxios])
 
     const onSubmit = () => {
-        dispatch({type:PAGE_STATUS_LOADING});
+        //dispatch({type:PAGE_STATUS_LOADING});
         const submit = async() => {
             try{
-                selectedMetrics.sort((a,b)=>a-b)
-                
-                dispatch({type: PAGE_STATUS_SUCCESS});
+                if(selectedMetrics.length === 0){
+                    throw "Select at least one metrics";
+                }
+                onhandleSetConnectionOpen();
+                //selectedMetrics.sort((a,b)=>a-b)
+                //dispatch({type: PAGE_STATUS_SUCCESS});
             }
             catch(error){
                 const payload = {message: error.message || error,
@@ -108,6 +133,7 @@ export const ConnectionMetricsSection:React.FC = () => {
         }
         submit()
     }
+
 // <Button variant="contained" onClick={()=>windowpopOpen(`${scope.application.direct_url_component}id=${serviceId}&scope=${item.term}`)} className={classes.buttonWidth}> {item.name } </Button > 
 //<Button variant="outlined"  className={classes.grid} style={{color:'purple',borderColor:'purple'}}> Reset </Button>
     const scopeOption = metrics.metrics.map((item : metricsI)=>{
@@ -118,7 +144,8 @@ export const ConnectionMetricsSection:React.FC = () => {
 //  <ConnectionSectionItem />
     return(  
         <Grid item xs={12} > 
-            <ConnectionMetricsDialogCam open={dialog} onClose={onhandleDialogClose} detail={dialogMetrics} />              
+            {!state && connection && <ConnectionMetricsDialogCamConnection myWindow={myWindow} servicename={metrics.service_name} imglocation={metrics.application.imglocation} open={connection} onClose={onhandleSetConnectionClose} direct_url_component={metrics.application.direct_url_component}/>}
+            <ConnectionMetricsDialogCam open={dialog} onClose={onhandleDialogClose} detail={dialogMetrics} servicename={metrics.service_name}/>              
             <Paper className={classes.paper} elevation={0}>
                 <Grid container direction="row" justify="flex-start" alignItems="center" >
                     <span className={clsx(classes.subtopictitle,classes.paperPadding,classes.position)}>

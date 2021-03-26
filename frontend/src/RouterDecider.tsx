@@ -15,7 +15,7 @@ import MyAccount from './view/user/myaccount/MyAccount';
 import ZohoPeople from './application/zoho/people/ZohoPeople';
 import ApplicationStatus from './application/ApplicationStatus';
 import ConnectionMetricsDialogCam from './view/feature/connection/connectionMetrics/ConnectionMetricsDialogCam/ConnectionMetricsDialogCam';
-
+import {ELS} from './view/modal'
 const RouterDecider : React.FC = () => {
   const {authState} = useContext(AuthContext);
 
@@ -32,6 +32,7 @@ const RouterDecider : React.FC = () => {
   //console.log(isAuth())
    return(
     <>
+        <ELS />
         <Switch>
           <Route exact path="/auth/login" component= {Login} />
           <Route exact path="/auth/forgetpassword" component= {ForgetPassword} />
