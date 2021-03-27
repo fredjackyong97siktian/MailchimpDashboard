@@ -34,6 +34,7 @@ export const CallBackMailchimp = async (req : Request, res : Response) => {
         const {data} = await axios.post("https://login.mailchimp.com/oauth2/token",new URLSearchParams(tokenDetail))
         firebaseSave({userId:req.user?.user_id,application:'Mailchimp',applicationId:3, data: data, sid:sid, scope:scope, req:req, res:res})
 
+        //put authenticationservice code and name after success.
         res.redirect(`${config.CLIENT_API}auth/app/complete/success`)         
     } catch (error) {
         console.log(error)

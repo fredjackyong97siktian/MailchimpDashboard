@@ -10,8 +10,6 @@ interface Params {
 const ApplicationStatus :React.FC = () => {
     const {status }  = useParams<Params>();
     let div;
-    console.log('ha')
-    console.log(status)
     status === 'success'  ? div = <ApplicationStatusS /> : div = <ApplicationStatusF />
 
     return(      

@@ -16,7 +16,8 @@ const MetricsReducer = (state = initiateState, action : any) => {
         case CONNECTION_CONNECTING:
             return {...state,...action.payload}
         case CONNECTION_SERVICE_SUCCESSFUL:
-            return {...state,...action.payload}
+            alert(action.payload.service)
+            return {...state,service:action.payload.service}
         case CONNECTION_METRICS_SUCCESSFUL:
             return {...state,...action.payload}
         case CONNECTION_METRICS_FAIL:

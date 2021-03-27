@@ -31,12 +31,18 @@ interface Locations {
 var myWindow: any;
 
 export const ConnectionMetricsSection:React.FC = () => {
+        
     const {state} = useLocation<Location>();
     const {platformid,serviceId}  = useParams<Params>();
     const classes = makeStyle();
     const {authAxios} = useContext(FetchContext);
     const dispatch = useDispatch();
     const MetricsDetail = useSelector((state:RootState)=>state.metrics);
+    //recall the onsubmit once they connect to the service
+    const [recall, setRecall]= useState(false);
+    const onhandleRecall = () => {
+        setRecall(true);
+    }
     //obtaing all metrics information
     const [metrics, setMetrics] = useState<metricsDisplayI>({
         service_name:'',
@@ -89,7 +95,6 @@ export const ConnectionMetricsSection:React.FC = () => {
         setDialog(false);
     }
 
-    
     useEffect(()=>{
         alert('Let Start Again :D');
         dispatch({type:PAGE_STATUS_LOADING});
@@ -102,7 +107,6 @@ export const ConnectionMetricsSection:React.FC = () => {
                 setMetrics(data.data);
                 dispatch({type:CONNECTION_CONNECTING,payload:{app:data.data.service_name}});
                 state && dispatch({type:CONNECTION_SERVICE_SUCCESSFUL});
-                
                 dispatch({type: PAGE_STATUS_SUCCESS});
             }
             catch(error){
@@ -115,15 +119,22 @@ export const ConnectionMetricsSection:React.FC = () => {
     },[authAxios])
 
     const onSubmit = () => {
-        //dispatch({type:PAGE_STATUS_LOADING});
+        dispatch({type:PAGE_STATUS_LOADING});
         const submit = async() => {
             try{
                 if(selectedMetrics.length === 0){
                     throw "Select at least one metrics";
                 }
-                onhandleSetConnectionOpen();
-                //selectedMetrics.sort((a,b)=>a-b)
-                //dispatch({type: PAGE_STATUS_SUCCESS});
+
+                if(MetricsDetail.service === 0){
+                    onhandleSetConnectionOpen();
+                }else{
+                    //call Axios to save the selecter metrics
+                    //selectedMetrics.sort((a,b)=>a-b)
+                    alert('SELECT Metrics')
+                }
+                
+                dispatch({type: PAGE_STATUS_SUCCESS});
             }
             catch(error){
                 const payload = {message: error.message || error,
@@ -134,7 +145,13 @@ export const ConnectionMetricsSection:React.FC = () => {
         submit()
     }
 
-// <Button variant="contained" onClick={()=>windowpopOpen(`${scope.application.direct_url_component}id=${serviceId}&scope=${item.term}`)} className={classes.buttonWidth}> {item.name } </Button > 
+    //used for those who havent conenct to the applicaiton. Once settle down 
+    useEffect(()=>{
+        if(recall){
+            onSubmit();
+        }
+    },[recall])
+
 //<Button variant="outlined"  className={classes.grid} style={{color:'purple',borderColor:'purple'}}> Reset </Button>
     const scopeOption = metrics.metrics.map((item : metricsI)=>{
        return(
@@ -144,9 +161,10 @@ export const ConnectionMetricsSection:React.FC = () => {
 //  <ConnectionSectionItem />
     return(  
         <Grid item xs={12} > 
-            {!state && connection && <ConnectionMetricsDialogCamConnection myWindow={myWindow} servicename={metrics.service_name} imglocation={metrics.application.imglocation} open={connection} onClose={onhandleSetConnectionClose} direct_url_component={metrics.application.direct_url_component}/>}
+            {!state && connection && <ConnectionMetricsDialogCamConnection onhandleRecall={onhandleRecall} myWindow={myWindow} servicename={metrics.service_name} imglocation={metrics.application.imglocation} open={connection} onClose={onhandleSetConnectionClose} direct_url_component={metrics.application.direct_url_component}/>}
             <ConnectionMetricsDialogCam open={dialog} onClose={onhandleDialogClose} detail={dialogMetrics} servicename={metrics.service_name}/>              
             <Paper className={classes.paper} elevation={0}>
+
                 <Grid container direction="row" justify="flex-start" alignItems="center" >
                     <span className={clsx(classes.subtopictitle,classes.paperPadding,classes.position)}>
                         <Icon name={metrics.application.imglocation} />
