@@ -2,12 +2,12 @@ import {CONNECTION_CONNECTING,CONNECTION_SERVICE_SUCCESSFUL,CONNECTION_SERVICE_F
 
 interface MetricsDetail {
     app: string,
-    service: number,
+    service: string | null,
     metrics: Array<number>
 }
 const initiateState : MetricsDetail = {
     app:'',
-    service: 0,
+    service: null,
     metrics: []
 }
 
@@ -16,7 +16,6 @@ const MetricsReducer = (state = initiateState, action : any) => {
         case CONNECTION_CONNECTING:
             return {...state,...action.payload}
         case CONNECTION_SERVICE_SUCCESSFUL:
-            alert(action.payload.service)
             return {...state,service:action.payload.service}
         case CONNECTION_METRICS_SUCCESSFUL:
             return {...state,...action.payload}
@@ -24,12 +23,12 @@ const MetricsReducer = (state = initiateState, action : any) => {
             return 
         case CONNECTION_SERVICE_FAIL:
             return {
-                service: 0,
+                service: null,
                 metrics: []}
         case CONNECTION_RECOVER:
             return {
                 app:'',
-                service: 0,
+                service: null,
                 metrics: []}
         default:
             return state;

@@ -1,4 +1,4 @@
-import React , {useEffect} from 'react';
+import React , {useEffect,useContext} from 'react';
 import DialogCom from '../../../../../utility/dialog/DialogCom';
 import ConnectionMetricsDialogCamConnectionTitle from './ConnectionMetricsDialogCamConnectionTitle';
 import ConnectionMetricsDialogCamConnectionContent from './ConnectionMetricsDialogCamConnectionContent';
@@ -7,9 +7,12 @@ import {CONNECTION_SERVICE_SUCCESSFUL} from '../redux/ConnectionMetricsConstant'
 import {useDispatch,useSelector  } from 'react-redux';
 import {RootState} from './../../../../../reducer';
 import {PAGE_STATUS_ERROR} from '../../../../modal/Loadingpage/redux/LoadingConstant'
+import {FetchContext} from '../../../../../context/FetchContext';
 
 declare const window: any;
 interface Cam {
+    platformid:string,
+    sid: string,
     onhandleRecall:()=>void,
     myWindow: any;
     servicename:string,
@@ -20,23 +23,25 @@ interface Cam {
 }
 
 
-const ConnectionMetricsDialogCamConnection: React.FC<Cam>= ({onhandleRecall,myWindow,servicename,imglocation,open,onClose,direct_url_component}) => {
+const ConnectionMetricsDialogCamConnection: React.FC<Cam>= ({platformid,sid,onhandleRecall,myWindow,servicename,imglocation,open,onClose,direct_url_component}) => {
     const MetricsDetail = useSelector((state:RootState)=>state.metrics);
     const dispatch = useDispatch();
+    const {authAxios} = useContext(FetchContext);
 
+    //'http://localhost:3000/auth/app/complete/success?aid=Mailchimp&uid=1'
     //User can click the button to trigger a popup window to connect to their application.
     const onhandleWindowpopOpen = () => {
-        myWindow = windowpopOpen(myWindow,'http://localhost:3000/auth/app/complete/success?aid=Mailchimp&uid=1');
-        window.DispatchService = (aid: string , uid : number) => {
+        myWindow = windowpopOpen(myWindow,`${direct_url_component}id=${sid}`);
+        window.DispatchService = (aid: string , uid : string) => {
             const serviceConnection = async() => {
                 try{
                     if(aid !== MetricsDetail.app){
                         throw "There is something wrong, Please try again."
                     }
-                    //call Axios to to check if the same **************************
-                   // const uidReal = await 
-                    const uidReal = 1
-                    uidReal === Number(uid) && dispatch({type:CONNECTION_SERVICE_SUCCESSFUL,payload:{service:uid}})
+                    const {data} = await authAxios.post(`platform/${platformid}/myconnection/apid/`,{
+                        "apid": uid
+                    })
+                    data.Check && dispatch({type:CONNECTION_SERVICE_SUCCESSFUL,payload:{service:uid}})
                     setTimeout(()=>windowpopClose(myWindow),4000);                   
                 }catch(error){
                     const payload = {message: error.message || error,

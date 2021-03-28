@@ -24,12 +24,13 @@ export interface authenticationI {
 
 export interface apI {
     authenticationservice_id: number,
+    ap_id?: string | null,
     authentication_authentication_id?: number | null
 }
 
 export interface contextI {
     serviceId : number,
-    authenticationId?: number | null,
+    authenticationServiceId?: string | null,
 }
 
 export interface ametricsI {

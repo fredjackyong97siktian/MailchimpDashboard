@@ -32,7 +32,8 @@ var myWindow: any;
 
 export const ConnectionMetricsSection:React.FC = () => {
         
-    const {state} = useLocation<Location>();
+    //const {state} = useLocation<Location>();
+    const state = null
     const {platformid,serviceId}  = useParams<Params>();
     const classes = makeStyle();
     const {authAxios} = useContext(FetchContext);
@@ -101,12 +102,13 @@ export const ConnectionMetricsSection:React.FC = () => {
         dispatch({type:CONNECTION_RECOVER});
         const category = async() => {
             try{
+                //state
                 const {data} = await authAxios.post(`platform/${platformid}/myconnection/service/${serviceId}`,{
-                    "authenticationserviceId": state
+                    "authenticationServiceId": state
                 })
                 setMetrics(data.data);
                 dispatch({type:CONNECTION_CONNECTING,payload:{app:data.data.service_name}});
-                state && dispatch({type:CONNECTION_SERVICE_SUCCESSFUL});
+                //state && dispatch({type:CONNECTION_SERVICE_SUCCESSFUL});
                 dispatch({type: PAGE_STATUS_SUCCESS});
             }
             catch(error){
@@ -126,11 +128,16 @@ export const ConnectionMetricsSection:React.FC = () => {
                     throw "Select at least one metrics";
                 }
 
-                if(MetricsDetail.service === 0){
+                if(!MetricsDetail.service){
                     onhandleSetConnectionOpen();
                 }else{
                     //call Axios to save the selecter metrics
-                    //selectedMetrics.sort((a,b)=>a-b)
+                    selectedMetrics.sort((a,b)=>a-b)
+                    dispatch({type:CONNECTION_METRICS_SUCCESSFUL,payload:selectedMetrics});
+                    await authAxios.post(`platform/${platformid}/myconnection/metrics`,{
+                        "metrics": MetricsDetail.metrics,
+                        "service": MetricsDetail.service
+                    })
                     alert('SELECT Metrics')
                 }
                 
@@ -161,7 +168,7 @@ export const ConnectionMetricsSection:React.FC = () => {
 //  <ConnectionSectionItem />
     return(  
         <Grid item xs={12} > 
-            {!state && connection && <ConnectionMetricsDialogCamConnection onhandleRecall={onhandleRecall} myWindow={myWindow} servicename={metrics.service_name} imglocation={metrics.application.imglocation} open={connection} onClose={onhandleSetConnectionClose} direct_url_component={metrics.application.direct_url_component}/>}
+            {!state && connection && <ConnectionMetricsDialogCamConnection platformid={platformid} sid={serviceId} onhandleRecall={onhandleRecall} myWindow={myWindow} servicename={metrics.service_name} imglocation={metrics.application.imglocation} open={connection} onClose={onhandleSetConnectionClose} direct_url_component={metrics.application.direct_url_component}/>}
             <ConnectionMetricsDialogCam open={dialog} onClose={onhandleDialogClose} detail={dialogMetrics} servicename={metrics.service_name}/>              
             <Paper className={classes.paper} elevation={0}>
 

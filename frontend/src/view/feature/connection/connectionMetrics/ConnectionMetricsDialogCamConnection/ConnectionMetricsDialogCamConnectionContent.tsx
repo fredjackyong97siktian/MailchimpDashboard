@@ -24,7 +24,7 @@ const ConnectionMetricsDialogCamConnectionContent: React.FC<Content>= ({onhandle
     const dispatch = useDispatch();
     const [change,setChange] = useState(false)
     useEffect(()=>{
-        if(MetricsDetail.service>0){
+        if(MetricsDetail.service){
             setChange(true)
             //recall the onsubmit function to save the selectedMetrics
             onhandleRecall();

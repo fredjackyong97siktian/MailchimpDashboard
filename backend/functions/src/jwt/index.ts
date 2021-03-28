@@ -17,6 +17,6 @@ export const createJWTToken = (payload : any) => {
         payload, 
         secretKey, 
       {algorithm: 'HS256',
-        expiresIn : '5m'
+        expiresIn : '60m'
     })
 }

@@ -12,15 +12,12 @@ interface firebaseDataI {
     applicationId: number,
     data: object,
     sid: number,
-    scope: string,
     req : Request,
     res: Response
 }
 
-export const firebaseSave = async({userId,application,applicationId,data,sid,scope,req, res} : firebaseDataI) => {
+export const firebaseSave = async({userId,application,applicationId,data,sid,req, res} : firebaseDataI) => {
     console.log('Pre Stage')
-    console.log(sid);
-    console.log(scope);
     console.log('Stage 1')
     const user = await getRepository(UserAccount).findOne({select:['id','user_account_id'],where :{user_account_id: userId}});
     const platform = await getRepository(Platform).findOne({select:['id'],where :{userAccountId: user?.id}});
@@ -30,6 +27,7 @@ export const firebaseSave = async({userId,application,applicationId,data,sid,sco
     let authentication_id;
     let ap_id;
     console.log('Stage 2')
+    /****** Check on Authentication  ******/
     if(user && platform && sid){
         console.log('Stage 3')
         //Check if the authentication is exist in PostgreSQL
@@ -65,6 +63,7 @@ export const firebaseSave = async({userId,application,applicationId,data,sid,sco
         
         console.log('Stage 5')
         //Got Problem
+        /****** Save into Authentication Service  ******/
         const ap = await getRepository(AuthenticationService).findOne({select:['ap_id'],where :{serviceId: sid,authenticationId:authenticationId}});
         if(!ap){
             //If dun have AuthenticationPermission (Mean it is new)
@@ -89,26 +88,16 @@ export const firebaseSave = async({userId,application,applicationId,data,sid,sco
             //Update/Append Business Information
             
         }
+
         console.log('Stage 9')
+        /***** Tasklog *****/
         await db.collection(user.user_account_id).doc(`/${authentication_id}/`).collection(`/${application}/`).doc('/tasklog/').collection('/data/').doc().set({
             timestamp : new Date(new Date().toUTCString()),
             service: sid,
-            scope: scope,
             uri: 'not yet'
         });
-
- 
-        //Do the TaskLog Update
-            /*  Area to Save Service Repository  */
-            //save into Firebase and get ID First
-            /* TaskLog Detail
-            - Timestamp
-            - Service Connect
-            - Which URI Used
-            - Duration? 
-            
-            */
-
+        console.log(ap_id);
+        return ap_id;
     }else{
         throw 'User not found'
     }   

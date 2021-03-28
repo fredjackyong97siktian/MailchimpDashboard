@@ -89,7 +89,7 @@ export const ConnectionSectionContextMenuNoConnection  :React.FC = () => {
 
 /* Check Scope */
 
-export const ConnectionSectionContextMenuMetrics :React.FC<contextI> = ({serviceId,authenticationId}) => {
+export const ConnectionSectionContextMenuMetrics :React.FC<contextI> = ({serviceId,authenticationServiceId}) => {
     const {platformid}  = useParams<Params>();
     const history = useHistory();
     const classes = makeStyle();
@@ -100,7 +100,7 @@ export const ConnectionSectionContextMenuMetrics :React.FC<contextI> = ({service
             case 's':
                 history.push({
                     pathname:`/platform/${platformid}/service/${serviceId}`,
-                    state: authenticationId})
+                    state: authenticationServiceId})
                 break;
             default:
                 break;
