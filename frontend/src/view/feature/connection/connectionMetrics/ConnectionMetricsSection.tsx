@@ -17,6 +17,7 @@ import ConnectionMetricsDialogCam from './ConnectionMetricsDialogCam/ConnectionM
 import ConnectionMetricsDialogCamConnection from './ConnectionMetricsDialogCamConnection/ConnectionMetricsDialogCamConnection';
 import Icon from '../../../../img/brand';
 import { Location } from "history";
+import { useSnackbar } from 'notistack';
 import Box from '@material-ui/core/Box';
 import Chip from '@material-ui/core/Chip';
 
@@ -30,10 +31,26 @@ interface Locations {
 
 var myWindow: any;
 
+function arraysEqual(a : Array<number>, b:Array<number>) {
+    if (a === b) return true;
+    if (a == null || b == null) return false;
+    if (a.length !== b.length) return false;
+  
+    // If you don't care about the order of the elements inside
+    // the array, you should sort both arrays here.
+    // Please note that calling sort on an array will modify that array.
+    // you might want to clone your array first.
+  
+    for (var i = 0; i < a.length; ++i) {
+      if (a[i] !== b[i]) return false;
+    }
+    return true;
+  }
+
 export const ConnectionMetricsSection:React.FC = () => {
-        
-    //const {state} = useLocation<Location>();
-    const state = null
+    const { enqueueSnackbar } = useSnackbar();
+    const {state} = useLocation<Location>();
+    //const state = null
     const {platformid,serviceId}  = useParams<Params>();
     const classes = makeStyle();
     const {authAxios} = useContext(FetchContext);
@@ -104,13 +121,22 @@ export const ConnectionMetricsSection:React.FC = () => {
             try{
                 //state
                 const {data} = await authAxios.post(`platform/${platformid}/myconnection/service/${serviceId}`,{
-                    "authenticationServiceId": state
+                    "ap_id": state
                 })
                 setMetrics(data.data);
                 dispatch({type:CONNECTION_CONNECTING,payload:{app:data.data.service_name}});
-                //state && dispatch({type:CONNECTION_SERVICE_SUCCESSFUL});
-                dispatch({type: PAGE_STATUS_SUCCESS});
-            }
+                if(state){
+                    data.data.metrics.map((item:any)=>{
+                        item.authenticationMetrics.length>0 && selectedMetrics.push(item.id)
+                     })
+                     setSelectedMetrics([ ...new Set(selectedMetrics)])
+                     selectedMetrics.sort((a,b)=>a-b)
+                     dispatch({type:CONNECTION_SERVICE_SUCCESSFUL,payload:{service:state}});
+                     dispatch({type:CONNECTION_METRICS_SUCCESSFUL,payload:selectedMetrics})
+                }
+                ;
+                dispatch({type: PAGE_STATUS_SUCCESS});;
+            }  
             catch(error){
                 const payload = {message: error.message || error,
                     explaination: ''}
@@ -120,27 +146,39 @@ export const ConnectionMetricsSection:React.FC = () => {
         category()
     },[authAxios])
 
+    useEffect(()=>{
+        console.log('Check this out!!!!!')
+        console.log(selectedMetrics)
+    },[selectedMetrics])
+
     const onSubmit = () => {
+        alert(selectedMetrics)
         dispatch({type:PAGE_STATUS_LOADING});
         const submit = async() => {
             try{
                 if(selectedMetrics.length === 0){
                     throw "Select at least one metrics";
                 }
-
+                selectedMetrics.sort((a,b)=>a-b)
                 if(!MetricsDetail.service){
                     onhandleSetConnectionOpen();
-                }else{
-                    //call Axios to save the selecter metrics
-                    selectedMetrics.sort((a,b)=>a-b)
-                    dispatch({type:CONNECTION_METRICS_SUCCESSFUL,payload:selectedMetrics});
-                    await authAxios.post(`platform/${platformid}/myconnection/metrics`,{
-                        "metrics": MetricsDetail.metrics,
-                        "service": MetricsDetail.service
-                    })
+                }else if(!arraysEqual(selectedMetrics,MetricsDetail.metrics)){
+                    alert('start Service')
+                    //remove duplicaiton in the list to avoid mistake
+                    //const RemovedDuplicationMetrics = [ ...new Set(selectedMetrics) ]
+                    //RemovedDuplicationMetrics.sort((a,b)=>a-b)
+                    alert(selectedMetrics)
+                    await dispatch({type:CONNECTION_METRICS_SUCCESSFUL,payload:selectedMetrics});
+                    
+                    //have to use selectedMetrics instead of MetricsDetail.selectedMetrics as dispatch is not finished.
+                    console.log('These are the servsicess '+MetricsDetail.metrics);
+                        await authAxios.post(`platform/${platformid}/myconnection/metrics`,{
+                            "metrics": selectedMetrics,
+                            "service": MetricsDetail.service
+                        })
                     alert('SELECT Metrics')
                 }
-                
+                enqueueSnackbar('Your metrics is saved.',{variant: 'success'});
                 dispatch({type: PAGE_STATUS_SUCCESS});
             }
             catch(error){
@@ -162,7 +200,7 @@ export const ConnectionMetricsSection:React.FC = () => {
 //<Button variant="outlined"  className={classes.grid} style={{color:'purple',borderColor:'purple'}}> Reset </Button>
     const scopeOption = metrics.metrics.map((item : metricsI)=>{
        return(
-        <ConnectionMetricsSectionList metricsData={item}  servicename={metrics.service_name} imglocation={metrics.application.imglocation} onhandleSelectedMetrics={onhandleSelectedMetrics} onhandleDialogMetrics={onhandleDialogMetrics}/>
+        <ConnectionMetricsSectionList metricsData={item} servicename={metrics.service_name} imglocation={metrics.application.imglocation} onhandleSelectedMetrics={onhandleSelectedMetrics} onhandleDialogMetrics={onhandleDialogMetrics}/>
        )
     })
 //  <ConnectionSectionItem />

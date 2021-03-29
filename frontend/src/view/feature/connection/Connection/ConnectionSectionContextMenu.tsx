@@ -96,6 +96,7 @@ export const ConnectionSectionContextMenuMetrics :React.FC<contextI> = ({service
 
     //switchFunction
     const switchFunction = (check: string) => {
+        console.log('Context Menu' + authenticationServiceId)
         switch(check){
             case 's':
                 history.push({

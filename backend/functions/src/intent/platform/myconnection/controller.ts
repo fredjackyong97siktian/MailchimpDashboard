@@ -63,6 +63,7 @@ export const RMetricsM = async (req : Request, res : Response) => {
             const data = await getRepository(Service)
             .createQueryBuilder('service')
             .select(['service.service_name'])
+            .leftJoin('service.authenticationServices','asm')
             .leftJoin('service.metrics','m')
             .addSelect(['m.id','m.metrics_id','m.name','m.detail'])
             .leftJoin('m.authenticationMetrics','am')
@@ -72,7 +73,7 @@ export const RMetricsM = async (req : Request, res : Response) => {
             .where('m.serviceId = :id',{id: req.params.serviceid})
             .andWhere('m.isactive = true')
             .andWhere(new Brackets(qb => {
-                qb.where("am.authenticationserviceId = :authenticationserviceid", { authenticationserviceid: req.body.authenticationserviceId })
+                qb.where("asm.ap_id = :ap_id", { ap_id: req.body.ap_id })
                   .orWhere('am.authenticationserviceId is null')
             }))
             .orderBy("m.id", "ASC")
@@ -155,31 +156,62 @@ export const RapidS = async (req : Request, res : Response) => {
 
 export const CMetricsM = async (req : Request, res : Response) => {
     try {
-       // if(req.user){            const data = await getRepository(AuthenticationService)
+       // if(req.user){    
+        const email = 'siktianyong97@gmail.com'     
        const asId = await getRepository(AuthenticationService)
        .createQueryBuilder('authenticationservice')
        .select(['authenticationservice.id'])
        .leftJoin('authenticationservice.authentication','authentication')
        .leftJoin('authentication.userAccount','userAccount')
-       .where('authenticationservice.ap_id = :id',{id: req.body.apid})
-       .andWhere('userAccount.email = :email',{email: req.user?.email})
+       .where('authenticationservice.ap_id = :id',{id: req.body.service})
+       .andWhere('userAccount.email = :email',{email: email})
        .getOne()
-       
+       console.log(asId)
+       //req.user?.email
         if(asId){
-            req.body.metrics.map(async(item: number)=>{
-                const AM = new AuthenticationMetrics();
-                AM.metricsId = item
-                AM.authenticationserviceId = asId?.id;
-                await getRepository(AuthenticationMetrics).save(AM);
-           })
+            const metricsID = await getRepository(AuthenticationMetrics)
+            .createQueryBuilder('authenticationmetrics')
+            .select(['authenticationmetrics.metricsId'])
+            .where('authenticationmetrics.authenticationserviceId = :asi',{asi : asId.id})
+            .getMany()
+        
+            let existMetricsId :Array<number> = [];
+            metricsID.map((item:any)=>{
+                existMetricsId.push(item["metricsId"])
+            })
+
+            const Metricstobedeleted = existMetricsId.filter(x=>req.body.metrics.indexOf(x)===-1)
+            if(Metricstobedeleted.length>0){
+                Metricstobedeleted.map(async(item:number)=>{
+                    await getConnection()
+                    .createQueryBuilder()
+                    .delete()
+                    .from(AuthenticationMetrics)
+                    .where("metricsId = :mId",{mId:item})
+                    .andWhere("authenticationserviceId = :asId",{asId:asId.id})
+                    .execute()
+                })
+
+            }
+            const Metricstobeadded = req.body.metrics.filter(x => existMetricsId.indexOf(x) === -1)
+            if(Metricstobeadded.length>0){
+                Metricstobeadded.map(async(item:number)=>{
+                    const AM = new AuthenticationMetrics()
+                    AM.metricsId = item;
+                    AM.authenticationserviceId = asId.id 
+                    await getRepository(AuthenticationMetrics).save(AM)
+
+                })
+            }
+
+           res.status(201).json({
+            success: true,
+        });
         }else{
             throw 'Wrong Input. Try Again'
         }
 
-            res.status(201).json({
-                success: true,
-                 
-            });
+
         //}else {
          //   throw 'No User Found';
         //}

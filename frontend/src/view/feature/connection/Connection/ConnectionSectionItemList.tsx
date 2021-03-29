@@ -23,7 +23,7 @@ export const ConnectionSectionItemList :React.FC<serviceI> = ({id,description,se
     const [loading, setLoading] = useState(true);
     const [authApp, setAuthApp] = useState<apI>({    
         authenticationservice_id: 0,
-        ap_id:null,
+        authenticationservice_ap_id:null,
         authentication_authentication_id: null});
 
     // Will move this into Connection Scope
@@ -36,7 +36,6 @@ export const ConnectionSectionItemList :React.FC<serviceI> = ({id,description,se
         AuthApp();        
     },[])
 
-    console.log(authApp);
     //console.log(application.imglocation)
     /*                            <Grid item xs={4} sm={2} className={classes.appdetail}>
                                 <Grid container direction="column" alignItems="center" className={classes.appstatus}>  
@@ -70,7 +69,7 @@ export const ConnectionSectionItemList :React.FC<serviceI> = ({id,description,se
                             <Grid item xs={1} className={classes.appdetail}>
                                 <Grid container direction="column" justify="flex-end" alignItems="flex-end" >    
                                     <Grid item xs={12} className={classes.appd}>
-                                        <ConnectionSectionContextMenuMetrics serviceId={id} authenticationServiceId={authApp.ap_id}/>
+                                        <ConnectionSectionContextMenuMetrics serviceId={id} authenticationServiceId={authApp.authenticationservice_ap_id}/>
                                     </Grid>                               
                                 </Grid>
                             </Grid>

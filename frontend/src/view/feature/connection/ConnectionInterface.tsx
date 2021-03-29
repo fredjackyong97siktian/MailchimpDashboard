@@ -24,7 +24,7 @@ export interface authenticationI {
 
 export interface apI {
     authenticationservice_id: number,
-    ap_id?: string | null,
+    authenticationservice_ap_id?: string | null,
     authentication_authentication_id?: number | null
 }
 

@@ -47,7 +47,7 @@ const MyAccountForm : React.FC = () => {
         dispatch({type:PAGE_STATUS_LOADING});
         try{
             await authAxios.post('myaccount/update', data);
-            enqueueSnackbar('This is a success message!',{variant: 'success'});
+            enqueueSnackbar('Your profile is saved.',{variant: 'success'});
             setUserDetail({...userDetail,...data})
             reset(data);
             dispatch({type: PAGE_STATUS_SUCCESS,payload: data});

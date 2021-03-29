@@ -26,13 +26,17 @@ export const ConnectionMetricsSectionList:React.FC<MSL> = ({servicename,imglocat
     const {authAxios} = useContext(FetchContext);
     //let state;
     //metricsData.authenticationMetrics[0] ? state = false : state = false;
-    const [select, setSelect] = useState(false);
-    
+    let selectBoolean;
+    metricsData.authenticationMetrics.length>0 ? selectBoolean = true : selectBoolean = false
+    const [select, setSelect] = useState(selectBoolean);
+
     const onSubmit = () => {
         setSelect(!select)
         onhandleSelectedMetrics(!select,metricsData.id)
 
     }
+
+    
     const metrics = metricsData.name;
     const detail = metricsData.detail;
     const onhandleDialog = (e: MouseEvent) => {
