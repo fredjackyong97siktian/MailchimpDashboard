@@ -36,6 +36,12 @@ const useStyles = makeStyles((theme) => ({
   paperMargin:{
     margin: theme.spacing(1),
   },
+  paperRelative:{
+    position:'relative',
+  },
+  paperAbsolute:{
+    position:'absolute'
+  },
   papertitle:{
     fontSize:'20px',
   },
@@ -144,6 +150,15 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor:'purple',
     borderRadius:'4px'
   },
+  connectionStatus:{
+    fontSize:'10px',
+    paddingLeft: theme.spacing(1.5),
+    paddingRight: theme.spacing(1.5),
+    borderTopRightRadius:'2px',
+    borderBottomRightRadius:'2px',
+    backgroundColor:'green',
+    color:'white'
+  }
 
 
 

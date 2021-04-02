@@ -14,7 +14,7 @@ import PlatformAdd from './view/platform/platformadd/Platformadd';
 import MyAccount from './view/user/myaccount/MyAccount';
 import ZohoPeople from './application/zoho/people/ZohoPeople';
 import ApplicationStatus from './application/ApplicationStatus';
-import ConnectionMetricsDialogCam from './view/feature/connection/connectionMetrics/ConnectionMetricsDialogCam/ConnectionMetricsDialogCam';
+import TemplateBox from './utility/visualization/template/TemplateBox';
 import {ELS} from './view/modal'
 const RouterDecider : React.FC = () => {
   const {authState} = useContext(AuthContext);
@@ -37,7 +37,7 @@ const RouterDecider : React.FC = () => {
           <Route exact path="/auth/login" component= {Login} />
           <Route exact path="/auth/forgetpassword" component= {ForgetPassword} />
           <Route exact path="/auth/recover" component= {ForgetPasswordRecover} />
-          <Route exact path="/auth/test" component= {ConnectionMetricsDialogCam} />
+          <Route exact path="/auth/test" component= {TemplateBox} />
           <Route exact path="/auth/signup" component = {Signup} />
           <Route exact path="/auth/signup/:status" component = {SignUpDecider}/>   
           <Route exact path="/auth/app/zoho/people" component = {ZohoPeople}/>   

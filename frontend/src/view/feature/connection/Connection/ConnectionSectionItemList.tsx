@@ -11,6 +11,7 @@ import {FetchContext} from '../../../../context/FetchContext';
 import {apI} from '../ConnectionInterface';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import {ConnectionSectionContextMenuMetrics} from './ConnectionSectionContextMenu';
+import { Typography } from '@material-ui/core';
 interface Params {
     platformid: string
 }
@@ -36,21 +37,16 @@ export const ConnectionSectionItemList :React.FC<serviceI> = ({id,description,se
         AuthApp();        
     },[])
 
-    //console.log(application.imglocation)
-    /*                            <Grid item xs={4} sm={2} className={classes.appdetail}>
-                                <Grid container direction="column" alignItems="center" className={classes.appstatus}>  
-                                    <Grid item xs={12} >
-                                        
-                                    </Grid>     
-                                    <Grid item xs={12} className={classes.appstatustext} style={{ color: 'black'}}>
-                                    
-                                    </Grid>                               
-                                </Grid>
-                            </Grid>*/
+    const connectStatus= <span className={clsx(classes.buttonApp,classes.paperAbsolute,classes.connectionStatus)}>
+                            Connected
+                        </span>
+
     return(
+        <>
           <Grid item xs={12} md={6} lg={4} >
-          <Paper className={clsx(classes.paper,classes.grid,classes.paperPadding)} >
-                <Grid container direction="row" justify="center" alignItems="center" >
+          <Paper className={clsx(classes.paper,classes.grid,classes.paperRelative)} >
+                <Grid container direction="row" justify="center" alignItems="center" className={clsx(classes.paperMargin)}>
+                    {authApp.authenticationservice_ap_id && connectStatus}
                     <Grid item xs={12} >
                         <Grid container direction="row" justify="center" alignItems="center"  className={classes.item}>
                             <Grid item xs={3} sm={2} className={classes.icon}>
@@ -62,11 +58,11 @@ export const ConnectionSectionItemList :React.FC<serviceI> = ({id,description,se
                                         {service_name}
                                     </Grid>     
                                     <Grid item xs={12} className={classes.appd}>
-                                        {description}
+                                        {description} 
                                     </Grid>                               
                                 </Grid>
                             </Grid>
-                            <Grid item xs={1} className={classes.appdetail}>
+                            <Grid item xs={1} sm={1} className={classes.appdetail}>
                                 <Grid container direction="column" justify="flex-end" alignItems="flex-end" >    
                                     <Grid item xs={12} className={classes.appd}>
                                         <ConnectionSectionContextMenuMetrics serviceId={id} authenticationServiceId={authApp.authenticationservice_ap_id}/>
@@ -75,8 +71,11 @@ export const ConnectionSectionItemList :React.FC<serviceI> = ({id,description,se
                             </Grid>
                         </Grid>
                     </Grid>
+
                 </Grid>
             </Paper>
             </Grid>
+            
+    </>
     )
 }

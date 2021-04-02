@@ -161,9 +161,9 @@ export const ConnectionMetricsSection:React.FC = () => {
                 }
                 selectedMetrics.sort((a,b)=>a-b)
                 if(!MetricsDetail.service){
+                    //open the dialog for app connection
                     onhandleSetConnectionOpen();
                 }else if(!arraysEqual(selectedMetrics,MetricsDetail.metrics)){
-                    alert('start Service')
                     //remove duplicaiton in the list to avoid mistake
                     //const RemovedDuplicationMetrics = [ ...new Set(selectedMetrics) ]
                     //RemovedDuplicationMetrics.sort((a,b)=>a-b)
@@ -176,7 +176,6 @@ export const ConnectionMetricsSection:React.FC = () => {
                             "metrics": selectedMetrics,
                             "service": MetricsDetail.service
                         })
-                    alert('SELECT Metrics')
                 }
                 enqueueSnackbar('Your metrics is saved.',{variant: 'success'});
                 dispatch({type: PAGE_STATUS_SUCCESS});
