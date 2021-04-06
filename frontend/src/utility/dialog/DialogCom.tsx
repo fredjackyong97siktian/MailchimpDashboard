@@ -34,27 +34,27 @@ const DialogTitle = withStyles(styles)((props: DialogTitleProps) => {
   );
 });
 
-const DialogCom: React.FC<DialogComInterface>= (props) => {
+const DialogCom: React.FC<DialogComInterface>= ({size,data,dialogStatus,dialogSetting,type}) => {
 
 
   return (
     <div>
       <Dialog
-        open={props.dialogStatus.open}
+        open={dialogStatus.open}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
-        fullWidth={props.size?.width? true: false}
+        fullWidth={size?.width? true: false}
       >
-        <DialogTitle id="alert-dialog-title" onClose={props.dialogStatus.onClose && props.dialogSetting.onCloseSet ? props.dialogStatus.onClose : null}>
-          {props.data.title}
+        <DialogTitle id="alert-dialog-title" onClose={dialogSetting.onCloseSet ? dialogStatus.onClose : null}>
+          {data.title}
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            {props.data.content}
+            {data.content}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          {props.data.action}
+          {data.action}
         </DialogActions>
       </Dialog>
     </div>

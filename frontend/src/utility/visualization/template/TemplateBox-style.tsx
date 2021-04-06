@@ -31,8 +31,8 @@ export const useStyles = makeStyles((theme: Theme) =>
         bottom:5
     },
     size:{
-        height:'250px',
-        width:'200px'
+        height:'330px',
+        width:'280px'
     },
     chartsize:{
         height:'100%',
@@ -83,6 +83,39 @@ export const useStyles = makeStyles((theme: Theme) =>
         position:'absolute',
         top:'0',
         right:'0',
+    },
+    datasample:{
+        position:'relative',
+        textAlign:'center'
+    },
+    figure:{
+        fontSize:'35px',
+        paddingTop:'10px',
+        paddingLeft:'10px'
+    },
+    figureUnit:{
+        fontSize:'10px'
+    },
+    figurePercent:{
+        alignItems:'center',
+        display:'flex',
+        fontSize:'10px',
+        justifyContent: 'center'
+    },
+    chartborder:{
+        height:'230px',
+        position:'absolute',
+        bottom:'0',
+    },
+    icon:{
+        fontSize:'20px',
+    },
+    green:{
+        color:'green'
+    },
+    red:{
+        color:'red'
     }
+    
   }),
 );
