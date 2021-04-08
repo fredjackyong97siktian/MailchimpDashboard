@@ -35,6 +35,7 @@ const NavTop : React.FC<NavTopI> = ({nav,type}) => {
    return(
      <>
     <AppBar position="absolute" className={clsx(classes.appBar, open && classes.appBarShift , classes.backgroundColor)}>
+
     <Toolbar className={classes.toolbar}>
         <IconButton edge="start"  color="inherit" aria-label="open drawer" onClick={handleDrawerOpen} className={clsx(classes.menuButton, open && classes.menuButtonHidden)} >
           <MenuIcon />

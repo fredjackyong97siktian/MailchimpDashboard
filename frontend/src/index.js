@@ -11,20 +11,21 @@ import {reducers} from './reducer';
 import {AuthProvider} from './context/AuthContext'
 import {FetchProvider} from './context/FetchContext'
 import { SnackbarProvider} from 'notistack';
+
 const store = createStore(reducers, compose(applyMiddleware(thunk)))
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <Router>
-      <FetchProvider>
-        <AuthProvider >
-            <SnackbarProvider maxSnack={3} >
-              <RouterDecider/>
-            </SnackbarProvider>
-        </AuthProvider>
-        </FetchProvider>
-      </Router>
+        <Router>
+          <FetchProvider>
+            <AuthProvider >
+                <SnackbarProvider maxSnack={3} >
+                  <RouterDecider/>
+                </SnackbarProvider>
+            </AuthProvider>
+          </FetchProvider>
+        </Router>
     </Provider>
 
   </React.StrictMode>,

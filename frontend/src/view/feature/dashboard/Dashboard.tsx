@@ -19,6 +19,7 @@ import {
 
 const Dashboard : React.FC = () => {
     let { path } = useRouteMatch();
+    console.log('take 1')
    return(
     <div >
         
@@ -37,4 +38,4 @@ const Dashboard : React.FC = () => {
    ); 
 }
 
-export default Dashboard
+export default React.memo(Dashboard)

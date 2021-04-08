@@ -84,7 +84,7 @@ export const useStyles = makeStyles((theme: Theme) =>
         top:'0',
         right:'0',
     },
-    datasample:{
+    Line_body:{
         position:'relative',
         textAlign:'center'
     },
@@ -102,7 +102,7 @@ export const useStyles = makeStyles((theme: Theme) =>
         fontSize:'10px',
         justifyContent: 'center'
     },
-    chartborder:{
+    Scoreline_body:{
         height:'230px',
         position:'absolute',
         bottom:'0',

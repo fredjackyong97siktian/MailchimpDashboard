@@ -62,8 +62,7 @@ const Feature : React.FC = () => {
       setNav({variant:"permanent"})
     }
  },[window.innerWidth])  
- const CLIENT_ID = config.ZOHO.CLIENT_ID
- const REDIRECT_URL = config.ZOHO.REDIRECT_URL
+
    return(
     <div className={classes.root}>
       <React.Fragment key='left'>
