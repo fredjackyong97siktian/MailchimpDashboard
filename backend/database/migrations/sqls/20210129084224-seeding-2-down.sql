@@ -30,6 +30,7 @@ DROP TABLE "visualization";
 DROP TABLE "authenticationmetrics";
 DROP TABLE "authenticationservice";
 DROP TABLE "metrics";
+DROP TABLE "metricsgroup";
 DROP TABLE "payment";
 DROP TABLE "role_assigned";
 DROP TABLE "subscription";

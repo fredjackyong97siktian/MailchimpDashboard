@@ -6,17 +6,20 @@ import {Authentication} from './../entity/authentication';
 import  {Request, Response} from 'express';
 import {AuthenticationService} from '../entity/authenticationservice';
 import {Service} from './../entity/service';
+import {tasklogRecord} from './tasklog';
+
 interface firebaseDataI {
     userId: string | undefined, 
     application: string,
     applicationId: number,
     data: object,
+    businessInformation:object,
     sid: number,
     req : Request,
-    res: Response
+    res : Response
 }
 
-export const firebaseSave = async({userId,application,applicationId,data,sid,req, res} : firebaseDataI) => {
+export const firebaseSave = async({userId,application,applicationId,data,businessInformation,sid,req, res} : firebaseDataI) => {
     console.log('Pre Stage')
     console.log('Stage 1')
     const user = await getRepository(UserAccount).findOne({select:['id','user_account_id'],where :{user_account_id: userId}});
@@ -69,9 +72,10 @@ export const firebaseSave = async({userId,application,applicationId,data,sid,req
             //If dun have AuthenticationPermission (Mean it is new)
             console.log('Stage 6')
             //if do not have authenticationPermission
-            const docRefService = await db.collection(user.user_account_id).doc(`/${authentication_id}/`).collection(`/${application}/`).doc('/businessInformation/').collection('/data/').doc();
+            const docRefService = await db.collection(user.user_account_id).doc(`/${authentication_id}/`).collection(`/${application}/`).doc('/businessInformation/').collection('/ap_id/').doc();
             const ServiceId = docRefService.id;
-            await docRefService.set({date:'TESTTEST'}) 
+            console.log(businessInformation);
+            await docRefService.collection('/data/').doc(new Date().toUTCString()).set(businessInformation) 
 
             console.log('Stage 7')
             const AP = new AuthenticationService();
@@ -84,18 +88,24 @@ export const firebaseSave = async({userId,application,applicationId,data,sid,req
         }else{
             //If have AuthenticationPermission
             ap_id = ap.ap_id;
-            await db.collection(user.user_account_id).doc(`/${authentication_id}/`).collection(`/${application}/`).doc('/businessInformation/').collection('/data/').doc(ap_id).set({date:'TESTTEST'}) ;
+            await db.collection(user.user_account_id).doc(`/${authentication_id}/`).collection(`/${application}/`).doc('/businessInformation/')
+            .collection('/ap_id/').doc(ap_id).collection('/data/').doc(new Date().toUTCString()).set(businessInformation) ;
             //Update/Append Business Information
             
         }
 
         console.log('Stage 9')
         /***** Tasklog *****/
-        await db.collection(user.user_account_id).doc(`/${authentication_id}/`).collection(`/${application}/`).doc('/tasklog/').collection('/data/').doc().set({
-            timestamp : new Date(new Date().toUTCString()),
+        /*await db.collection(user.user_account_id).doc(`/${authentication_id}/`).collection(`/${application}/`).doc('/tasklog/').collection('/data/').doc(new Date().toUTCString()).set({
             service: sid,
             uri: 'not yet'
-        });
+        });*/
+
+        const path = db.collection(user.user_account_id).doc(`/${authentication_id}/`).collection(`/${application}/`).doc('/tasklog/').collection('/data/').doc(new Date().toUTCString())
+        const category = `Connection to Application`
+        const detail = `Connecting to ${application} and success`
+        const otherDetail = null;
+        await tasklogRecord({path,category,detail,otherDetail})
         console.log(ap_id);
         return ap_id;
     }else{

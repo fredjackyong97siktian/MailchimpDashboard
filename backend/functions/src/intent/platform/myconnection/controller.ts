@@ -5,6 +5,7 @@ import { AuthenticationService} from '../../../entity/authenticationservice';
 import {Metrics} from '../../../entity/metrics';
 import {Service} from '../../../entity/service';
 import {AuthenticationMetrics} from '../../../entity/authenticationmetrics';
+import {tasklog, tasklogRecord} from '../../../application/tasklog';
 
 export const RConnectionM = async (req : Request, res : Response) => {
     try {
@@ -91,6 +92,7 @@ export const RMetricsM = async (req : Request, res : Response) => {
             }))
             .orderBy("metrics.id", "ASC")
             .getRawMany()*/
+
 
             res.status(201).json({
                 success: true,
@@ -203,7 +205,7 @@ export const CMetricsM = async (req : Request, res : Response) => {
 
                 })
             }
-
+            //await tasklogRecord()
            res.status(201).json({
             success: true,
         });

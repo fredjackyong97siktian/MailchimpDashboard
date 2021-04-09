@@ -162,13 +162,19 @@ CREATE TABLE "payment" (
   CONSTRAINT chk_payment_id check (payment_id ~ '^[0-9a-zA-Z!@-_#]{20}$') 
 );
 
+CREATE TABLE "metricsgroup" (
+  "id" SERIAL NOT NULL PRIMARY KEY,
+  "name" varchar(256)
+);
+
 CREATE TABLE "metrics" (
   "id" SERIAL NOT NULL PRIMARY KEY,
   "metrics_id" char(20) NOT NULL UNIQUE,
   "serviceId" int NOT NULL REFERENCES service(id),
+  "metricsgroupId" int NOT NULL REFERENCES metricsgroup(id),
   "name" varchar(256),
   "detail" text,
-  "component" varchar(256),
+  "selection" bool DEFAULT FALSE,
   "isactive" bool default TRUE,
   "created_at" timestamp  without time zone default (now() at time zone 'utc')  
 );
@@ -195,7 +201,9 @@ CREATE TABLE "authenticationmetrics" (
 CREATE TABLE "visualization" (
   "id" SERIAL NOT NULL PRIMARY KEY,
   "metricsId" int NOT NULL REFERENCES metrics(id),
-  "subchartId" int NOT NULL REFERENCES subchart(id)
+  "subchartId" int NOT NULL REFERENCES subchart(id),
+  "default" bool default FALSE,
+  "api" varchar(256)
 );
 
 CREATE TABLE "visual_presentation" (
@@ -203,7 +211,7 @@ CREATE TABLE "visual_presentation" (
   "visualizationId" int NOT NULL REFERENCES visualization(id),
   "business_informationId" char(20) NOT NULL UNIQUE,
   "dashboardId" int NOT NULL REFERENCES dashboard(id),
-  "arrangment" smallint,
+  "position" smallint,
   "created_at" timestamp  without time zone default (now() at time zone 'utc'),
   "updated_at" timestamp without time zone default (now() at time zone 'utc')
 );

@@ -4,10 +4,11 @@
     "lint": "eslint --ext .js,.ts .",
     "build": "tsc ",
     "build:watch": "tsc --watch --preserveWatchOutput",
-    "serve": "npm run build:watch | firebase emulators:start ",
+    "serve": "npm run build:watch | firebase emulators:start --only functions ",
+    "serveF": "npm run build:watch",
     "shell": "npm run build && firebase functions:shell",
     "start": "npm run shell",
-    "deploy": "firebase deploy --only functions",
+    "deploy": "firebase deploy --only firestore",
     "logs": "firebase functions:log"
   },
   "nodemonConfig": {
@@ -28,6 +29,7 @@
   },
   "main": "lib/intent/index.js",
   "dependencies": {
+    "@mailchimp/mailchimp_marketing": "^3.0.37",
     "@types/es6-shim": "^0.31.41",
     "@types/facebook-js-sdk": "^3.3.1",
     "@types/jsonwebtoken": "^8.5.0",

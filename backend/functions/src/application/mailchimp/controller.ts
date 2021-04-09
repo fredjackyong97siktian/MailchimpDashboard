@@ -3,6 +3,7 @@ import  {Request, Response} from 'express';
 import {firebaseSave } from './../firebaseSave';
 import axios from 'axios';
 import { URLSearchParams } from "url"
+import {mailchimpdata} from './data';
 var config = require('../../../config');
 var sid : any;
 export const CallMailchimp = async (req : Request, res : Response) => {
@@ -32,7 +33,8 @@ export const CallBackMailchimp = async (req : Request, res : Response) => {
         const {data} = await axios.post("https://login.mailchimp.com/oauth2/token",new URLSearchParams(tokenDetail))
         //userId:req.user?.user_id
         console.log('checking this one first')
-        const ap_id = await firebaseSave({userId:'Uds9El49yPv6ZvTNOWxPav93o',application:'Mailchimp',applicationId:1, data: data, sid:sid, req:req, res:res})
+        const businessInformation = await mailchimpdata({apiKey:data.access_token, server:"us1"})
+        const ap_id = await firebaseSave({userId:'Uds9El49yPv6ZvTNOWxPav93o',application:'Mailchimp',applicationId:1, data: data,businessInformation:businessInformation, sid:sid, req:req, res:res})
         console.log('check this one')
         console.log(ap_id);
         //put authenticationservice code and name after success.
