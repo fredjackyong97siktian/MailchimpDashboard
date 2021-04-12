@@ -3,6 +3,7 @@ import {Application} from './application';
 import {Category} from './category';
 import {AuthenticationService} from './authenticationservice';
 import {Metrics} from './metrics';
+import { Dashboard } from "./dashboard";
 
 @Entity('service')
 export class Service {
@@ -33,4 +34,7 @@ export class Service {
 
     @OneToMany(type =>Metrics, metrics => metrics.service)
     metrics : Metrics[];
+
+    @OneToMany(type=>Dashboard,dashboard=>dashboard.service)
+    dashboards : Dashboard[]
 }

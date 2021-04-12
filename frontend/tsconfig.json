@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "es6",
     "strict": true,
-    "jsx": "react-jsx",
+    "jsx": "react",
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,

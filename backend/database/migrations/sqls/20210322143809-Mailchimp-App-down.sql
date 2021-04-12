@@ -1,4 +1,6 @@
 /* Replace with your SQL commands */
+DELETE FROM dashboard;
+DELETE FROM authenticationmetrics;
 DELETE FROM authenticationservice where "serviceId" = 1;
 DELETE from authentication where "applicationId" = 1;
 DELETE FROM metrics where "serviceId" = 1;

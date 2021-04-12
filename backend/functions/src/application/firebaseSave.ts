@@ -100,14 +100,14 @@ export const firebaseSave = async({userId,application,applicationId,data,busines
             service: sid,
             uri: 'not yet'
         });*/
-
+        
         const path = db.collection(user.user_account_id).doc(`/${authentication_id}/`).collection(`/${application}/`).doc('/tasklog/').collection('/data/').doc(new Date().toUTCString())
         const category = `Connection to Application`
         const detail = `Connecting to ${application} and success`
         const otherDetail = null;
         await tasklogRecord({path,category,detail,otherDetail})
         console.log(ap_id);
-        return ap_id;
+        return [ap_id,platform.id];
     }else{
         throw 'User not found'
     }   

@@ -1,10 +1,11 @@
-import {Entity, PrimaryGeneratedColumn, Column, ManyToOne,JoinColumn, OneToMany} from "typeorm";
+import {Entity, PrimaryGeneratedColumn, Column, ManyToOne,JoinColumn, OneToMany, OneToOne} from "typeorm";
 import {Metrics} from './metrics'
 import { Subchart } from "./subchart";
 import { Visualization } from "./visualization";
 import { Dashboard } from "./dashboard";
+import {AuthenticationMetrics} from './authenticationmetrics';
 
-@Entity('visualization_presentation')
+@Entity('visualizationpresentation')
 export class VisualizationPresentation {
     @PrimaryGeneratedColumn()
     id: number;
@@ -13,13 +14,13 @@ export class VisualizationPresentation {
     visualizationId : number;
 
     @Column()
+    authenticationmetricsId : number;
+
+    @Column()
     business_informationId : string;
 
     @Column()
     dashboardId : number;
-
-    @Column()
-    position: number;
 
     @ManyToOne(type=>Visualization, v=>v.visualizationpresentations)
     visualization:Visualization;
@@ -27,4 +28,10 @@ export class VisualizationPresentation {
     @ManyToOne(type=>Dashboard, d=>d.visualizationpresentations)
     dashboard:Dashboard;
 
+    @ManyToOne(type=>AuthenticationMetrics,am=>am.visualizationpresentation,{
+        cascade: true, // <= here
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE',
+    })
+    authenticationmetrics: AuthenticationMetrics;
 }

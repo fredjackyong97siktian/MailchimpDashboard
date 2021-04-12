@@ -12,7 +12,7 @@ INSERT INTO subchart ("id","chartId","subchart_name","reference_component") VALU
 (4,4,'Summary Card + Horinzontal Line','cardLine'),
 (5,2,'Multiple Summary Card','multiSummaryCard');
 
-INSERT INTO visualization ("id","metricsId","subchartId","default","api") VALUES
+INSERT INTO visualization ("id","metricsId","subchartId","isDefault","api") VALUES
 (1,1,2,TRUE,''),
 (2,1,4,FALSE,''),
 (3,2,2,TRUE,''),

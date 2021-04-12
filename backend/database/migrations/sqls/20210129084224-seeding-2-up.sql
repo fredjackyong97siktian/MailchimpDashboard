@@ -39,20 +39,6 @@ CREATE TABLE "category" (
   "isactive" bool  default TRUE
 );
 
-CREATE TABLE "dashboard" (
-  "id" SERIAL NOT NULL PRIMARY KEY,
-  "dashboard_id" char(20) NOT NULL UNIQUE,
-  "platformId" int NOT NULL REFERENCES platform (id),
-  "dashboard_name" varchar(257),
-  "isactive" bool  default TRUE,
-  "iscustom" bool  default FALSE,
-  "created_at" timestamp  without time zone default (now() at time zone 'utc') ,
-  "updated_at" timestamp without time zone default (now() at time zone 'utc'),
-  CONSTRAINT chk_dash_id check (dashboard_id ~ '^[0-9a-zA-Z!@-_#]{20}$') 
-);
-
-
-
 CREATE TABLE "chart" (
   "id" SERIAL NOT NULL PRIMARY KEY ,
   "name" varchar(257)
@@ -87,6 +73,20 @@ CREATE TABLE "service" (
   CONSTRAINT chk_service_id check (service_id ~ '^[0-9a-zA-Z]{20}$'),
    UNIQUE ("categoryId", "applicationId" )
    
+);
+
+CREATE TABLE "dashboard" (
+  "id" SERIAL NOT NULL PRIMARY KEY,
+  "dashboard_id" char(20) NOT NULL UNIQUE,
+  "platformId" int NOT NULL REFERENCES platform (id),
+  "serviceId" int REFERENCES service(id),
+  "position" int[] DEFAULT ARRAY[]::integer[],
+  "dashboard_name" varchar(257),
+  "isactive" bool default TRUE,
+  "created_at" timestamp  without time zone default (now() at time zone 'utc') ,
+  "updated_at" timestamp without time zone default (now() at time zone 'utc'),
+  CONSTRAINT chk_dash_id check (dashboard_id ~ '^[0-9a-zA-Z!@-_#]{20}$'),
+  UNIQUE("platformId","serviceId")
 );
 
 CREATE TABLE "role_dashboard_authorization" (
@@ -202,16 +202,16 @@ CREATE TABLE "visualization" (
   "id" SERIAL NOT NULL PRIMARY KEY,
   "metricsId" int NOT NULL REFERENCES metrics(id),
   "subchartId" int NOT NULL REFERENCES subchart(id),
-  "default" bool default FALSE,
+  "isDefault" bool DEFAULT FALSE,
   "api" varchar(256)
 );
 
-CREATE TABLE "visual_presentation" (
+CREATE TABLE "visualizationpresentation" (
   "id" SERIAL NOT NULL PRIMARY KEY ,
   "visualizationId" int NOT NULL REFERENCES visualization(id),
-  "business_informationId" char(20) NOT NULL UNIQUE,
+  "authenticationmetricsId" int NOT NULL REFERENCES authenticationmetrics(id) ON DELETE CASCADE,
+  "business_informationId" char(20)  UNIQUE,
   "dashboardId" int NOT NULL REFERENCES dashboard(id),
-  "position" smallint,
   "created_at" timestamp  without time zone default (now() at time zone 'utc'),
   "updated_at" timestamp without time zone default (now() at time zone 'utc')
 );
@@ -221,7 +221,7 @@ CREATE TRIGGER update_customer_modtime BEFORE UPDATE ON authentication FOR EACH 
 CREATE TRIGGER update_customer_modtime BEFORE UPDATE ON dashboard FOR EACH ROW EXECUTE PROCEDURE  update_modified_column();
 CREATE TRIGGER update_customer_modtime BEFORE UPDATE ON role FOR EACH ROW EXECUTE PROCEDURE  update_modified_column();
 CREATE TRIGGER update_customer_modtime BEFORE UPDATE ON role_dashboard_authorization FOR EACH ROW EXECUTE PROCEDURE  update_modified_column();
-CREATE TRIGGER update_customer_modtime BEFORE UPDATE ON visual_presentation FOR EACH ROW EXECUTE PROCEDURE  update_modified_column();
+CREATE TRIGGER update_customer_modtime BEFORE UPDATE ON visualizationpresentation FOR EACH ROW EXECUTE PROCEDURE  update_modified_column();
 CREATE TRIGGER update_customer_modtime BEFORE UPDATE ON plan FOR EACH ROW EXECUTE PROCEDURE  update_modified_column();
 CREATE TRIGGER update_customer_modtime BEFORE UPDATE ON role_assigned FOR EACH ROW EXECUTE PROCEDURE  update_modified_column();
 CREATE TRIGGER update_customer_modtime BEFORE UPDATE ON oauth_login FOR EACH ROW EXECUTE PROCEDURE  update_modified_column();

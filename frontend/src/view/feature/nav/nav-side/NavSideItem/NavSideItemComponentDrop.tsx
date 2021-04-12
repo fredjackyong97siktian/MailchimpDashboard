@@ -1,4 +1,4 @@
-import React,{useContext} from 'react';
+import React,{useContext, useEffect} from 'react';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import ListItem from '@material-ui/core/ListItem';
@@ -10,11 +10,15 @@ import Divider from '@material-ui/core/Divider';
 import { DrawerSettingComponent } from '../../../../../model/nav/Nav';
 import {NavSideItemComponentDropSub} from './NavSideItemComponentDropSub';
 
-export const NavSideItemComponentDrop : React.FC<DrawerSettingComponent> = ({item}) =>{
+export const NavSideItemComponentDrop : React.FC<DrawerSettingComponent> = ({item ,listHandle, onSetListHandle}) =>{
   const [open, setOpen] = React.useState(false);
   const handleClick = () => {
     setOpen(!open);
   };
+
+  useEffect(()=>{
+    
+  },[listHandle])
 
   //openNav Context is to detect if the user close the nav, other thing will close too.
   const openNav = useContext(NavOpenContext);
@@ -31,7 +35,16 @@ export const NavSideItemComponentDrop : React.FC<DrawerSettingComponent> = ({ite
             {open ? <ExpandLess className={classes.ListItemIcon }/> : <ExpandMore className={classes.ListItemIcon }/>}
       </ListItem>
       {openNav? <Divider className={classes.divider}/> : <></>}
-      
-      {openNav? <NavSideItemComponentDropSub open={open}/> : <></> }
+      <div className={classes.ListHeight}>
+      {openNav? <NavSideItemComponentDropSub open={open} api={item.api} /> : <></> }
+      {openNav? <NavSideItemComponentDropSub open={open} api={item.api} /> : <></> }
+      {openNav? <NavSideItemComponentDropSub open={open} api={item.api} /> : <></> }
+      {openNav? <NavSideItemComponentDropSub open={open} api={item.api} /> : <></> }
+      {openNav? <NavSideItemComponentDropSub open={open} api={item.api} /> : <></> }
+      {openNav? <NavSideItemComponentDropSub open={open} api={item.api} /> : <></> }
+      {openNav? <NavSideItemComponentDropSub open={open} api={item.api} /> : <></> }
+      {openNav? <NavSideItemComponentDropSub open={open} api={item.api} /> : <></> }
+      {openNav? <NavSideItemComponentDropSub open={open} api={item.api} /> : <></> }
+      </div>
       </>);
   }

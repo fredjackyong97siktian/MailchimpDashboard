@@ -15,7 +15,15 @@ export interface NavTopI {
 
 }
 
+export interface ListHandleI {
+    favourite: boolean,
+    dashboard: boolean,
+    application: boolean
+}
+
 //component of the drawer open and close
 export interface DrawerSettingComponent {
-    item: {tag : string , icon : any}
+    item: {tag : string , icon : any,api:string},
+    listHandle : ListHandleI,
+    onSetListHandle : (list:string) => void
 }

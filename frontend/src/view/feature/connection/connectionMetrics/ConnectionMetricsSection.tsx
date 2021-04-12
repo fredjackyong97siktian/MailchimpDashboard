@@ -176,8 +176,10 @@ export const ConnectionMetricsSection:React.FC = () => {
                             "metrics": selectedMetrics,
                             "service": MetricsDetail.service
                         })
+
+                    enqueueSnackbar('Your metrics is saved.',{variant: 'success'});
                 }
-                enqueueSnackbar('Your metrics is saved.',{variant: 'success'});
+
                 dispatch({type: PAGE_STATUS_SUCCESS});
             }
             catch(error){

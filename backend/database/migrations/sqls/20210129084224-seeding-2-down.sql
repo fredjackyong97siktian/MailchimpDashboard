@@ -3,6 +3,7 @@ DELETE from service;
 DELETE from category;
 DELETE from application;
 
+
 ALTER TABLE metrics ALTER COLUMN metrics_id DROP DEFAULT ;  
 ALTER TABLE application ALTER application_id DROP DEFAULT;
 ALTER TABLE service ALTER COLUMN service_id DROP DEFAULT ;  
@@ -21,11 +22,11 @@ DROP TRIGGER update_customer_modtime  ON authentication ;
 DROP TRIGGER update_customer_modtime  ON dashboard ;
 DROP TRIGGER update_customer_modtime  ON role ;
 DROP TRIGGER update_customer_modtime  ON role_dashboard_authorization ;
-DROP TRIGGER update_customer_modtime  ON visual_presentation ;
+DROP TRIGGER update_customer_modtime  ON visualizationpresentation ;
 DROP TRIGGER update_customer_modtime  ON plan ;
 DROP TRIGGER update_customer_modtime  ON role_assigned ;
 
-DROP TABLE "visual_presentation";
+DROP TABLE "visualizationpresentation";
 DROP TABLE "visualization";
 DROP TABLE "authenticationmetrics";
 DROP TABLE "authenticationservice";
@@ -38,11 +39,11 @@ DROP TABLE "plan";
 DROP TABLE "favourite";
 DROP TABLE "payment_method";
 DROP TABLE "role_dashboard_authorization";
+DROP TABLE "dashboard";
 DROP TABLE "service";
 DROP TABLE "role";
 DROP TABLE "subchart";
 DROP TABLE "chart";
-DROP TABLE "dashboard";
 DROP TABLE "category";
 DROP TABLE "platform_setting_authorization";
 DROP TABLE "platform_setting";

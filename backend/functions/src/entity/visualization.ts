@@ -1,7 +1,7 @@
 import {Entity, PrimaryGeneratedColumn, Column, ManyToOne,JoinColumn, OneToMany} from "typeorm";
 import {Metrics} from './metrics'
 import { Subchart } from "./subchart";
-import {VisualizationPresentation} from './visualpresentation';
+import {VisualizationPresentation} from './visualizationpresentation';
 
 @Entity('visualization')
 export class Visualization {
@@ -15,7 +15,7 @@ export class Visualization {
     subchartId : number;
 
     @Column()
-    default : boolean;
+    isDefault : boolean;
 
     @Column()
     api: string;

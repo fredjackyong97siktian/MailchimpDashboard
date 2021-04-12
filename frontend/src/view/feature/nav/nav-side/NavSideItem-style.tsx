@@ -1,6 +1,10 @@
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
+    ListHeight:{
+        maxHeight:'300px',
+        overflowY:'scroll'
+    },
     ListItemText: {
         color:'white',
     },
@@ -12,12 +16,21 @@ const useStyles = makeStyles((theme) => ({
     ListItemIcon: {
         color:'white',
     },
+    ListItemHeight:{
+        height:'30px'
+    },
     nested: {
         backgroundColor:"#605865",
         paddingLeft: theme.spacing(4),
     },
     divider: {
         background:'#605865',
+    },
+    ListItemTitle:{
+
+    },
+    ListItemBackground:{
+        backgroundColor:"black",
     }
 }));
 
