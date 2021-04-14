@@ -16,7 +16,7 @@ const NavSideItemMain : React.FC = () =>{
     'application': false
   })
 
-  const onSetLIstHandle = (list:string) => {
+  const onSetLIstHandle = (list:string , open:boolean) => {
     setListHandle({
       'favourite': false,
       'dashboard': false,
@@ -24,28 +24,39 @@ const NavSideItemMain : React.FC = () =>{
     })
 
     switch(list){
-      case 'favourite' :
-        setListHandle({
-          'favourite' : true, ...listHandle
-        })
+     /* case 'favourite' :
+        setListHandle((prevState :any )=>({
+          ...prevState,
+          'favourite' : open
+        }))
         break;
-      case 'dashboard':
-        setListHandle({
-          'dashboard' : true, ...listHandle
-        })
+      case 'dashboard' :
+        setListHandle((prevState :any )=>({
+          ...prevState,
+          'dashboard' : open
+        }))
+        break;*/
+      case 'application' :
+        setListHandle((prevState :any )=>({
+          ...prevState,
+          'application' : open
+        }))
+        break; 
+      default:
+        setListHandle((prevState :any )=>({
+          'favourite': false,
+          'dashboard': false,
+          'application': false
+        }))
         break;
-      case 'application':
-        setListHandle({
-          'application' : true, ...listHandle
-        })
-        break;
+
     }
   }
 
   const background = {background:'#605865'}   
   const openNav = useContext(NavOpenContext);
   const ListItemArray = [
-   {
+   /*{
       tag : "Favourite",
       list:'favourite',
       api: 'application',
@@ -58,7 +69,7 @@ const NavSideItemMain : React.FC = () =>{
       api: 'application',
       level:1,
       icon : <DashboardIcon />      
-    },
+    },*/
     {
       tag : "Application",
       list: "application",
@@ -83,4 +94,4 @@ const NavBar = ListItemArray.map((item)=>{
   </div>);
 }
 
-export default NavSideItemMain
+export default React.memo(NavSideItemMain)

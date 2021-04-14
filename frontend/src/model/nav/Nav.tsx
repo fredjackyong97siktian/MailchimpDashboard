@@ -23,7 +23,7 @@ export interface ListHandleI {
 
 //component of the drawer open and close
 export interface DrawerSettingComponent {
-    item: {tag : string , icon : any,api:string},
+    item: {tag : string , icon : any,api:string,     list:string,},
     listHandle : ListHandleI,
-    onSetListHandle : (list:string) => void
+    onSetListHandle : (list:string ,open:boolean          ) => void
 }

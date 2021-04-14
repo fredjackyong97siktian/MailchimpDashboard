@@ -75,7 +75,10 @@ export const firebaseSave = async({userId,application,applicationId,data,busines
             const docRefService = await db.collection(user.user_account_id).doc(`/${authentication_id}/`).collection(`/${application}/`).doc('/businessInformation/').collection('/ap_id/').doc();
             const ServiceId = docRefService.id;
             console.log(businessInformation);
-            await docRefService.collection('/data/').doc(new Date().toUTCString()).set(businessInformation) 
+            await docRefService.collection('/data/').doc(new Date().toUTCString()).set(
+                {timestamp:new Date().toUTCString(),
+                businessInformation
+                }) 
 
             console.log('Stage 7')
             const AP = new AuthenticationService();
@@ -89,7 +92,10 @@ export const firebaseSave = async({userId,application,applicationId,data,busines
             //If have AuthenticationPermission
             ap_id = ap.ap_id;
             await db.collection(user.user_account_id).doc(`/${authentication_id}/`).collection(`/${application}/`).doc('/businessInformation/')
-            .collection('/ap_id/').doc(ap_id).collection('/data/').doc(new Date().toUTCString()).set(businessInformation) ;
+            .collection('/ap_id/').doc(ap_id).collection('/data/').doc(new Date().toUTCString()).set(
+                {timestamp:new Date().toUTCString(),
+                businessInformation
+                }) 
             //Update/Append Business Information
             
         }

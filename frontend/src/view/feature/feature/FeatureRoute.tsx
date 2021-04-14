@@ -2,7 +2,7 @@ import React from 'react';
 //import {DashboardGrid} from './../dashboard/DashboardGrid';
 import {Connection} from '../connection/Connection/Connection';
 import {ConnectionMetrics} from '../connection/connectionMetrics/ConnectionMetrics';
-import {Application} from'../visualization/application/Application';
+import {Dashboard} from'../visualization/dashboard/Dashboard';
 //const FeatureTest1 = React.lazy(() => import('./FeatureTest1'));
 //const FeatureTest2 = React.lazy(() => import('./FeatureTest2'));
 //const FeatureTest3 = React.lazy(() => import('./FeatureTest3'));
@@ -10,5 +10,5 @@ import {Application} from'../visualization/application/Application';
 export const FeatureRoute = [
     { path: '/myconnection', name: 'MyConnection', component: Connection , exact:false },
     { path: '/service/:serviceId', name: 'ConnectionMetrics', component: ConnectionMetrics , exact:false},
-    { path: '/application/:application',name:'Application',component: Application , exact:false}
+    { path: '/dashboard/:dashboardId',name:'Dashboard',component: Dashboard , exact:false}
 ]

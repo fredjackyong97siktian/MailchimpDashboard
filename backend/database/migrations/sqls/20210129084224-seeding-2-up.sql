@@ -173,6 +173,7 @@ CREATE TABLE "metrics" (
   "serviceId" int NOT NULL REFERENCES service(id),
   "metricsgroupId" int NOT NULL REFERENCES metricsgroup(id),
   "name" varchar(256),
+  "displayName" varchar(256),
   "detail" text,
   "selection" bool DEFAULT FALSE,
   "isactive" bool default TRUE,

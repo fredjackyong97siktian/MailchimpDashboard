@@ -10,6 +10,7 @@ import ZohoPeople from '../application/zoho/people/route';
 import QuickBook from '../application/quickbook/route';
 import MailChimp from '../application/mailchimp/route';
 import Nav from '../intent/nav/route';
+import Dashboard from '../intent/dashboard/route';
 import {auth , logout} from './auth'
 import express , {Request, Response} from 'express';
 import {checkJWT} from './../jwt/tokenchecker';
@@ -44,6 +45,10 @@ rootRouter.use(third_party+'/app/quickbook', QuickBook);
 /*Navigation */
 const nav = '/nav'
 rootRouter.use(nav,Nav);
+
+/*Dashboard */
+const dashboard= '/dashboard'
+rootRouter.use(dashboard,Dashboard)
 
 //const private_prefix = '/:platformid'
 rootRouter.use('/platform' , PlatformRoute)

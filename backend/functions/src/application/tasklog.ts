@@ -9,6 +9,7 @@ interface ParameterI{
 export const tasklogRecord = async({path,category,detail,otherDetail}:ParameterI) => {
 
     await path.set({
+        timestamp: new Date().toUTCString(),
         category:category,
         detail:detail,
         otherDetail:otherDetail

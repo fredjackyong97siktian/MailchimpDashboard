@@ -5,6 +5,7 @@ import axios from 'axios';
 import { URLSearchParams } from "url"
 import {mailchimpdata} from './data';
 import {CdashboardApplication} from '../../intent/dashboard/dashboard';
+import {db} from '../../intent/index';
 
 var config = require('../../../config');
 var sid : any;
@@ -38,6 +39,7 @@ export const CallBackMailchimp = async (req : Request, res : Response) => {
         //extract business information
         const businessInformation = await mailchimpdata({apiKey:data.access_token, server:"us1"})
         //save all the important information
+
         const [ap_id,platformId] = await firebaseSave({userId:'Uds9El49yPv6ZvTNOWxPav93o',application:'Mailchimp',applicationId:1, data: data,businessInformation:businessInformation, sid:sid, req:req, res:res})
         //create dashboard
         await CdashboardApplication(sid,'Mailchimp',platformId)
@@ -49,4 +51,27 @@ export const CallBackMailchimp = async (req : Request, res : Response) => {
         console.log(error)
         res.redirect(`${config.CLIENT_API}auth/app/complete/fail`)
     }
+};
+
+export const SaveMailChimp = async (req : Request, res : Response) => {
+    try {
+        //extract business information
+        const businessInformation = await mailchimpdata({apiKey:'71b07f8cb1dc10abcde1b4edbca40ae9', server:"us1"})
+        //save all the important information
+        await db.collection('Uds9El49yPv6ZvTNOWxPav93o').doc(`/JzmshKCEReH45ttFmuh5/`).collection(`/Mailchimp/`).doc('/businessInformation/')
+        .collection('/ap_id/').doc(`RReLNlNJecD5nCJPcNbs`).collection('/data/').doc(new Date().toUTCString()).set(
+            {timestamp:new Date().toUTCString(),
+            businessInformation
+            }) 
+        //put authenticationservice code and name after success.
+        res.status(201).json({
+            success: true,
+        });      
+    } catch (error) {
+        res.status(409).json({
+            success: false,
+            error: error.message || error
+        });
+    }
+    
 };

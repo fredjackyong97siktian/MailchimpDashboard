@@ -17,3 +17,5 @@ export const Scoreline : React.FC<ScorelineI> = ({chartData}) => {
         </>
     )
 }
+
+export default Scoreline;
