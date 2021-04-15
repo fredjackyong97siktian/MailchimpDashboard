@@ -1,4 +1,5 @@
 import {db} from './../intent/index';
+const access = (o :any, k:any) => { return o[k] }
 
 export const datasource = async(req : any)=>{
     if(req.query.authenticationId && req.query.name && req.query.apid && req.query.method){
@@ -27,4 +28,13 @@ export const datasource = async(req : any)=>{
     }else{
         throw "Not valid request"
     }   
+}
+
+export const selection = (data :any, dimensional : Array<string|number>)=>{
+    let selection :Array<string> = [];
+    data.map((item:any)=>{
+        selection.push(dimensional.reduce(access,item))
+    });
+
+    return selection
 }

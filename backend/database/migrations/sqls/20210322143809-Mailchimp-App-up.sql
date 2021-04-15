@@ -10,13 +10,13 @@ INSERT INTO metricsgroup("id","name") VALUES
 (2,'Automation'),
 (3,'Campaign');
 
-INSERT INTO metrics ("id","serviceId","metricsgroupId","name","displayName","detail","selection") VALUES
-(1,1,1,'Subscribed Contacts','Subscribed Contacts','To display the total contacts have subscribed.',TRUE),
-(2,1,1,'Unsubscribed Contacts','Unsubscribed Contacts','To display the total contacts have unsubscribed.',TRUE),
-(3,1,1,'Audience Performance','Audience Performance','Consist the information of subscribed and unsubscribed contacts.',TRUE),
-(4,1,1,'Total Audiences','Total Audiences','To display the total audiences.',TRUE),
-(5,1,3,'Click Rate by Campaign','Click Rate','To display the click rate of selected campaign',TRUE),
-(6,1,3,'Open Rate by Campaign','Open Rate','To display the open rate of selected campaign',TRUE),
-(7,1,3,'Unique Opens by Campaign','Unique Opens','To display the unique open of selected campaign',TRUE),
-(8,1,3,'Campaign Performance','Campaign Performance','Consist the information of click and open rate and unique open by campaign',TRUE),
-(9,1,3,'Total Campaign','Total Campaign','To display the total campaign',TRUE);
+INSERT INTO metrics ("id","serviceId","metricsgroupId","name","displayName","detail","selection","api") VALUES
+(1,1,1,'Subscribed Contacts','Subscribed Contacts','To display the total contacts have subscribed.',TRUE,'mailsc'),
+(2,1,1,'Unsubscribed Contacts','Unsubscribed Contacts','To display the total contacts have unsubscribed.',TRUE,'mailusc'),
+(3,1,1,'Audience Performance','Audience Performance','Consist the information of subscribed and unsubscribed contacts.',TRUE,'mailap'),
+(4,1,1,'Total Audiences','Total Audiences','To display the total audiences.',TRUE,'mailta'),
+(5,1,3,'Click Rate by Campaign','Click Rate','To display the click rate of selected campaign',TRUE,'mailcr'),
+(6,1,3,'Open Rate by Campaign','Open Rate','To display the open rate of selected campaign',TRUE,'mailor'),
+(7,1,3,'Unique Opens by Campaign','Unique Opens','To display the unique open of selected campaign',TRUE,'mailuo'),
+(8,1,3,'Campaign Performance','Campaign Performance','Consist the information of click and open rate and unique open by campaign',TRUE,'mailcp'),
+(9,1,3,'Total Campaign','Total Campaign','To display the total campaign',TRUE,'mailtc');

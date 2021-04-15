@@ -11,9 +11,9 @@ import {Scoreline} from './../scoreline/Scoreline';
 import {SortableHandle} from 'react-sortable-hoc';
 interface TemplateBoxI{
     itemId?:string,
-    body: React.ElementType
+    //body: React.ElementType
 }
-const TemplateBox : React.FC<TemplateBoxI> = ({itemId,body}) => {
+const TemplateBox : React.FC<TemplateBoxI> = ({itemId}) => {
     //draghandle
     const DragHandle = SortableHandle(()=>(
         <IconButton className={clsx(classes.position,classes.topleft,classes.button)}  >

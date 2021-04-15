@@ -175,6 +175,7 @@ CREATE TABLE "metrics" (
   "name" varchar(256),
   "displayName" varchar(256),
   "detail" text,
+  "api" varchar (256),
   "selection" bool DEFAULT FALSE,
   "isactive" bool default TRUE,
   "created_at" timestamp  without time zone default (now() at time zone 'utc')  
@@ -211,7 +212,7 @@ CREATE TABLE "visualizationpresentation" (
   "id" SERIAL NOT NULL PRIMARY KEY ,
   "visualizationId" int NOT NULL REFERENCES visualization(id),
   "authenticationmetricsId" int NOT NULL REFERENCES authenticationmetrics(id) ON DELETE CASCADE,
-  "business_informationId" char(20)  UNIQUE,
+  "selection" varchar(256),
   "dashboardId" int NOT NULL REFERENCES dashboard(id),
   "created_at" timestamp  without time zone default (now() at time zone 'utc'),
   "updated_at" timestamp without time zone default (now() at time zone 'utc')

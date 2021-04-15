@@ -7,24 +7,25 @@ import TemplateBox from './../../../../utility/visualization/template/TemplateBo
 import {SortableContainer,SortableElement,SortableHandle} from 'react-sortable-hoc';
 import {Scoreline} from './../../../../utility/visualization/scoreline/Scoreline';
 import arrayMove from 'array-move';
-import {DashboardI} from './Dashboard';
+import {DashboardI,VPI} from './Dashboard';
 
-export const DashboardSection  :React.FC<DashboardI> = ({position,visualizationpresentation}) => {
+interface nVPI extends VPI {
+  position:number
+}
 
-                    const finalSpaceCharacters = [
-                        {
-                          id: 1,
-                          position:1,
-                          component: Scoreline 
-                        },
+interface dataSectionI {
+  listDataProps: Array<nVPI>
+  onSetListData : (arr:any)=>void
+}
 
-                      ]
-    const [listData, setListData] = useState(finalSpaceCharacters);
-    const classes = makeStyle();
+export const DashboardSection  :React.FC<dataSectionI> = ({listDataProps,onSetListData}) => {
+  let VPData: Array<any> = [];
+  let i = 0;
+  const classes = makeStyle();              
 
     const SortableItem = SortableElement(({ value, index }:any) => (
         <Grid item xs={12} sm={6}md={4} lg={3} >
-            <TemplateBox itemId={value.id} body={value.component} />   
+            <TemplateBox itemId={value.visualizationId}  />   
         </Grid>
       ));
     
@@ -41,18 +42,19 @@ export const DashboardSection  :React.FC<DashboardI> = ({position,visualizationp
       });
     
       const onSortEnd = ({ oldIndex, newIndex }:any) => {
-        let arr = arrayMove(listData, oldIndex, newIndex);
+        let arr = arrayMove(listDataProps, oldIndex, newIndex);
         console.log('onSortEnd')
         for (let i = 0; i < arr.length; i++) {
-          arr[i].position = i;
+          arr[i].position = i;;
         }
-        setListData(arr);
+        onSetListData(arr);
       };
+      //
     return(
         <>
         <Grid item xs={12} >               
             <Paper className={clsx(classes.paper,classes.paperPadding)} elevation={0} >
-                <SortableList items={listData} onSortEnd={onSortEnd} axis="xy" useDragHandle/>
+              <SortableList items={listDataProps} onSortEnd={onSortEnd} axis="xy" useDragHandle/>
             </Paper>
         </Grid>
         </>

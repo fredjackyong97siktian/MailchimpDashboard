@@ -8,37 +8,48 @@ import {PAGE_STATUS_LOADING, PAGE_STATUS_SUCCESS, PAGE_STATUS_ERROR} from '../..
 
 interface Params {
     platformid: string,
-    serviceId: string
+    dashboardId: string
 }
 
-interface VPI {
+export interface VPI {
     id:number,
     visualizationId:number
 }
 
 export interface DashboardI {
     position: Array<number>,
-    dashboard_name: string,
-    visualizationpresentation: Array<VPI>
+    dashboard_name : string,
+    visualizationpresentations: Array<VPI>
 }
 
 export const Dashboard  :React.FC = () => {
 
-    const {platformid,serviceId}  = useParams<Params>();
+    const {platformid,dashboardId}  = useParams<Params>();
     const {authAxios} = useContext(FetchContext);
     const dispatch = useDispatch();
-    const [detail,setDetail] = useState<DashboardI>({
-        position:[],
-        dashboard_name: '',
-        visualizationpresentation:[]
-    })
-    
+    const [name,setName] = useState<string>('');
+    const [listData, setListData] = useState<Array<any>>([]);
+    const onSetListData = (arr : any) => {
+        setListData(arr);
+    }
     useEffect(()=>{
         dispatch({type:PAGE_STATUS_LOADING});
       const dashboard = async() => {
           try{
-            await authAxios.get(`dashbaord/${platformid}/${serviceId}`).then(({data}:any)=>{
-                setDetail(data.data)
+            await authAxios.get(`dashboard/${platformid}/${dashboardId}`).then(({data}:any)=>{
+                //console.log(data.data.visualizationId)
+                const Data= data.data;
+                setName(Data.dashboard_name)
+                let i =0;
+                Data.position.map((item : any)=>{
+                    const itemData :any = (Data.visualizationpresentations.filter((obj :any) => {
+                      return obj.id === item
+                    }))[0]
+                    itemData.position = i;
+                    i = i + 1;
+                    console.log(`${i}. It is ${itemData}`)
+                    setListData(oldArray => [...oldArray, itemData]);
+                  })
                 dispatch({type: PAGE_STATUS_SUCCESS});
             })
           }catch(error){
@@ -49,10 +60,10 @@ export const Dashboard  :React.FC = () => {
       } 
       dashboard()
     },[authAxios])
-    // <DashboardGrid title={detail.dashboard_name} prop={<DashboardSection /> }/>
+
     return(
         <>
-           
+           <DashboardGrid title={name} prop={<DashboardSection listDataProps={listData} onSetListData={onSetListData}/> }/>
         </>
     )
 }
