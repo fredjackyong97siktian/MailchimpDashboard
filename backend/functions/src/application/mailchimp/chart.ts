@@ -102,7 +102,7 @@ export const TotalAudience = async (req : Request, res : Response) => {
         })
         res.status(201).json({
             success: true,
-            data
+            returnData
         });
     } catch (error) {
         console.log(error)

@@ -22,6 +22,9 @@ export class VisualizationPresentation {
     @Column()
     dashboardId : number;
 
+    @Column()
+    selection: string;
+    
     @ManyToOne(type=>Visualization, v=>v.visualizationpresentations)
     visualization:Visualization;
 

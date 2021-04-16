@@ -44,6 +44,7 @@ DROP TABLE "service";
 DROP TABLE "role";
 DROP TABLE "subchart";
 DROP TABLE "chart";
+DROP TABLE "charttype";
 DROP TABLE "category";
 DROP TABLE "platform_setting_authorization";
 DROP TABLE "platform_setting";

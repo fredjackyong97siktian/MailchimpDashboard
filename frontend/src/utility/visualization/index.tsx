@@ -12,9 +12,9 @@ const  Visualization :React.FC<visualizationI>  = ({chartProps,name}) => {
   let sizeNumber = 0;
 
     const chart : any = {
-      'cardLine': <Scoreline {...chartProps} />,
-      'timeSeries': <Line  {...chartProps} />,
-      'summaryCard': <Score {...chartProps} />,
+      'cardLine': <Scoreline chartData={chartProps} />,
+      'timeSeries': <Line  chartData={chartProps} />,
+      'summaryCard': <Score chartData={chartProps} />,
      // 'normalTable':
     //  'multiSummaryCard'
   };

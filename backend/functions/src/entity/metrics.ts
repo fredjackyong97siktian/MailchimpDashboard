@@ -23,10 +23,16 @@ export class Metrics {
     name : string;
 
     @Column()
+    displayName:string;
+    
+    @Column()
     detail : string;
 
     @Column()
     component: string;
+
+    @Column()
+    api:string;
 
     @Column()
     isactive: boolean;

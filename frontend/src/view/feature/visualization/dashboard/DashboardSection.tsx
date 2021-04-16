@@ -14,18 +14,18 @@ interface nVPI extends VPI {
 }
 
 interface dataSectionI {
-  listDataProps: Array<nVPI>
-  onSetListData : (arr:any)=>void
+  listDataProps: Array<nVPI>,
+  onSetListData : (arr:any)=>void,
+  position: Array<number>,
+  onSetPosition: (arr:any)=>void,
 }
 
-export const DashboardSection  :React.FC<dataSectionI> = ({listDataProps,onSetListData}) => {
-  let VPData: Array<any> = [];
-  let i = 0;
+export const DashboardSection  :React.FC<dataSectionI> = ({listDataProps,onSetListData,position,onSetPosition}) => {
   const classes = makeStyle();              
 
     const SortableItem = SortableElement(({ value, index }:any) => (
         <Grid item xs={12} sm={6}md={4} lg={3} >
-            <TemplateBox itemId={value.visualizationId}  />   
+            <TemplateBox item={value} key={value.id} />   
         </Grid>
       ));
     
@@ -48,6 +48,7 @@ export const DashboardSection  :React.FC<dataSectionI> = ({listDataProps,onSetLi
           arr[i].position = i;;
         }
         onSetListData(arr);
+        onSetPosition(arrayMove(position, oldIndex, newIndex));
       };
       //
     return(

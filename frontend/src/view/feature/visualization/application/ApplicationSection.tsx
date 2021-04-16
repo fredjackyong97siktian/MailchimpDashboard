@@ -92,7 +92,7 @@ export const ApplicationSection  :React.FC = () => {
 
     const SortableItem = SortableElement(({ value, index }:any) => (
         <Grid item xs={12} sm={6}md={4} lg={3} >
-            <TemplateBox itemId={value.id} />   
+            <TemplateBox item={value.id} />   
         </Grid>
       ));
     

@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useEffect,useState,useContext} from 'react';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import {useStyles} from './TemplateBox-style';
@@ -6,21 +6,54 @@ import OpenWithIcon from '@material-ui/icons/OpenWith';
 import clsx from 'clsx';
 import { Typography, Button ,IconButton} from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import {FetchContext} from '../../../context/FetchContext';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import {Scoreline} from './../scoreline/Scoreline';
 import {SortableHandle} from 'react-sortable-hoc';
+import {VPI} from './../../../view/feature/visualization/dashboard/Dashboard'
+import Visualization from './../index';
+
 interface TemplateBoxI{
-    itemId?:string,
+    item : VPI,
     //body: React.ElementType
 }
-const TemplateBox : React.FC<TemplateBoxI> = ({itemId}) => {
+const TemplateBox : React.FC<TemplateBoxI> = ({item}) => {
     //draghandle
+    const util = require('util')
     const DragHandle = SortableHandle(()=>(
         <IconButton className={clsx(classes.position,classes.topleft,classes.button)}  >
             <OpenWithIcon/>   
         </IconButton>
     ))
+    console.log(`id: ${item.id}, visualizationId: ${item.visualizationId}, visualization: ${item.visualization}`)
     //<Scoreline chartData={chartData} Date={minmaxDate} Y={Y}/>
+    const {authAxios} = useContext(FetchContext);
+    const [data, setData] = useState();
+//item.visualization.subchart.chart.charttype.name
+    useEffect(()=>{
+        const retrieveData = async()=>{
+            try{
+                await authAxios.get(`oauth/app/${(item.visualization.metrics.service.application.name).toLowerCase()}/${item.visualization.metrics.api}`,{
+                    params:{
+                        authenticationId: item.visualization.metrics.service.authenticationServices[0].authentication.authentication_id,
+                        name: item.visualization.metrics.service.application.name,
+                        apid: item.visualization.metrics.service.authenticationServices[0].ap_id,
+                        method: 'multiple',
+                        selection: item.selection,
+                    }
+                }).then((data:any)=>{
+                    console.log(item.visualization.metrics.api)
+                    console.log(util.inspect(data.data.result.returnData, {showHidden: false, depth: null}))
+                   // console.log(`This is Tempalte Box Area${data}`)
+                    setData(data.data.result.returnData);
+                })
+            }catch(error){
+                console.log(error)
+            }            
+        }
+        retrieveData();
+    },[])
+
     const chartData = [
         { x: new Date(2016,5,1), y: 100  },
         { x: new  Date(2016,5,2), y: 150  },
@@ -38,6 +71,9 @@ const TemplateBox : React.FC<TemplateBoxI> = ({itemId}) => {
             minY : 100,
             maxY : 300
         }
+    console.log(chartData)
+   
+    //console.log(data[0] + 'this is')
     const bodyT = <body />
     const classes = useStyles();
     const ButtonChoose =  <Button variant="contained" className={classes.subtitleButton} >
@@ -48,6 +84,7 @@ const TemplateBox : React.FC<TemplateBoxI> = ({itemId}) => {
                             <ExpandMoreIcon fontSize="small" className={classes.subtitleButtonicon}/>
                         </span>
                     </Button>  
+                    //<Scoreline chartData={chartData} />
     return  (
         <div >
             <Grid container direction="column" justify="center" alignItems="center" className={classes.margin} >
@@ -59,7 +96,7 @@ const TemplateBox : React.FC<TemplateBoxI> = ({itemId}) => {
                             </Grid>
                             <Grid item xs={8} >
                                 <Typography align='center' className={classes.title}>
-                                    Click Rate {itemId}
+                                    {item.visualization.metrics.displayName}
                                 </Typography>
                                 <Typography align='center' className={classes.subtitle} >
                                     {ButtonChoose}
@@ -74,7 +111,7 @@ const TemplateBox : React.FC<TemplateBoxI> = ({itemId}) => {
                     </Grid>
                     <Grid item xs={12} >
                         <Paper className={clsx(classes.bottom)} >
-                            <Scoreline chartData={chartData} />
+                            <Visualization chartProps={data} name="cardLine"/>
                         </Paper>
                     </Grid>
                 </Paper>

@@ -39,8 +39,14 @@ CREATE TABLE "category" (
   "isactive" bool  default TRUE
 );
 
+CREATE TABLE "charttype" (
+  id SERIAL NOT NULL PRIMARY KEY,
+  name varchar(257)
+);
+
 CREATE TABLE "chart" (
   "id" SERIAL NOT NULL PRIMARY KEY ,
+  "charttypeId" int NOT NULL REFERENCES charttype(id),
   "name" varchar(257)
 );
 

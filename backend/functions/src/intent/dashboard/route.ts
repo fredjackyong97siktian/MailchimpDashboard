@@ -1,13 +1,13 @@
 //Login
-import {RDashboardVPM} from './controller';
+import {RDashboardVPM,UDashboardPositionS} from './controller';
 import express, {Request, Response} from 'express';
 
 const router = express.Router();
 
 //connection
 /*Application */
-router.get('/:platformid/:dashboardid',RDashboardVPM)
-
+router.get('/:platformid/:dashboardid/dashboard',RDashboardVPM)
+router.post('/:platformid/:dashboardid/position',UDashboardPositionS)
 
 /*Favourite */
 

@@ -2,6 +2,8 @@ import {db} from './../intent/index';
 const access = (o :any, k:any) => { return o[k] }
 
 export const datasource = async(req : any)=>{
+    console.log('datasource!!!!!!!!!!!!!!!!!!')
+    console.log(req.query.authenticationId)
     if(req.query.authenticationId && req.query.name && req.query.apid && req.query.method){
         const query = (req.query as any)
         const email = 'Uds9El49yPv6ZvTNOWxPav93o'

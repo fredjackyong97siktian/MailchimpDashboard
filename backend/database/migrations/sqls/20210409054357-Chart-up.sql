@@ -1,9 +1,13 @@
 /* Replace with your SQL commands */
+INSERT INTO charttype("id","name") VALUES
+(1,"single"),
+(2,"multiple"),
+
 INSERT INTO chart ("id","name") VALUES
-(1,'Line'),
-(2,'Card'),
-(3,'Table'),
-(4,'Card_Line');
+(1,'Line',2),
+(2,'Card',1),
+(3,'Table',2),
+(4,'Card_Line',2);
 
 INSERT INTO subchart ("id","chartId","subchart_name","reference_component") VALUES
 (1,1,'Time Series','timeSeries'),
