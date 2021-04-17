@@ -75,11 +75,11 @@ export const AudiencePerformance = async (req : Request, res : Response) => {
                     selectionList.includes(CampaigndimensionalSelection.reduce(access,item)) && selectionList.push(CampaigndimensionalSelection.reduce(access,item))
                 })
 
-                returnData.push({'subcribe':ymember,'unsubscribe':yunsubscribe});
+                returnData.push({'subscribe':ymember,'unsubscribe':yunsubscribe});
             }
         })
 
-        const result = {selectionList,returnData}
+        const result = {selectionList,returnData,display:["subscribe","unsubscribe"] }
         res.status(201).json({
             success: true,
             result
@@ -100,9 +100,10 @@ export const TotalAudience = async (req : Request, res : Response) => {
         data.map((item :any)=>{
             returnData.push({x:item.timestamp,y:item.businessInformation.data.audience.total_items});
         })
+        const result = {returnData}
         res.status(201).json({
             success: true,
-            returnData
+            result
         });
     } catch (error) {
         console.log(error)
@@ -183,7 +184,8 @@ export const CampaignPerformance = async (req : Request, res : Response) => {
         let selectionList : Array<string> = [];
         data.map((item :any)=>{
             let link = item.businessInformation.data.campaign.reports;
-            if(link.length > 1){
+            console.log(link.length +"hahss")
+            if(link.length > 0){
                 let yDataClick : number = 0;
                 let yDataOpen : number = 0;
                 let yDataUniqueOpen : number = 0;
@@ -200,7 +202,7 @@ export const CampaignPerformance = async (req : Request, res : Response) => {
             }
         })
 
-        const result = {selectionList,returnData}
+        const result = {selectionList,returnData, display:["click","open","unique"] }
         res.status(201).json({
             success: true,
             result
@@ -222,10 +224,10 @@ export const TotalCampaign = async (req : Request, res : Response) => {
         data.map((item :any)=>{
             returnData.push({x:item.timestamp,y:item.businessInformation.data.campaign.total_items});
         })
-        
+        const result = {returnData}
         res.status(201).json({
             success: true,
-            returnData
+            result
         });
     } catch (error) {
         console.log(error)

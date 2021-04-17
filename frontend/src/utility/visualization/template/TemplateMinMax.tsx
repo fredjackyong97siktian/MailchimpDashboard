@@ -1,9 +1,10 @@
 const util = require('util')
 export const findMinMaxY = (arr: any) =>{
   console.log('renderme AGAIN!!!! MINMAX')
-    if(!arr || typeof arr == undefined){
+    if(!arr || typeof arr == undefined || arr.length === 0){
       return [0,1];
     }
+
     console.log(util.inspect(arr, {showHidden: false, depth: null}))
     let min :number = arr[0].y, max :number=arr[0].y;
     for (let i = 0, len=arr.length; i < len; i++) {
@@ -20,7 +21,7 @@ export const findMinMaxY = (arr: any) =>{
 
 export const findMinMaxDate = (arr:any)=>{
   console.log('renderme AGAIN!!!! Date')
-  if(!arr || typeof arr == undefined){
+  if(!arr || typeof arr == undefined || arr.length === 0){
     return [new Date(),new Date()]
   }
 

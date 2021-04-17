@@ -17,9 +17,6 @@ export class VisualizationPresentation {
     authenticationmetricsId : number;
 
     @Column()
-    business_informationId : string;
-
-    @Column()
     dashboardId : number;
 
     @Column()

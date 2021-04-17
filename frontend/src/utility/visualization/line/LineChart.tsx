@@ -2,6 +2,7 @@ import React from 'react';
 import { VictoryLine ,VictoryTooltip ,VictoryChart,VictoryVoronoiContainer,VictoryContainer,VictoryArea, VictoryAxis,VictoryLabel, VictoryScatter} from 'victory';
 import {LineFlyout,sansSerif} from './LineFlyout';
 import {findMinMaxY, findMinMaxDate} from './../template/TemplateMinMax';
+import {filterDateArray} from './../template/TemplateDate';
 
 interface XYaxisI{
     x: any,
@@ -10,6 +11,7 @@ interface XYaxisI{
 
 export interface ScorelineI {
     chartData : Array<XYaxisI>,
+    display ?: Array<string>
 }
 
 const baseLabelStyles = {
@@ -34,12 +36,17 @@ const chartTheme = {
       },
     },
   };
-  //const uniqueArray = (a :any) => [...new Set(a.map((o :any) => JSON.stringify(o)))].map((s:any) => JSON.parse(s))
+  
+
 export const LineChart : React.FC<ScorelineI> = ({chartData}) => {
     /*Remove Duplication */
-    if(chartData){
+    let Scattersize;
+    let XlabelStyle : 'transparent' | 'black'  = 'black';
+    let XlabelLabel : 'transparent' | 'grey'  = 'transparent'; 
+    if(chartData && chartData.length !==0){
       //coverting string to date
-      for (let i=0;i<chartData.length; i++){
+      const chartDataLength = chartData.length;
+      for (let i=0;i<chartDataLength; i++){
         (!(chartData[i].x instanceof Date)) && (chartData[i].x = new Date(chartData[i].x))
         chartData[i].x = new Date((chartData[i].x).setHours(0,0,0,0))
       }
@@ -48,18 +55,21 @@ export const LineChart : React.FC<ScorelineI> = ({chartData}) => {
       chartData.sort((a ,b)=>{return Math.abs(new Date(b.x).getDate() - new Date(a.x).getDate())})
       console.log('hahahahhahahahahaha')
       console.log(util.inspect(chartData, {showHidden: false, depth: null}))
-      //chartData = uniqueArray(chartData)
-      //remove duplicate if any (must get the latest) (Based on date in future)
-      //console.log('Nopiakc'+chartData)
-      //console.log(util.inspect(chartData, {showHidden: false, depth: null}))
+
+      //remove duplicate if any (must get the latest) (Based on date/month/year in future)
+      chartData = filterDateArray(chartData)
+
+      chartData.length === 1 ? Scattersize = 5 : Scattersize = 0;
+    }else{
+      XlabelStyle = 'transparent'
+      XlabelLabel =  'grey';
     }
-    let Scattersize;
-    //chartData.length === 1 ? Scattersize = 5 : Scattersize = 5;
+
     //console.log(`length ${chartData.length}`)
 
     const [minY,maxY] = findMinMaxY(chartData)
     const [minDate,maxDate]= findMinMaxDate(chartData) 
-    console.log(minY + maxY)
+    //console.log(minY + maxY)
     return(
         <VictoryChart 
                     scale={{ x: "time" }}
@@ -71,10 +81,16 @@ export const LineChart : React.FC<ScorelineI> = ({chartData}) => {
                         <VictoryVoronoiContainer/>
                     }
                     >
+                      <VictoryLabel text="No Data" x={200} y={150} textAnchor="middle" style={{ fill: XlabelLabel ,fontSize: 25 }}/>
                       <VictoryScatter
                         style={{ data: { fill: "green" } }}
                         size={Scattersize}
                         data={chartData}
+                        labels={({ datum }) => ``}
+                        labelComponent={
+                          <VictoryTooltip
+                              flyoutComponent={<LineFlyout />}
+                          />}
                       />
 
                     <VictoryAxis     
@@ -82,16 +98,17 @@ export const LineChart : React.FC<ScorelineI> = ({chartData}) => {
                             fixLabelOverlap={true}
                             axisLabelComponent={<VictoryLabel />}
                             style={{
-                            grid: { stroke: "grey",strokeWidth:0.5 },
+                            grid: { stroke: XlabelStyle ,strokeWidth:0.5 },
                             tickLabels: {
                                 fontSize: 20,
+                                fill:XlabelStyle,
                               }
                             }}
                     />
                      <VictoryAxis tickFormat={(x) => `${x.getDate()}/${x.getMonth()}`} 
                            style={{
                             tickLabels: {
-    
+                                fill:XlabelStyle
                               }
                             }}/>
 

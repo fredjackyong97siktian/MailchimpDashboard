@@ -28,3 +28,23 @@ export const TemplateDay = (num: number) => {
 
     return weekday[num]
 }
+
+//Filter Date/Month/Year can get the latest date
+/*the functionality of month and year yet to developed */
+export const filterDateArray = (arr : Array<{x:Date,y:any}>) => {
+    let tmp :any = {};
+
+    arr.forEach((item : {x:Date,y:any}) =>{
+      const d = new Date(item.x);
+      const yr = (d.getFullYear()).toString();
+      const mo = (d.getMonth()).toString();
+      const day = (d.getDate()).toString();
+
+      tmp[yr +'' + mo + '' + day] = item; // will overwrite prior same date
+    });
+
+    return Object.keys(tmp).map((key)=>{
+      return tmp[key];
+    });
+    
+ }

@@ -88,6 +88,19 @@ export const useStyles = makeStyles((theme: Theme) =>
         position:'relative',
         textAlign:'center'
     },
+    Score_body:{
+        position:'absolute',
+        top: 80,
+        left : 120
+    },
+    multiFigure:{
+        display:'flex',
+        alignItems:'center',
+        justifyContent: 'center',
+        fontSize:'15px',    
+        paddingTop:'10px', 
+
+    },
     figure:{
         fontSize:'35px',
         paddingTop:'10px',
@@ -118,6 +131,12 @@ export const useStyles = makeStyles((theme: Theme) =>
     },
     grey:{
         color:'grey'
+    },
+    progressBar:{
+        position:'absolute',
+        top:100,
+        left:120,
+        opacaity:1
     }
     
   }),
