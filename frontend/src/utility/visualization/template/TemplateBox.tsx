@@ -87,13 +87,13 @@ const TemplateBox : React.FC<TemplateBoxI> = ({item}) => {
     const bodyT = <body />
     const classes = useStyles();
     const ButtonChoose =  <Button variant="contained" className={classes.subtitleButton} >
-                        <span className={classes.subtitleButtontext}>
-                            All Automation
-                        </span>
-                        <span>
-                            <ExpandMoreIcon fontSize="small" className={classes.subtitleButtonicon}/>
-                        </span>
-                    </Button>  
+                                <span className={classes.subtitleButtontext}>
+                                    All Automation
+                                </span>
+                                <span>
+                                    <ExpandMoreIcon fontSize="small" className={classes.subtitleButtonicon}/>
+                                </span>
+                            </Button>  
                     //<Scoreline chartData={chartData} />
 
                     //
