@@ -12,7 +12,7 @@ const Logo : React.FC = () => {
    return(
      <>
     <IconButton className={classes.logo} onClick={handleClick}>
-        Logo
+        BSUPKIT
     </IconButton>
     </>
    ); 
